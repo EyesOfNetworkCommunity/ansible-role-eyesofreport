@@ -5,15 +5,23 @@
 #
 # Eric Belhomme <rico-github@ricozome.net> - 2018-07-22
 
-- name: system prerequisites
-  include_tasks: install_system.yml
-  tags:
-  - prereqs
+- name: create temporary directory for installation purpose
+  file:
+    path: "{{ eor_tmp_install_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
 
-- name: install Oracle JDK
-  include_tasks: install_jdk.yml
-  tags:
-  - java
+#- name: system prerequisites
+#  include_tasks: install_system.yml
+#  tags:
+#  - prereqs
+#
+#- name: install Oracle JDK
+#  include_tasks: install_jdk.yml
+#  tags:
+#  - java
 
 ## temp workaround for eorweb db
 #- name: Create and initialize eorweb database
@@ -21,10 +29,10 @@
 #    name: eorweb
 #    state: absent
 
-- name: install & configure MariaDB and EOR databases
-  include_tasks: install_mariadb.yml
-  tags:
-  - databases
+#- name: install & configure MariaDB and EOR databases
+#  include_tasks: install_mariadb.yml
+#  tags:
+#  - databases
 
 - name: install & configure Docker
   include_tasks: install_docker.yml
@@ -47,6 +55,6 @@
   - birt
 
 - name: install & configure HTTP server
-  include_tasks: install_web.yml
+  include_tasks: install_apache.yml
   tags:
   - web

@@ -9,7 +9,7 @@
 - name: download Pentaho package on target system
   get_url:
     url: "{{ external_softs.pentaho.uri }}"
-    dest: "{{ eor_source_path }}/{{ external_softs.pentaho.filename }}"
+    dest: "{{ eor_tmp_install_path }}/{{ external_softs.pentaho.filename }}"
     mode: 0644
     checksum: "{{ external_softs.pentaho.sum }}"
   when: external_softs.pentaho.uri|regex_search('https{0,1}:\/\/')
@@ -18,7 +18,7 @@
 - name: copy Pentaho package on target system
   copy:
     url: "{{ external_softs.pentaho.uri }}"
-    dest: "{{ eor_source_path }}/{{ external_softs.pentaho.filename }}"
+    dest: "{{ eor_tmp_install_path }}/{{ external_softs.pentaho.filename }}"
     mode: 0644
     checksum: "{{ external_softs.pentaho.sum }}"
   when: not download_pentaho
@@ -39,7 +39,7 @@
 
 - name: uncompress Pentaho archive
   unarchive:
-    src: "{{ eor_source_path }}/{{ external_softs.pentaho.filename }}"
+    src: "{{ eor_tmp_install_path }}/{{ external_softs.pentaho.filename }}"
     dest: "{{ pentaho.path }}"
     remote_src: yes
 
@@ -60,6 +60,23 @@
     path: "{{ pentaho.path }}/data-integration/lib/mysql-connector-java-bin.jar"
     src: "{{ eor_install_path }}/mysql-java-connector/{{ eor_mysql_connector_java_path | basename }}"
     state: link
+
+
+
+
+
+- name: copy ETL scripts
+  synchronize:
+    src: "pentaho/scripts"
+    dest: "{{ pentaho.path }}"
+
+
+
+
+- name: create ETL validator directory
+  file:
+    path: "{{ pentaho.path }}/validator"
+    state: directory
 
 - name: build and install ETL_DTM_COMPUTE_HS_INCIDENT_JAR ETL validator
   include_tasks: build_etl_validator.yml
@@ -93,13 +110,13 @@
     owner: "{{ pentaho.user }}"
     group: "{{ pentaho.group }}"
     mode: 0640
-  with_item:
+  with_items:
   - kettle.properties
   - repositories.xml
 
 - name: set-up jdbc.properties
   template:
-    src: etl/data-integration/jdbc.properties.j2
+    src: pentaho/data-integration/jdbc.properties.j2
     dest: "{{ pentaho.path }}/data-integration/simple-jndi/jdbc.properties"
     owner: "{{ pentaho.user }}"
     group: "{{ pentaho.group }}"
@@ -107,7 +124,7 @@
 
 - name: set carte_config XML file
   template:
-    src: etl/data-integration/jdbc.properties.j2
+    src: pentaho/data-integration/jdbc.properties.j2
     dest: "{{ pentaho.path }}/data-integration/simple-jndi/jdbc.properties"
     owner: "{{ pentaho.user }}"
     group: "{{ pentaho.group }}"

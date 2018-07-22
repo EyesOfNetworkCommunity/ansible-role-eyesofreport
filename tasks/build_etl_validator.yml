@@ -8,7 +8,7 @@
 - name: copy {{ etl_name }} files
   synchronize:
     src: "pentaho/{{ etl_name }}"
-    dest: "{{ eor_tmp_install_path }}/{{ etl_name }}"
+    dest: "{{ eor_tmp_install_path }}"
 
 - name: copy the jdbc mysql connector to the jar
   copy:

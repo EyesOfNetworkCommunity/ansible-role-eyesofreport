@@ -51,7 +51,7 @@
    
 - name: install Wildfly systemd unit file
   template:
-    src: report/wildfly.service.j2
+    src: wildfly/wildfly.service.j2
     dest: /etc/systemd/system/wildfly.service
     owner: root
     group: root
@@ -72,8 +72,8 @@
 
 - name: put Wildfly CLI script on server
   template:
-    src: report/wildfly-configure.cli.j2
-    dest: /tmp/wildfly-configure.cli
+    src: wildfly/wildfly-configure.cli.j2
+    dest: "{{ eor_tmp_install_path }}/wildfly-configure.cli"
     owner: root
     group: root
     mode: 0640
@@ -82,7 +82,7 @@
 # unreachable until it finishes to start. So let's have a try
 # every 10s until it answers
 - name: Configure Wildfly through CLI
-  command: "{{ wildfly.app_path }}/wildfly/bin/jboss-cli.sh --connect --file=/tmp/wildfly-configure.cli"
+  command: "{{ wildfly.app_path }}/wildfly/bin/jboss-cli.sh --connect --file={{ eor_tmp_install_path }}/wildfly-configure.cli"
   register: wildfly_cli
   until: wildfly_cli.rc == 0
   retries: 6
