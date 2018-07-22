@@ -1,0 +1,105 @@
+---
+
+- name: create eyesofnetwork directory
+  file:
+    path: /srv/eyesofnetwork
+    state: directory
+    owner: "{{ eor_owner }}"
+    group: "{{ eor_group }}"
+    mode: 0755
+
+- name: set correct ownership and privileges
+  file:
+    path: '/srv/eyesofreport/eorweb'
+    owner: "{{ eor_owner }}"
+    group: "{{ eor_group }}"
+    mode: u=rwX,go=rX
+    recurse: yes
+
+- name: symlink eorweb
+  file:
+    src: '/srv/eyesofreport/eorweb'
+    dest: '/srv/eyesofnetwork/eorweb'
+    state: link
+
+# There is no need to overwrite system config files for
+- name: configure apache's main config file
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: '^DocumentRoot .*'
+    line: 'DocumentRoot "/srv/eyesofnetwork/eorweb"'
+
+- name: patch web.xml file on Birt war
+  blockinfile:
+    path: /etc/httpd/conf/httpd.conf
+    block: |
+      <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+      </Directory>
+
+- name: put Apache eorweb.conf template
+  template:
+    src: apache/eorweb.conf.j2
+    dest: /etc/httpd/conf.d/eorweb.conf
+    owner: root
+    group: root
+    mode: 0640
+
+- name: put Apache birt.conf template
+  template:
+    src: apache/birt.conf.j2
+    dest: /etc/httpd/conf.d/birt.conf
+    owner: root
+    group: root
+    mode: 0640
+    
+- name: put Apache kettle.conf template
+  template:
+    src: apache/kettle.conf.j2
+    dest: /etc/httpd/conf.d/kettle.conf
+    owner: root
+    group: root
+    mode: 0640
+
+- name: configure apache's php.conf
+  lineinfile:
+    path: /etc/httpd/conf.d/php.conf
+    regexp: '^AddHandler php5-script .php'
+    insertbefore: '^AddType .*text/html .php'
+    line: 'AddHandler php5-script .php'
+    
+## configure eorweb config.php file
+- name: configure db host on eorweb config.php file
+  lineinfile:
+    path: "/srv/eyesofreport/eorweb/include/config.php"
+    regexp: '^\$database_host.*=.*$'
+    line: "$database_host=\"{{ sql.eorweb.host }}\";"
+
+- name: configure db listening port on eorweb config.php file
+  lineinfile:
+    path: "/srv/eyesofreport/eorweb/include/config.php"
+    regexp: '^\$database_port.*=.*$'
+    line: "$database_port=\"3306\";"
+
+- name: configure db user name on eorweb config.php file
+  lineinfile:
+    path: "/srv/eyesofreport/eorweb/include/config.php"
+    regexp: '^\$database_username.*=.*$'
+    line: "$database_username=\"{{ sql.eorweb.user }}\";"
+
+- name: configure db user password on eorweb config.php file
+  lineinfile:
+    path: "/srv/eyesofreport/eorweb/include/config.php"
+    regexp: '^\$database_password.*=.*$'
+    line: "$database_password=\"{{ sql.eorweb.password }}\";"
+    owner: root
+    group: "{{ eor_group }}"
+    mode: 0640
+
+- name: enable and start Apache httpd service
+  systemd:
+    name: httpd
+    enabled: yes
+    masked: no
+    state: restarted

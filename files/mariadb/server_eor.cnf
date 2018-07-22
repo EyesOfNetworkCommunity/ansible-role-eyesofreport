@@ -1,0 +1,24 @@
+[mysqld]
+# EOR specific MariaDB configuration
+
+# Disabling symbolic-links is recommended to prevent assorted security risks
+#symbolic-links=0
+#tmpdir=/tmpmysql
+
+max-heap-table-size=15G
+
+tmp-table-size=15G
+innodb-file-per-table=1
+innodb-flush-log-at-trx-commit=1
+#innodb-buffer-pool-size=10G
+innodb-flush-method=O_DSYNC
+
+sync-binlog=1
+#general_log_file=/var/lib/mysql/mysql.log
+#general_log=1
+#log_warnings = 2
+default-time-zone='Europe/Paris'
+max-allowed-packet=2209900
+sql-mode=ANSI_QUOTES
+lower_case_table_names = 1
+

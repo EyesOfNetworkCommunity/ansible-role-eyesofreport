@@ -1,0 +1,52 @@
+---
+# vim: set bs=2 sw=2 expandtab:
+#
+# tasks file for ansible-role-eyesofreport
+#
+# Eric Belhomme <rico-github@ricozome.net> - 2018-07-22
+
+- name: system prerequisites
+  include: install_system.yml
+  tags:
+  - prereqs
+
+- name: install Oracle JDK
+  include: install_jdk.yml
+  tags:
+  - java
+
+## temp workaround for eorweb db
+#- name: Create and initialize eorweb database
+#  mysql_db:
+#    name: eorweb
+#    state: absent
+
+- name: install & configure MariaDB and EOR databases
+  include: install_mariadb.yml
+  tags:
+  - databases
+
+- name: install & configure Docker
+  include: install_docker.yml
+  tags:
+  - docker
+
+- name: install & configure Pentaho ETL software
+  include: install_pentaho.yml
+  tags:
+  - pentaho
+
+- name: install & configure Wildfly application server
+  include: install_wildfly.yml
+  tags:
+  - wildfly
+
+- name: install & configure BIRT reporting webapp
+  include: install_birt.yml
+  tags:
+  - birt
+
+- name: install & configure HTTP server
+  include: install_web.yml
+  tags:
+  - web

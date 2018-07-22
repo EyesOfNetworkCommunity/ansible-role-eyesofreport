@@ -1,0 +1,65 @@
+---
+# vim: set bs=2 sw=2 expandtab:
+#
+# install & configure Oracle JRE 7u80 from local repo on
+# RHEL & CentOS distros
+#
+# Eric Belhomme <rico-github@ricozome.net> - 2018-07-22
+
+# Oracle's legacy JDKs are almost impossible to download automatically
+# from Oracle website as it is mandatory to authenticate on Oracle's
+# web portal.
+# So you can either get the RPM from a local repo, or from a network fs
+#
+# See defaults/main.yml to further details.
+
+# use get_url module if source file is a HTTP URI
+- name: download Oracle JRE package on target system
+  get_url:
+    url: "{{ external_softs.jdk.uri }}"
+    dest: /tmp/jdk-7u80-linux-x64.rpm
+    mode: 0644
+    checksum: "{{ external_softs.jdk.sum }}"
+  when: external_softs.jdk.uri|regex_search('https{0,1}:\/\/')
+  register: download_jdk
+# or use file copy
+- name: copy Oracle JRE package on target system
+  copy:
+    url: "{{ external_softs.jdk.uri }}"
+    dest: /tmp/jdk-7u80-linux-x64.rpm
+    mode: 0644
+    checksum: "{{ external_softs.jdk.sum }}"
+  when: not download_jdk
+  register: copy_jdk
+
+- block:
+
+  - name: install JRE package
+    yum:
+      name: "/tmp/{{ external_softs.jdk.filename }}"
+      state: present
+    
+  - name: correct java version selected
+    alternatives:
+      name: java
+      link: /usr/bin/java
+      path: /usr/java/jdk1.7.0_80/bin/java
+  
+  - name: correct javac version selected
+    alternatives:
+      name: javac
+      link: /usr/bin/javac
+      path: /usr/java/jdk1.7.0_80/bin/javac
+  
+  - name: correct javaws version selected
+    alternatives:
+      name: javaws
+      link: /usr/bin/javaws
+      path: /usr/java/jdk1.7.0_80/bin/javaws
+
+  when: not download_jdk.failed or not copy_jdk.failed
+  
+- name: delete JRE package installer
+  file:
+    path: /tmp/jdk-7u80-linux-x64.rpm
+    state: absent

@@ -1,0 +1,79 @@
+---
+
+# use get_url module if source file is a HTTP URI
+- name: download Birt runtime package on target system
+  get_url:
+    url: "{{ external_softs.birt.uri }}"
+    dest: "{{ eor_source_path }}/{{ external_softs.birt.filename }}"
+    mode: 0644
+    checksum: "{{ external_softs.birt.sum }}"
+  when: external_softs.birt.uri|regex_search('https{0,1}:\/\/')
+  register: download_birt
+# or use file copy
+- name: copy Birt runtime package on target system
+  copy:
+    url: "{{ external_softs.birt.uri }}"
+    dedest: "{{ eor_source_path }}/{{ external_softs.birt.filename }}"
+    mode: 0644
+    checksum: "{{ external_softs.birt.sum }}"
+  when: not download_birt
+  register: copy_birt
+
+- name: create temporary directory for birt runtime extraction
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+  - '/tmp/birt/runtime'
+  - '/tmp/birt/war'
+
+- name: uncompress Birt archive in a temporary directory
+  unarchive:
+    src: "{{ eor_source_path }}/{{ external_softs.birt.filename }}"
+    dest: /tmp/birt/runtime
+    remote_src: yes
+
+- name: find Birt WAR file
+  find:
+    paths: /tmp/birt/runtime
+    patterns: 'birt.war'
+    recurse: yes
+  register: find_war
+
+- block:
+
+  - name: uncompress Birt WAR file in a temp dir
+    unarchive:
+      src: "{{ find_war.files[0].path }}"
+      dest: /tmp/birt/war
+      remote_src: yes
+
+  - name: copy MySQL java connector on Birt war
+    copy:
+      src: "{{ eor_install_path }}/mysql-java-connector/{{ eor_mysql_connector_java_path | basename }}"
+      dest: /tmp/birt/war/WEB-INF/lib
+      remote_src: yes
+
+  - name: copy bmrt.rptdesign template on Birt war
+    template:
+      src: birt/bmrt.rptdesign.j2
+      dest: /tmp/birt/war/bmrt.rptdesign
+
+  - name: patch web.xml file on Birt war
+    blockinfile:
+      path: /tmp/birt/war/WEB-INF/web.xml
+      block: |
+        <context-param>
+          <param-name>BIRT_VIEWER_WORKING_FOLDER</param-name>
+          <param-value>/srv/eyesofreport/report/</param-value>
+        </context-param>
+
+  - name: compress patched birt WAR file
+    archive:
+      path: /tmp/birt/war/*
+      dest: "{{ wildfly.app_path }}/wildfly/standalone/deployments/birt.war"
+      format: zip
+      owner: "{{ wildfly.user }}"
+      group: "{{ wildfly.group }}"
+      mode: 0640
+  when: find_war.matched == 1

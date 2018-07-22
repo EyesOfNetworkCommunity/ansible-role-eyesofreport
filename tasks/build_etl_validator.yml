@@ -1,0 +1,28 @@
+- name: copy {{ etl_name }} files
+  synchronize:
+    src: "pentaho/{{ etl_name }}"
+    dest: "{{ eor_source_path }}/{{ etl_name }}"
+
+- name: copy the jdbc mysql connector to the jar
+  copy:
+    src: "{{ eor_install_path }}/mysql-java-connector/{{ eor_mysql_connector_java_path | basename }}"
+    dest: "{{ eor_source_path }}/{{ etl_name }}/{{ eor_mysql_connector_java_path | basename }}"
+    remote_src: yes
+
+- name: put Manifest for {{ etl_name }}
+  template:
+    src: "pentaho/{{ etl_name }}/META-INF/MANIFEST.MF.j2"
+    dest: "{{ eor_source_path }}/{{ etl_name }}/META-INF/MANIFEST.MF"
+
+- name: put properties file for {{ etl_name }}
+  template:
+    src: "pentaho/{{ etl_name }}/{{ properties_name }}.properties.j2"
+    dest: "{{ eor_source_path }}/{{ etl_name }}/{{ properties_name }}.properties"
+
+- name: build JAR file {{ etl_name }}.jar
+  archive:
+    format: zip
+    path: "{{ eor_source_path }}/{{ etl_name }}"
+    dest: "{{ pentaho.path }}/validator/{{ etl_name }}.jar"
+    owner: "{{ pentaho.user }}"
+    group: "{{ pentaho.group }}"

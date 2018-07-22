@@ -1,0 +1,20 @@
+ProxyPreserveHost On
+<Location /birt>
+	AuthType Basic
+	AuthName "Restricted"
+	AuthEonAuthoritative On
+	AuthEonMySQLSocket /var/lib/mysql/mysql.sock
+	AuthEonMySQLUsername {{ sql.eorweb.user }}
+	AuthEonMySQLPassword {{ sql.eorweb.password }}
+	AuthEonMySQLDB {{ sql.eorweb.db[0] }}
+	AuthEonMySQLTableSID sessions,users,groupright
+	AuthEonMySQLFieldUID sessions.user_id
+	AuthEonMySQLTableSIDCondition "`users`.`user_name`=$user_name AND `groupright`.`tab_1`='1'"
+	AuthEonPageLogin /login.php
+	AuthEonSessionCookies On
+	Require valid-user 
+	ProxyPass http://localhost:8080/birt
+	ProxyPassReverse http://localhost:8080/birt
+	ProxyPassReverseCookiePath / /birt
+	ProxyPassReverseCookiePath /birt /birt  
+</Location>

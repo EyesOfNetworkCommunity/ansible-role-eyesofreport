@@ -1,0 +1,261 @@
+---
+# vim: set bs=2 sw=2 expandtab :
+
+# tasks file for MariaDB configuration
+
+- name: ensure MariaDB is running
+  systemd:
+    name: mariadb
+    state: started
+
+- name: check if TZINFO data are present in MariaDB core database
+  command: >
+    mysql --batch --skip-column-names mysql
+    --execute="select count(*) from time_zone_name where Name = 'Europe/Paris';"
+  register: mysql_tzinfo_count
+
+- name: inject TZINFO into MySQL core database
+  shell: mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -uroot mysql
+  args:
+    executable: /bin/bash
+  when: mysql_tzinfo_count.stdout != "1"
+
+- name: install EOR specific configuration for MariaDB server
+  copy:
+    src: mariadb/server_eor.cnf
+    dest: /etc/my.cnf.d/server_eor.cnf
+    owner: root
+    group: root
+    mode: 0664
+
+- name: restart MariaDB server
+  systemd:
+    name: mariadb
+    state: restarted
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- name: copy initial SQL schemas on target
+  copy:
+    src: "mariadb/db/{{ item }}"
+    dest: "{{ eor_tmp_install_path }}/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+  - bp_group_lilac.sql
+  - eor_dwh.sql
+  - eor_ods.sql
+  - eyesofreport.sql
+  - fill_data_procedure.sql
+  - global_nagiosbp.sql
+  - eor_repository.sql
+
+
+- block:
+
+  - name: check if db [{{ item }}] exists
+    mysql_db:
+      name: "{{ item }}"
+      state: present
+    register: db_created
+
+  - name: initialize db [{{ item }}]
+    mysql_db:
+      name: "{{ item }}"
+      state: import
+      target: "{{ eor_tmp_install_path }}/{{ item }}.sql"
+    when: db_created.changed == true
+
+  loop:
+  - global_nagiosbp
+  - eor_ods
+  - eor_dwh
+  - eyesofreport
+  - bp_group_lilac
+  - eor_repository
+
+- name: check if db [eorweb] exists
+  mysql_db:
+    name: eorweb
+    state: present
+  register: db_created
+
+- name: Create and initialize eorweb database
+  mysql_db:
+    name: eorweb
+    state: import
+    target: "{{ eor_install_path }}/eorweb/appliance/eorweb.sql"
+  when: db_created.changed == true
+
+- name: create mariadb user for EOR databases
+  mysql_user:
+    check_implicit_admin: yes
+    append_privs: yes
+    name: "{{ sql.eor.user }}"
+    password: "{{ sql.eor.password }}"
+    priv: "{{ item }}.*:ALL"
+    state: present
+  with_items:
+  - 'eor_ods'
+  - 'eor_dwh'
+  - 'nagiosbp'
+  - 'lilac'
+  - 'thruk'
+  - 'ged'
+  - 'eorweb'
+
+# eor_repository is the only db that might need a dedicated user for
+# remote connection
+- name: create mariadb user for eor_repository
+  mysql_user:
+    check_implicit_admin: yes
+    append_privs: yes
+    name: "{{ sql.repo.user }}"
+    password: "{{ sql.repo.password }}"
+    priv: "{{ sql.repo.db }}.*:ALL"
+    state: present
+
+- name: create mariadb user for Web databases
+  mysql_user:
+    check_implicit_admin: yes
+    append_privs: yes
+    name: "{{ sql.web.user }}"
+    password: "{{ sql.web.password }}"
+    priv: "{{ item }}.*:ALL"
+    state: present
+  with_items:
+  - global_nagiosbp
+
+- name: create mariadb user for Repository databases
+  mysql_user:
+    check_implicit_admin: yes
+    append_privs: yes
+    name: "{{ sql.repo.user }}"
+    password: "{{ sql.repo.password }}"
+    priv: "{{ item }}.*:ALL"
+    state: present
+  with_items:
+  - 'eyesofreport'
+
+- name: check if d_time_dimension data are present in eor_dwh database
+  command: >
+    mysql --batch --skip-column-names eor_dwh
+    --execute="select count(*) from d_time_dimension;"
+  register: mysql_timedimension_count
+
+- block:
+  - name: unzip d_time_dimension dataset
+    unarchive:
+      src: mariadb/db/d_time_dimension.zip
+      dest: "{{ eor_tmp_install_path }}/"
+  
+  - name: inject d_time_dimension tables into eor_dwh database
+    shell: mysql -uroot eor_dwh < {{ eor_tmp_install_path }}/d_time_dimension.sql
+    args:
+      executable: /bin/bash
+  
+  - name: creating indexes on Mariadb databases... may take a long time...
+    command: >
+      mysql --batch --skip-column-names eor_dwh
+      --execute="use eor_dwh;
+      CREATE INDEX idx_d_time_dimension_hour on d_time_dimension(epoch_hour) using btree;
+      CREATE INDEX idx_d_time_dimension_day on d_time_dimension(epoch_day) using btree;
+      CREATE INDEX idx_d_time_dimension_month on d_time_dimension(epoch_month) using btree;
+      CREATE INDEX idx_d_time_dimension_month_hour on d_time_dimension(epoch_month_hour) using btree;
+      CREATE INDEX td_dbdate_idx on d_time_dimension(db_datetime) using btree;
+      CREATE INDEX idx_d_time_dimension_year on d_time_dimension(year) using btree;
+      CREATE INDEX idx_d_time_dimension_month_num on d_time_dimension(month) using btree;"
+  
+  when: mysql_timedimension_count.stdout|int >= 2000000
+
+
+# todo: expect mysql secure
+
+
+### MySQL java connetor ###
+
+# use get_url module if source file is a HTTP URI
+- name: download MySQL Java connector package on target system
+  get_url:
+    url: "{{ external_softs.mysqljavacnx.uri }}"
+    dest: "{{ eor_source_path }}/{{ external_softs.mysqljavacnx.filename }}"
+    checksum: "{{external_softs.mysqljavacnx.sum }}"
+    mode: 0644
+  when: external_softs.mysqljavacnx.uri|regex_search('https{0,1}:\/\/')
+  register: download_mysqljavacnx
+# or use file copy
+- name: copy MySQL Java connector package on target system
+  copy:
+    url: "{{ external_softs.mysqljavacnx.uri }}"
+    dest: "{{ eor_source_path }}/{{ external_softs.mysqljavacnx.filename }}"
+    checksum: "{{external_softs.mysqljavacnx.sum }}"
+    mode: 0644
+  when: not download_mysqljavacnx
+  register: copy_mysqljavacnx
+
+- name: create directory for mysql java connector
+  file:
+    path: "{{ eor_install_path }}/mysql-java-connector"
+    owner: root
+    group: "{{ eor_group }}"
+    mode: 0755
+    state: directory
+
+- block:
+  - name: create temp dir to extract MySQL java connector
+    file:
+      path: /tmp/javamysql/
+      state: directory
+
+  - name: uncompress MySQL java connector
+    unarchive:
+      src: "{{ eor_source_path }}/mysql-connector-java-5.1.45.tar.gz"
+      dest: /tmp/javamysql/
+      remote_src: yes
+
+  - name: find JAR file
+    find:
+      paths: /tmp/javamysql
+      patterns: 'mysql-connector-java-*-bin.jar'
+      recurse: yes
+    register: find_jar
+
+  - set_fact:
+      eor_mysql_connector_java_path: "{{ find_jar.files[0].path }}"
+    when: find_jar.matched == 1
+  
+  when: not download_mysqljavacnx.failed or not copy_mysqljavacnx.failed
+
+- name: copy MySQL java connector to final location
+  copy:
+    src: "{{ eor_mysql_connector_java_path }}"
+    dest: "{{ eor_install_path }}/mysql-java-connector/{{ eor_mysql_connector_java_path | basename }}"
+    owner: root
+    group: "{{ eor_group }}"
+    mode: 0644
+    remote_src: yes
+
+- name: delete extracted MySQL java connector temp dir
+  file:
+    path: /tmp/javamysql/
+    state: absent
+
+- set_fact:
+  eor_mysql_connector_java_path: "{{ eor_install_path }}/mysql-java-connector/{{ eor_mysql_connector_java_path | basename }}"
+
+
+
+

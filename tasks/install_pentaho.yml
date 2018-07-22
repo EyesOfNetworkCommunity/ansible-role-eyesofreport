@@ -1,0 +1,160 @@
+---
+
+# use get_url module if source file is a HTTP URI
+- name: download Pentaho package on target system
+  get_url:
+    url: "{{ external_softs.pentaho.uri }}"
+    dest: "{{ eor_source_path }}/{{ external_softs.pentaho.filename }}"
+    mode: 0644
+    checksum: "{{ external_softs.pentaho.sum }}"
+  when: external_softs.pentaho.uri|regex_search('https{0,1}:\/\/')
+  register: download_pentaho
+# or use file copy
+- name: copy Pentaho package on target system
+  copy:
+    url: "{{ external_softs.pentaho.uri }}"
+    dest: "{{ eor_source_path }}/{{ external_softs.pentaho.filename }}"
+    mode: 0644
+    checksum: "{{ external_softs.pentaho.sum }}"
+  when: not download_pentaho
+  register: copy_pentaho
+
+- name: create pentaho directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ pentaho.user }}"
+    group: "{{ pentaho.group }}"
+    mode: 0775
+  with_items:
+  - '/var/log/pentaho'
+  - "{{ pentaho.path }}"
+  - "{{ pentaho.path }}/injection"
+  - "{{ pentaho.path }}/pdi_log"
+
+- name: uncompress Pentaho archive
+  unarchive:
+    src: "{{ eor_source_path }}/{{ external_softs.pentaho.filename }}"
+    dest: "{{ pentaho.path }}"
+    remote_src: yes
+
+- name: copy EOR specific scripts to data integration
+  template:
+    src: "pentaho/data-integration/{{ item }}.j2"
+    dest: "{{ pentaho.path }}/data-integration/{{ item }}"
+    owner: "{{ pentaho.user }}"
+    group: "{{ pentaho.group }}"
+    mode: 0750
+  with_items:
+  - 'init_carte_pwd.sh'
+  - 'carte_config.xml'
+  - 'start_carte.sh'
+
+- name: link Mysql java connector for Pentaho
+  file:
+    path: "{{ pentaho.path }}/data-integration/lib/mysql-connector-java-bin.jar"
+    src: "{{ eor_install_path }}/mysql-java-connector/{{ eor_mysql_connector_java_path | basename }}"
+    state: link
+
+- name: build and install ETL_DTM_COMPUTE_HS_INCIDENT_JAR ETL validator
+  include: build_etl_validator.yml
+  vars:
+    etl_name: 'ETL_DTM_COMPUTE_HS_INCIDENT_JAR'
+    properties_name: 'HostServiceTimeToResolve'
+
+- name: build and install ETL_DTM_COMPUTE_STATE_JAR ETL validator
+  include: build_etl_validator.yml
+  vars:
+    etl_name: 'ETL_DTM_COMPUTE_STATE_JAR'
+    properties_name: 'AppliAvailabilityCompute'
+
+- name: build and install ETL_RAW_APPLICATION_LINK_ANALYSIS ETL validator
+  include: build_etl_validator.yml
+  vars:
+    etl_name: 'ETL_RAW_APPLICATION_LINK_ANALYSIS'
+    properties_name: 'AppliLinkAnalysis'
+
+
+
+- name: create Kettle env
+  file:
+    path: "/root/.kettle"
+    state: directory
+
+- name: copy Kettle env files
+  template:
+    src: "pentaho/kettle/{{ item }}.j2"
+    dest: "/root/.kettle/{{ item }}"
+    owner: "{{ pentaho.user }}"
+    group: "{{ pentaho.group }}"
+    mode: 0640
+  with_item:
+  - kettle.properties
+  - repositories.xml
+
+- name: set-up jdbc.properties
+  template:
+    src: etl/data-integration/jdbc.properties.j2
+    dest: "{{ pentaho.path }}/data-integration/simple-jndi/jdbc.properties"
+    owner: "{{ pentaho.user }}"
+    group: "{{ pentaho.group }}"
+    mode: 0644
+
+- name: set carte_config XML file
+  template:
+    src: etl/data-integration/jdbc.properties.j2
+    dest: "{{ pentaho.path }}/data-integration/simple-jndi/jdbc.properties"
+    owner: "{{ pentaho.user }}"
+    group: "{{ pentaho.group }}"
+    mode: 0644
+
+- name: initialize carte_config
+  shell: |
+    echo "cluster: $({{ pentaho.path }}/data-integration/encr.sh -carte {{ carte.password }})" > {{ pentaho.path }}/data-integration/pwd/kettle.pwd
+  args:
+    executable: /bin/bash
+
+- name: install main_job.sh 
+  file:
+    path: "{{ pentaho.path }}/scripts/main_job.sh"
+    state: file
+    owner: root
+    group: root
+    mode: 0744
+
+- name: install keep_mysql_connection_alive.sh 
+  file:
+    path: "{{ pentaho.path }}/scripts/keep_mysql_connection_alive.sh"
+    state: file
+    owner: root
+    group: root
+    mode: 0744
+
+- name: Install ETL cron jobs
+  template:
+    src: pentaho/cron.j2
+    dest: /etc/cron.d/eyesofreport
+    owner: root
+    group: root
+    mode: 0644
+
+- name: install Pentaho systemd unit file
+  template:
+    src: pentaho/pentaho.service.j2
+    dest: /etc/systemd/system/pentaho.service
+    owner: root
+    group: root
+    mode: 0644
+  register: install_pentaho_unit
+
+- name: reload systemd configuration
+  systemd:
+    daemon_reload: yes
+  when: install_pentaho_unit
+
+- name: enable and start Pentaho service
+  systemd:
+    name: pentaho
+    enabled: yes
+    masked: no
+    state: restarted

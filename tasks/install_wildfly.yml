@@ -1,0 +1,106 @@
+---
+
+# use get_url module if source file is a HTTP URI
+- name: download Wildfly package on target system
+  get_url:
+    url: "{{ external_softs.wildfly.uri }}"
+    dest: "{{ eor_source_path }}/{{ external_softs.wildfly.filename }}"
+    mode: 0644
+    checksum: "{{ external_softs.wildfly.sum }}"
+  when: external_softs.wildfly.uri|regex_search('https{0,1}:\/\/')
+  register: download_wildfly
+# or use file copy
+- name: copy Wildfly package on target system
+  copy:
+    url: "{{ external_softs.wildfly.uri }}"
+    dedest: "{{ eor_source_path }}/{{ external_softs.wildfly.filename }}"
+    mode: 0644
+    checksum: "{{ external_softs.wildfly.sum }}"
+  when: not download_wildfly
+  register: copy_wildfly
+
+- name: create paths for Wildfly
+  file:
+    path: "{{ item }}"
+    owner: "{{ wildfly.user }}"
+    group: "{{ wildfly.group }}"
+    state: directory
+    mode: 0750
+  with_items:
+  - '/var/log/wildfly'
+  - "{{ wildfly.report_path }}"
+  - "{{ wildfly.app_path }}"
+
+- name: uncompress Wildfly archive
+  unarchive:
+    src: "{{ eor_source_path }}/{{ external_softs.wildfly.filename }}"
+    dest: "{{ wildfly.app_path }}"
+    remote_src: yes
+
+- name: symlink wildfly current release
+  file:
+    path: "{{ wildfly.app_path }}/wildfly"
+    src: "{{ wildfly.app_path }}/wildfly-9.0.2.Final"
+    state: link
+
+- name: Create [dashbuilder] database
+  mysql_db:
+    name: dashbuilder
+    state: present
+  register: dashbuilder_db_created
+
+- name: import [dashbuilder] initial schema
+  mysql_db:
+    name: dashbuilder
+    state: import
+    target: "{{ eor_source_path }}/eyesofreport/REPORTING/dashbuilder.sql"
+  when: dashbuilder_db_created.changed
+
+- name: create mariadb user for EOR databases
+  mysql_user:
+    check_implicit_admin: yes
+    append_privs: yes
+    name: "{{ sql.dash.user }}"
+    password: "{{ sql.dash.password }}"
+    priv: 'dashbuilder.*:ALL'
+    state: present
+    
+- name: install Wildfly systemd unit file
+  template:
+    src: report/wildfly.service.j2
+    dest: /etc/systemd/system/wildfly.service
+    owner: root
+    group: root
+    mode: 0644
+  register: install_wildfly_unit
+
+- name: reload systemd configuration
+  systemd:
+    daemon_reload: yes
+  when: install_wildfly_unit
+
+- name: enable and start Wildfly service
+  systemd:
+    name: wildfly
+    enabled: yes
+    masked: no
+    state: restarted
+
+- name: put Wildfly CLI script on server
+  template:
+    src: report/wildfly-configure.cli.j2
+    dest: /tmp/wildfly-configure.cli
+    owner: root
+    group: root
+    mode: 0640
+
+# as Wildfly takes a long time to start, the CLI might remain
+# unreachable until it finishes to start. So let's have a try
+# every 10s until it answers
+- name: Configure Wildfly through CLI
+  command: "{{ wildfly.app_path }}/wildfly/bin/jboss-cli.sh --connect --file=/tmp/wildfly-configure.cli"
+  register: wildfly_cli
+  until: wildfly_cli.rc == 0
+  retries: 6
+  delay: 10
+  ignore_errors: yes

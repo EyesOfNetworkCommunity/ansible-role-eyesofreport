@@ -1,0 +1,2 @@
+0 3 * * *   root {{ pentaho.path }}/scripts/main_job.sh >> {{ pentaho.path }}/pdi_log/main_job
+0 */4 * * * root {{ pentaho.path }}/scripts/keep_mysql_connection_alive.sh >> {{ pentaho.path }}/pdi_log/keep_alive_mysql

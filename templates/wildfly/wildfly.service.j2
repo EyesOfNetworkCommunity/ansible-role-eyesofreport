@@ -1,0 +1,15 @@
+[Unit]
+Description=WildFly application server
+After=network.target
+
+[Service]
+Type=simple
+Environment=JAVA_HOME={{ java_home }} JAVA={{ java_bin }} "JAVA_OPTS=-Xms1024m -Xmx20480m -XX:MaxPermSize=768m"
+ExecStart={{ wildfly.app_path }}/wildfly/bin/standalone.sh -Djboss.bind.address=127.0.0.1 -Djboss.bind.address.management=127.0.0.1
+ExecStop={{ wildfly.app_path }}/wildfly/bin/jboss-cli.sh --connect command=:shutdown
+WorkingDirectory={{ wildfly.app_path }}/wildfly/bin
+TimeoutStartSec=600
+TimeoutStopSec=600
+
+[Install]
+WantedBy=multi-user.target

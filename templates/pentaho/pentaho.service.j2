@@ -1,0 +1,11 @@
+[Unit]
+Description=Starts Pentaho ETL Webservice
+
+[Service]
+Type=forking
+WorkingDirectory={{ pentaho.path }}/data-integration/
+ExecStart={{ pentaho.path }}/data-integration/start_carte.sh
+ExecStop=/usr/bin/kill -9 $(ps aux | grep KETTLE | awk {'print $2'} | head -1)
+
+[Install]
+WantedBy=mariadb.service

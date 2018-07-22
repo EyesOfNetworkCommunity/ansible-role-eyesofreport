@@ -1,0 +1,53 @@
+# This is a Wildfly JBoss CLI script, intended to be executed with
+# 'jboss-cli.sh' CLI executable.
+#
+# This script will add MySQL JDBC module to Wildfly's cpnfiguration
+# if required, then it will create the relevant jdbc driver for the
+# mysql module.
+#
+# It will also add EOR related MySQL datasources if they're not
+# already created.
+#
+# As this script is part of an Ansible role, it is designed to be
+# idempotent, so it is safe (at least should be) to execute it
+# many times.
+#
+# 2018-07-20 - Eric Belhomme <rico@ricozome.net>
+
+# add MySQL module if not already defined
+if (outcome != success) of /core-service=module-loading/:list-resource-loader-paths(module=com.mysql.driver)
+  echo "installing mysql module"
+  module add --name=com.mysql.driver --dependencies=javax.api,javax.transaction.api --resources={{ eor_install_path }}/mysql-java-connector/{{ eor_mysql_connector_java_path | basename }}
+  :reload
+end-if
+
+# add MySQL jdbc driver if not already defined
+if (outcome != success) of /subsystem=datasources/jdbc-driver=mysql/:read-resource
+  echo "installing mysql driver"
+  /subsystem=datasources/jdbc-driver=mysql/:add(driver-module-name=com.mysql.driver,driver-name=mysql,jdbc-compliant=false,driver-class-name=com.mysql.jdbc.Driver)
+end-if
+
+# add EOR datasource if not already defined
+if (outcome != success) of /subsystem=datasources/data-source=DWH:read-resource
+  echo "installing DWH datasource"
+  data-source  add --name=DWH --driver-name=mysql --jta=true --use-java-context=true --use-ccm=true \
+        --jndi-name=java:jboss/datasources/DWH \
+        --connection-url=jdbc:mysql://127.0.0.1:3306/eor_dwh \
+        --user-name={{ sql.eor.user }} --password="{{ sql.eor.password }}" 
+end-if
+
+if (outcome != success) of /subsystem=datasources/data-source=eyesofreport:read-resource
+  echo "installing eyesofreport datasource"
+  data-source  add --name=eyesofreport --driver-name=mysql --jta=true --use-java-context=true --use-ccm=true \
+        --jndi-name=java:jboss/datasources/eyesofreport \
+        --connection-url=jdbc:mysql://127.0.0.1:3306/eyesofreport \
+        --user-name={{ sql.eor.user }} --password="{{ sql.eor.password }}" 
+end-if
+
+if (outcome != success) of /subsystem=datasources/data-source=ExampleDS:read-resource
+  echo "installing ExampleDS datasource"
+  data-source  add --name=ExampleDS --driver-name=mysql --jta=true --use-java-context=true --use-ccm=true \
+        --jndi-name=java:jboss/datasources/ExampleDS \
+        --connection-url=jdbc:mysql://127.0.0.1:3306/dashbuilder \
+        --user-name={{ sql.eor.user }} --password="{{ sql.eor.password }}" 
+end-if

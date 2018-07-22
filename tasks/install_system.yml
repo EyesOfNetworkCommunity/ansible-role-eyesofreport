@@ -1,0 +1,89 @@
+---
+# vim: set bs=2 sw=2 expandtab:
+#
+# System prerequisites
+#
+# Eric Belhomme <rico-github@ricozome.net> - 2018-07-22
+
+- name: Disable SELinux
+  selinux:
+    state: disabled
+
+- name: install EPEL repo
+  yum:
+    name: epel-release
+    state: present
+
+- name: install the 'eyesofnetwork-release' package
+  yum:
+    name: https://download.eyesofnetwork.com/repos/{{ eon_repo.version }}/base/eyesofnetwork-release-{{ eon_repo.version }}-{{ eon_repo.release }}.noarch.rpm
+    state: present
+
+- name: install package prerequisites
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - git
+  - unzip
+  - zip
+  - bzip2
+  - xz
+  - rsync
+  - httpd-tools
+  - httpd
+  - perl
+  - net-tools
+  - bind-utils
+  - patch
+  - dos2unix
+  - firewalld
+  - wget 
+  - libxslt
+  - php-common
+  - php-mysql
+  - php
+  - php-xml
+  - php-xmlrpc
+  - php-ldap
+  - mod_auth_eon
+  - mariadb-server
+  - expect
+  - MySQL-python
+  - docker
+  - python-docker-py
+
+- name: create dedicated group for EyesOfReport
+  group:
+    name: "{{ eor_group }}"
+    state: present
+    system: yes
+
+- name: create dedicated user for EyesOfReport
+  user:
+    name: "{{ eor_owner }}"
+    home: "{{ eor_install_path }}"
+    comment: "Eyes Of Report dedicated user"
+    group: "{{ eor_group }}"
+    groups: apache
+    system: yes
+    create_home: no
+    password_lock: yes
+
+- name: enable and start MariaDB server
+  systemd:
+    name: mariadb
+    enabled: true
+    state: restarted
+
+- name: enable and start Docker daemon
+  systemd:
+    name: docker
+    enabled: true
+    state: restarted
+
+- name: clone eorweb Git repo
+  git:
+    repo: "{{ eor_git_location.repo }}"
+    dest: "{{ eor_install_path }}/eorweb"
+    version: "{{ eorweb_git.release }}"
