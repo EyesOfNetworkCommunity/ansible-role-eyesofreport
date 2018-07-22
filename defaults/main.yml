@@ -6,8 +6,10 @@ eon_repo:
   version: 5
   release: 2
 
-eor_source_path: '/srv/eor_repo'
+#eor_source_path: '/srv/eor_repo'
 eor_install_path: '/srv/eyesofreport'
+eor_tmp_install_path: '/tmp/eor-install'
+
 eor_owner: eyesofreport
 eor_group: eyesofreport
 
@@ -30,13 +32,8 @@ java_bin: "{{ java_home }}/bin/java"
 
 
 eorweb_git:
-  repo: https://github.com:eric-belhomme/eorweb.git
-  release: master
-
-#eor_git_location:
-#  archive: 'http://192.168.233.1/ansible_repo/eyes/eor/eyesofreport_git.tar.xz'
-#  repo: 'https://github.com/EyesOfNetworkCommunity/eyesofreport.git'
-#  release: '2.2'
+  repo: 'https://github.com/eric-belhomme/eorweb.git'
+  release: 'master'
 
 
 ### third party packages variables #####################################

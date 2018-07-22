@@ -50,6 +50,12 @@
 
 
 
+
+
+
+
+
+
 - name: copy initial SQL schemas on target
   copy:
     src: "mariadb/db/{{ item }}"
@@ -62,9 +68,10 @@
   - eor_dwh.sql
   - eor_ods.sql
   - eyesofreport.sql
-  - fill_data_procedure.sql
+  - fill_date_procedure.sql
   - global_nagiosbp.sql
   - eor_repository.sql
+  - dashbuilder.sql
 
 
 - name: create and initialize sql schemas
@@ -79,6 +86,7 @@
   - eyesofreport
   - bp_group_lilac
   - eor_repository
+  - dashbuilder
 
 - name: create and initialize eorweb sql schemas
   include_tasks: db_init_schema.yml
@@ -177,7 +185,7 @@
 - name: download MySQL Java connector package on target system
   get_url:
     url: "{{ external_softs.mysqljavacnx.uri }}"
-    dest: "{{ eor_source_path }}/{{ external_softs.mysqljavacnx.filename }}"
+    dest: "{{ eor_tmp_install_path }}/{{ external_softs.mysqljavacnx.filename }}"
     checksum: "{{external_softs.mysqljavacnx.sum }}"
     mode: 0644
   when: external_softs.mysqljavacnx.uri|regex_search('https{0,1}:\/\/')
@@ -186,7 +194,7 @@
 - name: copy MySQL Java connector package on target system
   copy:
     url: "{{ external_softs.mysqljavacnx.uri }}"
-    dest: "{{ eor_source_path }}/{{ external_softs.mysqljavacnx.filename }}"
+    dest: "{{ eor_tmp_install_path }}/{{ external_softs.mysqljavacnx.filename }}"
     checksum: "{{external_softs.mysqljavacnx.sum }}"
     mode: 0644
   when: not download_mysqljavacnx
@@ -203,18 +211,18 @@
 - block:
   - name: create temp dir to extract MySQL java connector
     file:
-      path: /tmp/javamysql/
+      path: "{{ eor_tmp_install_path }}/mysql-connector-java/"
       state: directory
 
   - name: uncompress MySQL java connector
     unarchive:
-      src: "{{ eor_source_path }}/mysql-connector-java-5.1.45.tar.gz"
-      dest: /tmp/javamysql/
+      src: "{{ eor_tmp_install_path }}/{{ external_softs.mysqljavacnx.filename }}"
+      dest: "{{ eor_tmp_install_path }}/mysql-connector-java/"
       remote_src: yes
 
   - name: find JAR file
     find:
-      paths: /tmp/javamysql
+      paths: "{{ eor_tmp_install_path }}/mysql-connector-java"
       patterns: 'mysql-connector-java-*-bin.jar'
       recurse: yes
     register: find_jar
@@ -236,7 +244,7 @@
 
 - name: delete extracted MySQL java connector temp dir
   file:
-    path: /tmp/javamysql/
+    path: "{{ eor_tmp_install_path }}/mysql-connector-java/"
     state: absent
 
 - set_fact:

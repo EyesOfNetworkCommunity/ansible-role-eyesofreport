@@ -10,7 +10,7 @@
 - name: download Wildfly package on target system
   get_url:
     url: "{{ external_softs.wildfly.uri }}"
-    dest: "{{ eor_source_path }}/{{ external_softs.wildfly.filename }}"
+    dest: "{{ eor_tmp_install_path }}/{{ external_softs.wildfly.filename }}"
     mode: 0644
     checksum: "{{ external_softs.wildfly.sum }}"
   when: external_softs.wildfly.uri|regex_search('https{0,1}:\/\/')
@@ -19,7 +19,7 @@
 - name: copy Wildfly package on target system
   copy:
     url: "{{ external_softs.wildfly.uri }}"
-    dedest: "{{ eor_source_path }}/{{ external_softs.wildfly.filename }}"
+    dedest: "{{ eor_tmp_install_path }}/{{ external_softs.wildfly.filename }}"
     mode: 0644
     checksum: "{{ external_softs.wildfly.sum }}"
   when: not download_wildfly
@@ -39,7 +39,7 @@
 
 - name: uncompress Wildfly archive
   unarchive:
-    src: "{{ eor_source_path }}/{{ external_softs.wildfly.filename }}"
+    src: "{{ eor_tmp_install_path }}/{{ external_softs.wildfly.filename }}"
     dest: "{{ wildfly.app_path }}"
     remote_src: yes
 
@@ -48,29 +48,7 @@
     path: "{{ wildfly.app_path }}/wildfly"
     src: "{{ wildfly.app_path }}/wildfly-9.0.2.Final"
     state: link
-
-- name: Create [dashbuilder] database
-  mysql_db:
-    name: dashbuilder
-    state: present
-  register: dashbuilder_db_created
-
-- name: import [dashbuilder] initial schema
-  mysql_db:
-    name: dashbuilder
-    state: import
-    target: "{{ eor_source_path }}/eyesofreport/REPORTING/dashbuilder.sql"
-  when: dashbuilder_db_created.changed
-
-- name: create mariadb user for EOR databases
-  mysql_user:
-    check_implicit_admin: yes
-    append_privs: yes
-    name: "{{ sql.dash.user }}"
-    password: "{{ sql.dash.password }}"
-    priv: 'dashbuilder.*:ALL'
-    state: present
-    
+   
 - name: install Wildfly systemd unit file
   template:
     src: report/wildfly.service.j2

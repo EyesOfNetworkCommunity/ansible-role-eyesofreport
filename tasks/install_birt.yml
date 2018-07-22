@@ -9,7 +9,7 @@
 - name: download Birt runtime package on target system
   get_url:
     url: "{{ external_softs.birt.uri }}"
-    dest: "{{ eor_source_path }}/{{ external_softs.birt.filename }}"
+    dest: "{{ eor_tmp_install_path }}/{{ external_softs.birt.filename }}"
     mode: 0644
     checksum: "{{ external_softs.birt.sum }}"
   when: external_softs.birt.uri|regex_search('https{0,1}:\/\/')
@@ -18,7 +18,7 @@
 - name: copy Birt runtime package on target system
   copy:
     url: "{{ external_softs.birt.uri }}"
-    dedest: "{{ eor_source_path }}/{{ external_softs.birt.filename }}"
+    dedest: "{{ eor_tmp_install_path }}/{{ external_softs.birt.filename }}"
     mode: 0644
     checksum: "{{ external_softs.birt.sum }}"
   when: not download_birt
@@ -34,7 +34,7 @@
 
 - name: uncompress Birt archive in a temporary directory
   unarchive:
-    src: "{{ eor_source_path }}/{{ external_softs.birt.filename }}"
+    src: "{{ eor_tmp_install_path }}/{{ external_softs.birt.filename }}"
     dest: /tmp/birt/runtime
     remote_src: yes
 
