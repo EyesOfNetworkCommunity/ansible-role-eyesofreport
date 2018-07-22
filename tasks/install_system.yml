@@ -84,6 +84,6 @@
 
 - name: clone eorweb Git repo
   git:
-    repo: "{{ eor_git_location.repo }}"
+    repo: "{{ eorweb_git.repo }}"
     dest: "{{ eor_install_path }}/eorweb"
     version: "{{ eorweb_git.release }}"
