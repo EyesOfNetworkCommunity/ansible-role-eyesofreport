@@ -19,36 +19,47 @@ Finally, EOR have extra dependencies for third party software:
 - Oracle Java JDK 7u79+ (*MUST* be present on a local repo)
 - Java/J connector for MySQL (can be downloaded from upstream provider, or be present on a local repo)
 - Wildfly 9.0.X (can be downloaded from upstream provider, or be present on a local repo)
+- Eclipse BIRT 4.5 (can be downloaded from upstream provider, or be present on a local repo)
 - Hitachi Pentaho data integration (can be downloaded from upstream provider, or be present on a local repo)
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+All variables are defaulted into defaults/main.yml file.
+
+TODO: describe noticeable variables
 
 Dependencies
 ------------
 
-The following role is required as a dependency:
+The following role is an optional dependency:
   - ansible-role-snmpd (git@gitlab.cloudbuilder.axians.com:ansible/ansible-role-snmpd.git)
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Simply invoke ansible-role-eyesofreport :)
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+See on tests/directory for an example playbook
 
 License
 -------
 
-BSD
+This is [GNU Lesser General Public License 3.0](lgpl-3.0.md)
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Based on The EyesOfNetwork Community team
+
+ToDo task
+---------
+
+Many tasks still pending:
+- fetch Docker images from Docker hub instead of local archives
+- configure firewalld
+- create dedicated users for Pentaho and Wildfly
+- simplify SQL users
+- rationalize variables
+- remove hardcoded dependencies to /srv/eyeofreport and /srv/eyesofnetwork paths (especially on eorweb)
+- etc. 
