@@ -1,7 +1,10 @@
 ---
-# vim: set bs=2 sw=2 expandtab :
+# vim: set bs=2 sw=2 expandtab:
+#
+# Install MariaDB databases
+#
+# Eric Belhomme <rico-github@ricozome.net> - 2018-07-22
 
-# tasks file for MariaDB configuration
 
 - name: ensure MariaDB is running
   systemd:
@@ -64,22 +67,12 @@
   - eor_repository.sql
 
 
-- block:
-
-  - name: check if db [{{ item }}] exists
-    mysql_db:
-      name: "{{ item }}"
-      state: present
-    register: db_created
-
-  - name: initialize db [{{ item }}]
-    mysql_db:
-      name: "{{ item }}"
-      state: import
-      target: "{{ eor_tmp_install_path }}/{{ item }}.sql"
-    when: db_created.changed == true
-
-  loop:
+- name: create and initialize sql schemas
+  include_tasks: db_init_schema.yml
+  vars:
+    dbname: "{{ item }}"
+    schema_path: "{{ eor_tmp_install_path }}/{{ item }}.sql"
+  with_items:
   - global_nagiosbp
   - eor_ods
   - eor_dwh
@@ -87,18 +80,11 @@
   - bp_group_lilac
   - eor_repository
 
-- name: check if db [eorweb] exists
-  mysql_db:
-    name: eorweb
-    state: present
-  register: db_created
-
-- name: Create and initialize eorweb database
-  mysql_db:
-    name: eorweb
-    state: import
-    target: "{{ eor_install_path }}/eorweb/appliance/eorweb.sql"
-  when: db_created.changed == true
+- name: create and initialize eorweb sql schemas
+  include_tasks: db_init_schema.yml
+  vars:
+    dbname: "eorweb"
+    schema_path: "{{ eor_install_path }}/eorweb/appliance/eorweb.sql"
 
 - name: create mariadb user for EOR databases
   mysql_user:

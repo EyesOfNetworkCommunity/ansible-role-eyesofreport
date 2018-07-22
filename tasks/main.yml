@@ -6,12 +6,12 @@
 # Eric Belhomme <rico-github@ricozome.net> - 2018-07-22
 
 - name: system prerequisites
-  include: install_system.yml
+  include_tasks: install_system.yml
   tags:
   - prereqs
 
 - name: install Oracle JDK
-  include: install_jdk.yml
+  include_tasks: install_jdk.yml
   tags:
   - java
 
@@ -22,31 +22,31 @@
 #    state: absent
 
 - name: install & configure MariaDB and EOR databases
-  include: install_mariadb.yml
+  include_tasks: install_mariadb.yml
   tags:
   - databases
 
 - name: install & configure Docker
-  include: install_docker.yml
+  include_tasks: install_docker.yml
   tags:
   - docker
 
 - name: install & configure Pentaho ETL software
-  include: install_pentaho.yml
+  include_tasks: install_pentaho.yml
   tags:
   - pentaho
 
 - name: install & configure Wildfly application server
-  include: install_wildfly.yml
+  include_tasks: install_wildfly.yml
   tags:
   - wildfly
 
 - name: install & configure BIRT reporting webapp
-  include: install_birt.yml
+  include_tasks: install_birt.yml
   tags:
   - birt
 
 - name: install & configure HTTP server
-  include: install_web.yml
+  include_tasks: install_web.yml
   tags:
   - web

@@ -1,0 +1,20 @@
+---
+# vim: set bs=2 sw=2 expandtab:
+#
+# Create and initialize SQL schema if required
+#
+# Eric Belhomme <rico-github@ricozome.net> - 2018-07-22
+
+
+- name: check if db [{{ dbname }}] exists
+  mysql_db:
+    name: "{{ dbname }}"
+    state: present
+  register: db_created
+
+- name: initialize db [{{ dbname }}]
+  mysql_db:
+    name: "{{ dbname }}"
+    state: import
+    target: "{{ schema_path }}"
+  when: db_created.changed == true

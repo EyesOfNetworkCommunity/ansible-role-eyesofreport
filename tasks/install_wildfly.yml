@@ -1,4 +1,10 @@
 ---
+# vim: set bs=2 sw=2 expandtab:
+#
+# Install Wildfly application server
+#
+# Eric Belhomme <rico-github@ricozome.net> - 2018-07-22
+
 
 # use get_url module if source file is a HTTP URI
 - name: download Wildfly package on target system

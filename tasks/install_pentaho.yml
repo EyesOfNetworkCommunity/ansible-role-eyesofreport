@@ -1,4 +1,9 @@
 ---
+# vim: set bs=2 sw=2 expandtab:
+#
+# Install Pentaho ETL application
+#
+# Eric Belhomme <rico-github@ricozome.net> - 2018-07-22
 
 # use get_url module if source file is a HTTP URI
 - name: download Pentaho package on target system
@@ -57,19 +62,19 @@
     state: link
 
 - name: build and install ETL_DTM_COMPUTE_HS_INCIDENT_JAR ETL validator
-  include: build_etl_validator.yml
+  include_tasks: build_etl_validator.yml
   vars:
     etl_name: 'ETL_DTM_COMPUTE_HS_INCIDENT_JAR'
     properties_name: 'HostServiceTimeToResolve'
 
 - name: build and install ETL_DTM_COMPUTE_STATE_JAR ETL validator
-  include: build_etl_validator.yml
+  include_tasks: build_etl_validator.yml
   vars:
     etl_name: 'ETL_DTM_COMPUTE_STATE_JAR'
     properties_name: 'AppliAvailabilityCompute'
 
 - name: build and install ETL_RAW_APPLICATION_LINK_ANALYSIS ETL validator
-  include: build_etl_validator.yml
+  include_tasks: build_etl_validator.yml
   vars:
     etl_name: 'ETL_RAW_APPLICATION_LINK_ANALYSIS'
     properties_name: 'AppliLinkAnalysis'
