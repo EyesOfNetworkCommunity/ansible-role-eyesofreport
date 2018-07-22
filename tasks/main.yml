@@ -13,26 +13,20 @@
     group: root
     mode: 0755
 
-#- name: system prerequisites
-#  include_tasks: install_system.yml
-#  tags:
-#  - prereqs
-#
-#- name: install Oracle JDK
-#  include_tasks: install_jdk.yml
-#  tags:
-#  - java
+- name: system prerequisites
+  include_tasks: install_system.yml
+  tags:
+  - prereqs
 
-## temp workaround for eorweb db
-#- name: Create and initialize eorweb database
-#  mysql_db:
-#    name: eorweb
-#    state: absent
+- name: install Oracle JDK
+  include_tasks: install_jdk.yml
+  tags:
+  - java
 
-#- name: install & configure MariaDB and EOR databases
-#  include_tasks: install_mariadb.yml
-#  tags:
-#  - databases
+- name: install & configure MariaDB and EOR databases
+  include_tasks: install_mariadb.yml
+  tags:
+  - databases
 
 - name: install & configure Docker
   include_tasks: install_docker.yml
@@ -58,3 +52,9 @@
   include_tasks: install_apache.yml
   tags:
   - web
+
+- name: cleanup temporary installation dir
+  file:
+    path: "{{ eor_tmp_install_path }}"
+    state: present
+  when: cleanup_install_files == true

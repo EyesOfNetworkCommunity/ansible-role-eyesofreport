@@ -6,12 +6,18 @@ eon_repo:
   version: 5
   release: 2
 
+# cleanup temporary install files.
+# override this variable for debug purpose
+cleanup_install_files: true
+
 #eor_source_path: '/srv/eor_repo'
 eor_install_path: '/srv/eyesofreport'
 eor_tmp_install_path: '/tmp/eor-install'
 
 eor_owner: eyesofreport
 eor_group: eyesofreport
+
+
 
 
 fwports:
