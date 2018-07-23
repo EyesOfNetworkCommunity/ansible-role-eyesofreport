@@ -16,12 +16,7 @@
 - name: extract filename from resource URI
   set_fact:
     pkg_filename: "{{ package.uri | basename }}"
-
-- debug:
-    var: package
-- debug:
-    var: pkg_filename
-    
+  
 - block:
 
   - name: "try to copy {{ pkg_filename }} package from role"
@@ -46,8 +41,10 @@
   # or use file copy
   - name: "copy {{ package.uri }} package local mountpoint"
     copy:
-      url: "{{ package.uri }}"
+      src: "{{ package.uri }}"
       dest: "{{ eor_tmp_install_path }}/{{ pkg_filename }}"
       mode: 0644
       checksum: "{{ package.sum }}"
-    when: not download_uri
+    when:
+    - download_uri.changed == false
+    - not package.uri|regex_search('https{0,1}:\/\/')
