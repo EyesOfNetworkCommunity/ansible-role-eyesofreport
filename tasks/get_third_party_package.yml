@@ -17,34 +17,37 @@
 
 - name: extract filename from resource URI
   set_fact:
-  filename: "{{ file_uri | basename }}"
+    pkg_filename: "{{ file_uri | basename }}"
+
+- debug:
+    msg: "{{ pkg_filename }}"
 
 - block:
 
-  - name: try to copy {{ filename }} package from role
+  - name: "try to copy {{ pkg_filename }} package from role"
     copy:
-      src: "3rd_party/{{ filename }}"
-      dest: "{{ eor_tmp_install_path }}/{{ filename }}"
+      src: "3rd_party/{{ pkg_filename }}"
+      dest: "{{ eor_tmp_install_path }}/{{ pkg_filename }}"
       mode: 0644
       checksum: "{{ checksum }}"
 
   rescue:
 
   # use get_url module if source file is a HTTP URI
-  - name: download Birt runtime package on target system
+  - name: "download {{ pkg_filename }} from URL"
     get_url:
       url: "{{ file_uri }}"
-      dest: "{{ eor_tmp_install_path }}/{{ filename }}"
+      dest: "{{ eor_tmp_install_path }}/{{ pkg_filename }}"
       mode: 0644
       checksum: "{{ checksum }}"
     when: file_uri|regex_search('https{0,1}:\/\/')
     register: download_uri
 
   # or use file copy
-  - name: copy Birt runtime package on target system
+  - name: "copy {{ file_uri }} package local mountpoint"
     copy:
       url: "{{ file_uri }}"
-      dest: "{{ eor_tmp_install_path }}/{{ filename }}"
+      dest: "{{ eor_tmp_install_path }}/{{ pkg_filename }}"
       mode: 0644
       checksum: "{{ checksum }}"
     when: not download_uri

@@ -9,19 +9,19 @@
 # use get_url module if source file is a HTTP URI
 - name: download Wildfly package on target system
   get_url:
-    url: "{{ external_softs.wildfly.uri }}"
-    dest: "{{ eor_tmp_install_path }}/{{ external_softs.wildfly.filename }}"
+    url: "{{ third_party.wildfly.uri }}"
+    dest: "{{ eor_tmp_install_path }}/{{ third_party.wildfly.filename }}"
     mode: 0644
-    checksum: "{{ external_softs.wildfly.sum }}"
-  when: external_softs.wildfly.uri|regex_search('https{0,1}:\/\/')
+    checksum: "{{ third_party.wildfly.sum }}"
+  when: third_party.wildfly.uri|regex_search('https{0,1}:\/\/')
   register: download_wildfly
 # or use file copy
 - name: copy Wildfly package on target system
   copy:
-    url: "{{ external_softs.wildfly.uri }}"
-    dedest: "{{ eor_tmp_install_path }}/{{ external_softs.wildfly.filename }}"
+    url: "{{ third_party.wildfly.uri }}"
+    dedest: "{{ eor_tmp_install_path }}/{{ third_party.wildfly.filename }}"
     mode: 0644
-    checksum: "{{ external_softs.wildfly.sum }}"
+    checksum: "{{ third_party.wildfly.sum }}"
   when: not download_wildfly
   register: copy_wildfly
 
@@ -39,7 +39,7 @@
 
 - name: uncompress Wildfly archive
   unarchive:
-    src: "{{ eor_tmp_install_path }}/{{ external_softs.wildfly.filename }}"
+    src: "{{ eor_tmp_install_path }}/{{ third_party.wildfly.uri | basename }}"
     dest: "{{ wildfly.app_path }}"
     remote_src: yes
 

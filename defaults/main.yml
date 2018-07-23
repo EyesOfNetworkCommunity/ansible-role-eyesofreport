@@ -43,46 +43,24 @@ eorweb_git:
 
 
 ### third party packages variables #####################################
-
-# EOR relies on outdated 3rd party softwares:
-# - Oracle JDK 7, which is outdated and impossible to download without an Oracle account.
-#   Because of this, getting the right package automatically is not an option
-# - JBOSS Wildfly, in an outdated flavor. Until now, the 9.0.X branch is still downloadable
-#   from JBOSS download site
-# - Hitachi Pentaho data integration, in an outdated flavor. Until now 5.4 branch is still
-#   available from sourceforge.
-#
-# Because these 3 files consume a huge storage space (about 1GB), it could be safer to get
-# the files from an alternative storage.
-#
-# So the playbook allows you install 3rd party software either from a HTTP/HTTP resource,
-# *OR* from a local file path
-
-external_softs:
+# Refer to files/3rd_perty/README.md for instruction on how to use
+# local repos for 3rd party softwares
+third_party:
   pentaho:
-    uri: 'http://192.168.233.1/ansible_repo/hitachi/pentaho/pdi-ce-5.4.0.1-130.zip'
-    # uri: 'https://sourceforge.net/projects/pentaho/files/Data%20Integration/5.4/pdi-ce-5.4.0.1-130.zip
+    uri: 'https://sourceforge.net/projects/pentaho/files/Data%20Integration/5.4/pdi-ce-5.4.0.1-130.zip'
     sum: 'sha256:240e72e2227f1e3e4c7b7173a42157a1ba0ef0e2055ffa3122d2f633ca9e14c6'
-    filename: 'pdi-ce-5.4.0.1-130.zip'
   wildfly:
-    uri: 'http://192.168.233.1/ansible_repo/jboss/wildfly/wildfly-9.0.2.Final.zip'
-    # uri: 'http://download.jboss.org/wildfly/9.0.2.Final/wildfly-9.0.2.Final.zip'
+    uri: 'http://download.jboss.org/wildfly/9.0.2.Final/wildfly-9.0.2.Final.zip'
     sum: 'sha256:5872edb16ed968ecbf4446f74eff158f91add47ec28484b8768880cb5c149ad2'
-    filename: 'wildfly-9.0.2.Final.zip'
   jdk:
     uri: 'http://192.168.233.1/ansible_repo/oracle/java/jdk-7u80-linux-x64.rpm'
     sum: 'sha256:405d5fb7fa8cc4b5e5fe2c5fa349af6fbd742d9967772163d1fa8ea4ce35cd7b'
-    filename: 'jdk-7u80-linux-x64.rpm'
   birt:
-    # uri: 'http://www.eclipse.org/downloads/download.php?file=/birt/downloads/drops/R-R1-4_5_0-201506092134/birt-runtime-4.5.0-20150609.zip&r=1'
-    uri: 'http://192.168.233.1/ansible_repo/eclipse/birt/birt-runtime-4.5.0-20150609.zip'
+    uri: 'http://www.eclipse.org/downloads/download.php?file=/birt/downloads/drops/R-R1-4_5_0-201506092134/birt-runtime-4.5.0-20150609.zip&r=1'
     sum: 'md5:ac639bcdaedd8ded301b7b52162ec811'
-    filename: 'birt-runtime-4.5.0-20150609.zip'
-  mysqljavacnx:
-    uri: 'http://192.168.233.1/ansible_repo/mysql/mysql-connector-java-5.1.45.tar.gz'
-    # uri: 'https://downloads.mysql.com/archives/get/file/mysql-connector-java-5.1.45.tar.gz'
+  mysqljdbc:
+    uri: 'https://downloads.mysql.com/archives/get/file/mysql-connector-java-5.1.45.tar.gz'
     sum: 'sha256:1d289a056c7eb8290108a8d2e3c4717193662a9171adb56cfa3b769b32de3300'
-    filename: 'mysql-connector-java-5.1.45.tar.gz'
 
 
 ### MariaDB specific variables #########################################

@@ -5,25 +5,30 @@
 #
 # Eric Belhomme <rico-github@ricozome.net> - 2018-07-22
 
-# use get_url module if source file is a HTTP URI
-- name: download Birt runtime package on target system
-  get_url:
-    url: "{{ external_softs.birt.uri }}"
-    dest: "{{ eor_tmp_install_path }}/{{ external_softs.birt.filename }}"
-    mode: 0644
-    checksum: "{{ external_softs.birt.sum }}"
-  when: external_softs.birt.uri|regex_search('https{0,1}:\/\/')
-  register: download_birt
-# or use file copy
-- name: copy Birt runtime package on target system
-  copy:
-    url: "{{ external_softs.birt.uri }}"
-    dedest: "{{ eor_tmp_install_path }}/{{ external_softs.birt.filename }}"
-    mode: 0644
-    checksum: "{{ external_softs.birt.sum }}"
-  when: not download_birt
-  register: copy_birt
-
+## use get_url module if source file is a HTTP URI
+#- name: download Birt runtime package on target system
+#  get_url:
+#    url: "{{ third_party.birt.uri }}"
+#    dest: "{{ eor_tmp_install_path }}/{{ third_party.birt.filename }}"
+#    mode: 0644
+#    checksum: "{{ third_party.birt.sum }}"
+#  when: third_party.birt.uri|regex_search('https{0,1}:\/\/')
+#  register: download_birt
+## or use file copy
+#- name: copy Birt runtime package on target system
+#  copy:
+#    url: "{{ third_party.birt.uri }}"
+#    dedest: "{{ eor_tmp_install_path }}/{{ third_party.birt.filename }}"
+#    mode: 0644
+#    checksum: "{{ third_party.birt.sum }}"
+#  when: not download_birt
+#  register: copy_birt
+- name: get BIRT package
+  include_tasks: get_third_party_package.yml
+  vars:
+    file_uri: "{{ third_party.birt.uri }}"
+    checksum: "{{ third_party.birt.sum }}"
+    
 - name: create temporary directory for birt runtime extraction
   file:
     path: "{{ item }}"
@@ -34,7 +39,7 @@
 
 - name: uncompress Birt archive in a temporary directory
   unarchive:
-    src: "{{ eor_tmp_install_path }}/{{ external_softs.birt.filename }}"
+    src: "{{ eor_tmp_install_path }}/{{ third_party.birt.uri | basename }}"
     dest: "{{ eor_tmp_install_path }}/birt/runtime"
     remote_src: yes
 

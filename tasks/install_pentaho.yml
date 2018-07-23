@@ -8,19 +8,19 @@
 # use get_url module if source file is a HTTP URI
 - name: download Pentaho package on target system
   get_url:
-    url: "{{ external_softs.pentaho.uri }}"
-    dest: "{{ eor_tmp_install_path }}/{{ external_softs.pentaho.filename }}"
+    url: "{{ third_party.pentaho.uri }}"
+    dest: "{{ eor_tmp_install_path }}/{{ third_party.pentaho.filename }}"
     mode: 0644
-    checksum: "{{ external_softs.pentaho.sum }}"
-  when: external_softs.pentaho.uri|regex_search('https{0,1}:\/\/')
+    checksum: "{{ third_party.pentaho.sum }}"
+  when: third_party.pentaho.uri|regex_search('https{0,1}:\/\/')
   register: download_pentaho
 # or use file copy
 - name: copy Pentaho package on target system
   copy:
-    url: "{{ external_softs.pentaho.uri }}"
-    dest: "{{ eor_tmp_install_path }}/{{ external_softs.pentaho.filename }}"
+    url: "{{ third_party.pentaho.uri }}"
+    dest: "{{ eor_tmp_install_path }}/{{ third_party.pentaho.u }}"
     mode: 0644
-    checksum: "{{ external_softs.pentaho.sum }}"
+    checksum: "{{ third_party.pentaho.sum }}"
   when: not download_pentaho
   register: copy_pentaho
 
@@ -39,7 +39,7 @@
 
 - name: uncompress Pentaho archive
   unarchive:
-    src: "{{ eor_tmp_install_path }}/{{ external_softs.pentaho.filename }}"
+    src: "{{ eor_tmp_install_path }}/{{ third_party.pentaho.uri | basename }}"
     dest: "{{ pentaho.path }}"
     remote_src: yes
 

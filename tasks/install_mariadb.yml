@@ -181,24 +181,30 @@
 
 ### MySQL java connetor ###
 
-# use get_url module if source file is a HTTP URI
-- name: download MySQL Java connector package on target system
-  get_url:
-    url: "{{ external_softs.mysqljavacnx.uri }}"
-    dest: "{{ eor_tmp_install_path }}/{{ external_softs.mysqljavacnx.filename }}"
-    checksum: "{{external_softs.mysqljavacnx.sum }}"
-    mode: 0644
-  when: external_softs.mysqljavacnx.uri|regex_search('https{0,1}:\/\/')
-  register: download_mysqljavacnx
-# or use file copy
-- name: copy MySQL Java connector package on target system
-  copy:
-    url: "{{ external_softs.mysqljavacnx.uri }}"
-    dest: "{{ eor_tmp_install_path }}/{{ external_softs.mysqljavacnx.filename }}"
-    checksum: "{{external_softs.mysqljavacnx.sum }}"
-    mode: 0644
-  when: not download_mysqljavacnx
-  register: copy_mysqljavacnx
+## use get_url module if source file is a HTTP URI
+#- name: download MySQL Java connector package on target system
+#  get_url:
+#    url: "{{ third_party.mysqljavacnx.uri }}"
+#    dest: "{{ eor_tmp_install_path }}/{{ third_party.mysqljavacnx.filename }}"
+#    checksum: "{{third_party.mysqljavacnx.sum }}"
+#    mode: 0644
+#  when: third_party.mysqljavacnx.uri|regex_search('https{0,1}:\/\/')
+#  register: download_mysqljavacnx
+## or use file copy
+#- name: copy MySQL Java connector package on target system
+#  copy:
+#    url: "{{ third_party.mysqljavacnx.uri }}"
+#    dest: "{{ eor_tmp_install_path }}/{{ third_party.mysqljavacnx.filename }}"
+#    checksum: "{{third_party.mysqljavacnx.sum }}"
+#    mode: 0644
+#  when: not download_mysqljavacnx
+#  register: copy_mysqljavacnx
+
+- name: get MySQL Java connector package
+  include_tasks: get_third_party_package.yml
+  vars:
+    file_uri: "{{ third_party.mysqljavacnx.uri }}"
+    checksum: "{{ third_party.mysqljavacnx.sum }}"
 
 - name: create directory for mysql java connector
   file:
@@ -208,31 +214,28 @@
     mode: 0755
     state: directory
 
-- block:
-  - name: create temp dir to extract MySQL java connector
-    file:
-      path: "{{ eor_tmp_install_path }}/mysql-connector-java/"
-      state: directory
+- name: create temp dir to extract MySQL java connector
+  file:
+    path: "{{ eor_tmp_install_path }}/mysql-connector-java/"
+    state: directory
 
-  - name: uncompress MySQL java connector
-    unarchive:
-      src: "{{ eor_tmp_install_path }}/{{ external_softs.mysqljavacnx.filename }}"
-      dest: "{{ eor_tmp_install_path }}/mysql-connector-java/"
-      remote_src: yes
+- name: uncompress MySQL java connector
+  unarchive:
+    src: "{{ eor_tmp_install_path }}/{{ third_party.mysqljavacnx.filename }}"
+    dest: "{{ eor_tmp_install_path }}/mysql-connector-java/"
+    remote_src: yes
 
-  - name: find JAR file
-    find:
-      paths: "{{ eor_tmp_install_path }}/mysql-connector-java"
-      patterns: 'mysql-connector-java-*-bin.jar'
-      recurse: yes
-    register: find_jar
+- name: find JAR file
+  find:
+    paths: "{{ eor_tmp_install_path }}/mysql-connector-java"
+    patterns: 'mysql-connector-java-*-bin.jar'
+    recurse: yes
+  register: find_jar
 
-  - set_fact:
-      eor_mysql_connector_java_path: "{{ find_jar.files[0].path }}"
-    when: find_jar.matched == 1
-  
-  when: not download_mysqljavacnx.failed or not copy_mysqljavacnx.failed
-
+- set_fact:
+    eor_mysql_connector_java_path: "{{ find_jar.files[0].path }}"
+  when: find_jar.matched == 1
+ 
 - name: copy MySQL java connector to final location
   copy:
     src: "{{ eor_mysql_connector_java_path }}"
@@ -248,7 +251,7 @@
     state: absent
 
 - set_fact:
-  eor_mysql_connector_java_path: "{{ eor_install_path }}/mysql-java-connector/{{ eor_mysql_connector_java_path | basename }}"
+    eor_mysql_connector_java_path: "{{ eor_install_path }}/mysql-java-connector/{{ eor_mysql_connector_java_path | basename }}"
 
 
 
