@@ -1,0 +1,50 @@
+---
+# vim: set bs=2 sw=2 expandtab:
+#
+# Retrieve 3rd party package and put it on target system
+#
+# This task should be included from parent task, and should define the
+# following variables:
+#   file_uri: either location on ansible role, mountpoint, or HTTP/FTP
+#             resource location
+#   checksum: the file checksum
+#
+# Eric Belhomme <rico-github@ricozome.net> - 2018-07-23
+
+# first we try to get the file from the role itself.
+# if it fails, then we get the file from a local FS resource
+# of from the HTTP/FTP upstream resource
+
+- name: extract filename from resource URI
+  set_fact:
+  filename: "{{ file_uri | basename }}"
+
+- block:
+
+  - name: try to copy {{ filename }} package from role
+    copy:
+      src: "3rd_party/{{ filename }}"
+      dest: "{{ eor_tmp_install_path }}/{{ filename }}"
+      mode: 0644
+      checksum: "{{ checksum }}"
+
+  rescue:
+
+  # use get_url module if source file is a HTTP URI
+  - name: download Birt runtime package on target system
+    get_url:
+      url: "{{ file_uri }}"
+      dest: "{{ eor_tmp_install_path }}/{{ filename }}"
+      mode: 0644
+      checksum: "{{ checksum }}"
+    when: file_uri|regex_search('https{0,1}:\/\/')
+    register: download_uri
+
+  # or use file copy
+  - name: copy Birt runtime package on target system
+    copy:
+      url: "{{ file_uri }}"
+      dest: "{{ eor_tmp_install_path }}/{{ filename }}"
+      mode: 0644
+      checksum: "{{ checksum }}"
+    when: not download_uri
