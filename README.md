@@ -27,7 +27,7 @@ Role Variables
 
 All variables are defaulted into defaults/main.yml file.
 
-TODO: describe noticeable variables
+Detailled description of used varaibles is available in [ROLE-VARIABLE](ROLE-VARIABLES.md) file.
 
 Dependencies
 ------------
@@ -56,7 +56,6 @@ ToDo task
 ---------
 
 Many tasks still pending:
-- fetch Docker images from Docker hub instead of local archives
 - configure firewalld
 - create dedicated users for Pentaho and Wildfly
 - simplify SQL users
