@@ -58,7 +58,7 @@
 - name: link Mysql java connector for Pentaho
   file:
     path: "{{ pentaho.path }}/data-integration/lib/mysql-connector-java-bin.jar"
-    src: "{{ eor_install_path }}/mysql-java-connector/{{ eor_mysql_connector_java_path | basename }}"
+    src: "{{ eor_mysql_connector_java_path }}"
     state: link
 
 

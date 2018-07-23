@@ -12,7 +12,7 @@
 
 - name: copy the jdbc mysql connector to the jar
   copy:
-    src: "{{ eor_install_path }}/mysql-java-connector/{{ eor_mysql_connector_java_path | basename }}"
+    src: "{{ eor_mysql_connector_java_path }}"
     dest: "{{ eor_tmp_install_path }}/{{ etl_name }}/{{ eor_mysql_connector_java_path | basename }}"
     remote_src: yes
 

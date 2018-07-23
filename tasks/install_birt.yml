@@ -60,7 +60,7 @@
 
   - name: copy MySQL java connector on Birt war
     copy:
-      src: "{{ eor_install_path }}/mysql-java-connector/{{ eor_mysql_connector_java_path | basename }}"
+      src: "{{ eor_mysql_connector_java_path }}"
       dest: "{{ eor_tmp_install_path }}/birt/war/WEB-INF/lib"
       remote_src: yes
 

@@ -17,7 +17,7 @@
 # add MySQL module if not already defined
 if (outcome != success) of /core-service=module-loading/:list-resource-loader-paths(module=com.mysql.driver)
   echo "installing mysql module"
-  module add --name=com.mysql.driver --dependencies=javax.api,javax.transaction.api --resources={{ eor_install_path }}/mysql-java-connector/{{ eor_mysql_connector_java_path | basename }}
+  module add --name=com.mysql.driver --dependencies=javax.api,javax.transaction.api --resources={{ eor_mysql_connector_java_path }}
   :reload
 end-if
 
