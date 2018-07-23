@@ -24,7 +24,10 @@
       src: "3rd_party/{{ pkg_filename }}"
       dest: "{{ eor_tmp_install_path }}/{{ pkg_filename }}"
       mode: 0644
-      checksum: "{{ package.sum }}"
+#      checksum: "{{ package.sum }}"
+# copy module currently only supports SHA1 checksum. As we store SHA2 or
+# MD5 checksum from upstream Internet sources, we can't use it for local
+# copy checksums.
 
   rescue:
 
@@ -44,7 +47,7 @@
       src: "{{ package.uri }}"
       dest: "{{ eor_tmp_install_path }}/{{ pkg_filename }}"
       mode: 0644
-      checksum: "{{ package.sum }}"
+#      checksum: "{{ package.sum }}"
     when:
     - download_uri.changed == false
     - not package.uri|regex_search('https{0,1}:\/\/')

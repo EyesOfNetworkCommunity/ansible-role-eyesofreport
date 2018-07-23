@@ -5,25 +5,10 @@
 #
 # Eric Belhomme <rico-github@ricozome.net> - 2018-07-22
 
-
-# use get_url module if source file is a HTTP URI
-- name: download Wildfly package on target system
-  get_url:
-    url: "{{ third_party.wildfly.uri }}"
-    dest: "{{ eor_tmp_install_path }}/{{ third_party.wildfly.filename }}"
-    mode: 0644
-    checksum: "{{ third_party.wildfly.sum }}"
-  when: third_party.wildfly.uri|regex_search('https{0,1}:\/\/')
-  register: download_wildfly
-# or use file copy
-- name: copy Wildfly package on target system
-  copy:
-    url: "{{ third_party.wildfly.uri }}"
-    dedest: "{{ eor_tmp_install_path }}/{{ third_party.wildfly.filename }}"
-    mode: 0644
-    checksum: "{{ third_party.wildfly.sum }}"
-  when: not download_wildfly
-  register: copy_wildfly
+- name: get Wildfly package
+  include_tasks: get_third_party_package.yml
+  vars:
+    package: "{{ pkg_wildfly }}"
 
 - name: create paths for Wildfly
   file:
@@ -39,10 +24,11 @@
 
 - name: uncompress Wildfly archive
   unarchive:
-    src: "{{ eor_tmp_install_path }}/{{ third_party.wildfly.uri | basename }}"
+    src: "{{ eor_tmp_install_path }}/{{ pkg_wildfly.uri | basename }}"
     dest: "{{ wildfly.app_path }}"
     remote_src: yes
 
+# TODO: deduce wildfly directory from the archive
 - name: symlink wildfly current release
   file:
     path: "{{ wildfly.app_path }}/wildfly"

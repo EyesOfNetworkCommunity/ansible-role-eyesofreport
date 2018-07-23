@@ -180,31 +180,10 @@
 
 
 ### MySQL java connetor ###
-
-## use get_url module if source file is a HTTP URI
-#- name: download MySQL Java connector package on target system
-#  get_url:
-#    url: "{{ third_party.mysqljavacnx.uri }}"
-#    dest: "{{ eor_tmp_install_path }}/{{ third_party.mysqljavacnx.filename }}"
-#    checksum: "{{third_party.mysqljavacnx.sum }}"
-#    mode: 0644
-#  when: third_party.mysqljavacnx.uri|regex_search('https{0,1}:\/\/')
-#  register: download_mysqljavacnx
-## or use file copy
-#- name: copy MySQL Java connector package on target system
-#  copy:
-#    url: "{{ third_party.mysqljavacnx.uri }}"
-#    dest: "{{ eor_tmp_install_path }}/{{ third_party.mysqljavacnx.filename }}"
-#    checksum: "{{third_party.mysqljavacnx.sum }}"
-#    mode: 0644
-#  when: not download_mysqljavacnx
-#  register: copy_mysqljavacnx
-
 - name: get MySQL Java connector package
   include_tasks: get_third_party_package.yml
   vars:
-    file_uri: "{{ third_party.mysqljavacnx.uri }}"
-    checksum: "{{ third_party.mysqljavacnx.sum }}"
+    package: "{{ pkg_mysqljdbc }}"
 
 - name: create directory for mysql java connector
   file:
@@ -221,7 +200,7 @@
 
 - name: uncompress MySQL java connector
   unarchive:
-    src: "{{ eor_tmp_install_path }}/{{ third_party.mysqljavacnx.filename }}"
+    src: "{{ eor_tmp_install_path }}/{{ pkg_mysqljdbc.uri | basename }}"
     dest: "{{ eor_tmp_install_path }}/mysql-connector-java/"
     remote_src: yes
 

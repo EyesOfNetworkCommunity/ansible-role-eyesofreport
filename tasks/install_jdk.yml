@@ -11,27 +11,7 @@
 # web portal.
 # So you can either get the RPM from a local repo, or from a network fs
 #
-# See defaults/main.yml to further details.
-
-# use get_url module if source file is a HTTP URI
-#- name: download Oracle JRE package on target system
-#  get_url:
-#    url: "{{ pkg_jdk.uri }}"
-#    dest: /tmp/jdk-7u80-linux-x64.rpm
-#    mode: 0644
-#    checksum: "{{ pkg_jdk.sum }}"
-#  when: pkg_jdk.uri|regex_search('https{0,1}:\/\/')
-#  register: download_jdk
-## or use file copy
-#- name: copy Oracle JRE package on target system
-#  copy:
-#    url: "{{ pkg_jdk.uri }}"
-#    dest: /tmp/jdk-7u80-linux-x64.rpm
-#    mode: 0644
-#    checksum: "{{ pkg_jdk.sum }}"
-#  when: not download_jdk
-#  register: copy_jdk
-
+# See files/3rd_party/README.md to further details.
 - name: get Oracle JDK package
   include_tasks: get_third_party_package.yml
   vars:

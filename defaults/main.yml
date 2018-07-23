@@ -53,11 +53,11 @@ pkg_wildfly:
   uri: 'http://download.jboss.org/wildfly/9.0.2.Final/wildfly-9.0.2.Final.zip'
   sum: 'sha256:5872edb16ed968ecbf4446f74eff158f91add47ec28484b8768880cb5c149ad2'
 pkg_jdk:
-  uri: 'http://192.168.233.1/ansible_repo/oracle/java/jdk-7u80-linux-x64.rpm'
+  uri: '/mnt/ansible_repo/oracle/java/jdk-7u80-linux-x64.rpm'
   sum: 'sha256:405d5fb7fa8cc4b5e5fe2c5fa349af6fbd742d9967772163d1fa8ea4ce35cd7b'
 pkg_birt:
-  uri: 'http://www.eclipse.org/downloads/download.php?file=/birt/downloads/drops/R-R1-4_5_0-201506092134/birt-runtime-4.5.0-20150609.zip&r=1'
-  sum: 'md5:ac639bcdaedd8ded301b7b52162ec811'
+  uri: 'http://download.eclipse.org/birt/downloads/drops/R-R1-4_5_0-201506092134/birt-runtime-4.5.0-20150609.zip'
+  sum: 'sha512:375f8022ab082909a6ddbccc70e4e23648fa91e68ea599bee343a8439e3e1ea8591a442dacf6cd959a7bc771a1650238675983fa52236bbaa9fd1b8c29ffd62e'
 pkg_mysqljdbc:
   uri: 'https://downloads.mysql.com/archives/get/file/mysql-connector-java-5.1.45.tar.gz'
   sum: 'sha256:1d289a056c7eb8290108a8d2e3c4717193662a9171adb56cfa3b769b32de3300'

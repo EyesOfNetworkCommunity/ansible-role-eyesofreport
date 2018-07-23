@@ -5,24 +5,10 @@
 #
 # Eric Belhomme <rico-github@ricozome.net> - 2018-07-22
 
-# use get_url module if source file is a HTTP URI
-- name: download Pentaho package on target system
-  get_url:
-    url: "{{ third_party.pentaho.uri }}"
-    dest: "{{ eor_tmp_install_path }}/{{ third_party.pentaho.filename }}"
-    mode: 0644
-    checksum: "{{ third_party.pentaho.sum }}"
-  when: third_party.pentaho.uri|regex_search('https{0,1}:\/\/')
-  register: download_pentaho
-# or use file copy
-- name: copy Pentaho package on target system
-  copy:
-    url: "{{ third_party.pentaho.uri }}"
-    dest: "{{ eor_tmp_install_path }}/{{ third_party.pentaho.u }}"
-    mode: 0644
-    checksum: "{{ third_party.pentaho.sum }}"
-  when: not download_pentaho
-  register: copy_pentaho
+- name: get Pentaho package
+  include_tasks: get_third_party_package.yml
+  vars:
+    package: "{{ pkg_pentaho }}"
 
 - name: create pentaho directories
   file:
@@ -39,7 +25,7 @@
 
 - name: uncompress Pentaho archive
   unarchive:
-    src: "{{ eor_tmp_install_path }}/{{ third_party.pentaho.uri | basename }}"
+    src: "{{ eor_tmp_install_path }}/{{ pkg_pentaho.uri | basename }}"
     dest: "{{ pentaho.path }}"
     remote_src: yes
 
@@ -61,17 +47,10 @@
     src: "{{ eor_mysql_connector_java_path }}"
     state: link
 
-
-
-
-
 - name: copy ETL scripts
   synchronize:
     src: "pentaho/scripts"
     dest: "{{ pentaho.path }}"
-
-
-
 
 - name: create ETL validator directory
   file:
@@ -95,8 +74,6 @@
   vars:
     etl_name: 'ETL_RAW_APPLICATION_LINK_ANALYSIS'
     properties_name: 'AppliLinkAnalysis'
-
-
 
 - name: create Kettle env
   file:
