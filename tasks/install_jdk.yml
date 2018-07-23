@@ -16,32 +16,30 @@
 # use get_url module if source file is a HTTP URI
 #- name: download Oracle JRE package on target system
 #  get_url:
-#    url: "{{ external_softs.jdk.uri }}"
+#    url: "{{ pkg_jdk.uri }}"
 #    dest: /tmp/jdk-7u80-linux-x64.rpm
 #    mode: 0644
-#    checksum: "{{ external_softs.jdk.sum }}"
-#  when: external_softs.jdk.uri|regex_search('https{0,1}:\/\/')
+#    checksum: "{{ pkg_jdk.sum }}"
+#  when: pkg_jdk.uri|regex_search('https{0,1}:\/\/')
 #  register: download_jdk
 ## or use file copy
 #- name: copy Oracle JRE package on target system
 #  copy:
-#    url: "{{ external_softs.jdk.uri }}"
+#    url: "{{ pkg_jdk.uri }}"
 #    dest: /tmp/jdk-7u80-linux-x64.rpm
 #    mode: 0644
-#    checksum: "{{ external_softs.jdk.sum }}"
+#    checksum: "{{ pkg_jdk.sum }}"
 #  when: not download_jdk
 #  register: copy_jdk
 
 - name: get Oracle JDK package
   include_tasks: get_third_party_package.yml
   vars:
-    file_uri: "{{ external_softs.jdk.uri }}"
-    checksum: "{{ external_softs.jdk.sum }}"
-
+    package: "{{ pkg_jdk }}"
 
 - name: install JRE package
   yum:
-    name: "{{ eor_tmp_install_path }}/{{ external_softs.jdk.uri | basename }}"
+    name: "{{ eor_tmp_install_path }}/{{ pkg_jdk.uri | basename }}"
     state: present
   register: jdk_installed
 

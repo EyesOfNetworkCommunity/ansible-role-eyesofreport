@@ -5,9 +5,7 @@
 #
 # This task should be included from parent task, and should define the
 # following variables:
-#   file_uri: either location on ansible role, mountpoint, or HTTP/FTP
-#             resource location
-#   checksum: the file checksum
+#   package: array of (uri, checksum)
 #
 # Eric Belhomme <rico-github@ricozome.net> - 2018-07-23
 
@@ -17,11 +15,13 @@
 
 - name: extract filename from resource URI
   set_fact:
-    pkg_filename: "{{ file_uri | basename }}"
+    pkg_filename: "{{ package.uri | basename }}"
 
 - debug:
-    msg: "{{ pkg_filename }}"
-
+    var: package
+- debug:
+    var: pkg_filename
+    
 - block:
 
   - name: "try to copy {{ pkg_filename }} package from role"
@@ -29,25 +29,25 @@
       src: "3rd_party/{{ pkg_filename }}"
       dest: "{{ eor_tmp_install_path }}/{{ pkg_filename }}"
       mode: 0644
-      checksum: "{{ checksum }}"
+      checksum: "{{ package.sum }}"
 
   rescue:
 
   # use get_url module if source file is a HTTP URI
   - name: "download {{ pkg_filename }} from URL"
     get_url:
-      url: "{{ file_uri }}"
+      url: "{{ package.uri }}"
       dest: "{{ eor_tmp_install_path }}/{{ pkg_filename }}"
       mode: 0644
-      checksum: "{{ checksum }}"
-    when: file_uri|regex_search('https{0,1}:\/\/')
+      checksum: "{{ package.sum }}"
+    when: package.uri|regex_search('https{0,1}:\/\/')
     register: download_uri
 
   # or use file copy
-  - name: "copy {{ file_uri }} package local mountpoint"
+  - name: "copy {{ package.uri }} package local mountpoint"
     copy:
-      url: "{{ file_uri }}"
+      url: "{{ package.uri }}"
       dest: "{{ eor_tmp_install_path }}/{{ pkg_filename }}"
       mode: 0644
-      checksum: "{{ checksum }}"
+      checksum: "{{ package.sum }}"
     when: not download_uri
