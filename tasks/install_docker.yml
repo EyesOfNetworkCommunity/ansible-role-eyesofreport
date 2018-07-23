@@ -3,6 +3,17 @@
 #
 # Docker configuration
 #
+# The role first try to push a local Docker image archive from role's
+# files/3rd_party directory.
+#
+# The file must follow the naming scheme:
+#   docker.io_<image name>_<image tag>.tar.bz2
+#
+# This implies the docker image is bzip2 compressed.
+#
+# If it fails to find a local archive, it then download (pull) the image
+# from official docker.io Hub repository.
+#
 # Eric Belhomme <rico-github@ricozome.net> - 2018-07-22
 
 - name: ensure Docker is running
@@ -10,22 +21,14 @@
     name: docker
     state: started
 
-# todo: get docker images from docker.io
-#- name: unzip CentOS 7 docker container archive
-#  unarchive:
-#    src: "{{ eor_source_path }}/eyesofreport/CORE/dockers/centos_1503.zip"
-#    dest: "{{ eor_source_path }}/eyesofreport/CORE/dockers/"
-#    remote_src: yes
-#
-#- name: Load CentOS Docker image from local archive
-#  docker_image:
-#    name: eor/centos
-#    tag: 7.1.1503
-#    load_path: "{{ eor_source_path }}/eyesofreport/CORE/dockers/centos_1503.tar"
-#
-#- name: Load busybox Docker image from local archive
-#  docker_image:
-#    name: eor/busybox
-#    tag: latest
-#    load_path: "{{ eor_source_path }}/eyesofreport/CORE/dockers/busybox.tar"
+- name: install CentOS docker image
+  include_tasks: get_docker_image.yml
+  vars:
+    image_name: 'centos'
+    image_tag: "{{ docker_image_centos }}"
 
+- name: install Busybox docker image
+  include_tasks: get_docker_image.yml
+  vars:
+    image_name: 'busybox'
+    image_tag: "{{ docker_image_busybox }}"

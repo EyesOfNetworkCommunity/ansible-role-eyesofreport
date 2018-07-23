@@ -1,0 +1,35 @@
+---
+# vim: set bs=2 sw=2 expandtab:
+#
+# Retrieve Docker image and put it on target system
+#
+# This task should be included from parent task, and should define the
+# following variables:
+#   image_name: Docker image name
+#   image_tag: Docker image tag
+#
+# Eric Belhomme <rico-github@ricozome.net> - 2018-07-23
+
+- block:
+
+  - name: "try to copy {{ image_name }} docker image from role"
+    copy:
+      src: "3rd_party/docker.io_{{ image_name }}_{{ image_tag }}.tar.bz2"
+      dest: "{{ eor_tmp_install_path }}/docker.io_{{ image_name }}_{{ image_tag }}.tar.bz2"
+      mode: 0640
+
+  - name: unpack docker image
+    command: "bzip2 -d {{ eor_tmp_install_path }}/docker.io_{{ image_name }}_{{ image_tag }}.tar.bz2"
+
+  - name: Load {{ image_name }} Docker image from local archive
+    docker_image:
+      name: "eor/{{ image_name }}_{{ image_tag }}.tar"
+      tag: "{{ image_tag }}"
+      load_path: "{{ eor_tmp_install_path }}/docker.io_{{ image_name }}_{{ image_tag }}.tar"
+
+  rescue:
+
+  - name: Load {{ image_name }} Docker image from docker.io Hub
+    docker_image:
+      name: "{{ image_name }}"
+      tag: "{{ image_tag }}"

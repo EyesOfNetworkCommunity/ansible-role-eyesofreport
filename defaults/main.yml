@@ -62,6 +62,11 @@ pkg_mysqljdbc:
   uri: 'https://downloads.mysql.com/archives/get/file/mysql-connector-java-5.1.45.tar.gz'
   sum: 'sha256:1d289a056c7eb8290108a8d2e3c4717193662a9171adb56cfa3b769b32de3300'
 
+
+### Docker images ######################################################
+docker_image_centos: '7.1.1503'
+docker_image_busybox: '1.29.1'
+
 ### MariaDB specific variables #########################################
 sql:
   server: '127.0.0.1'
