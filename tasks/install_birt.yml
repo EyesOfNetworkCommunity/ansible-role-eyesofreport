@@ -29,18 +29,18 @@
     path: "{{ item }}"
     state: directory
   with_items:
-  - '/tmp/birt/runtime'
-  - '/tmp/birt/war'
+  - "{{ eor_tmp_install_path }}/birt/runtime"
+  - "{{ eor_tmp_install_path }}/birt/war"
 
 - name: uncompress Birt archive in a temporary directory
   unarchive:
     src: "{{ eor_tmp_install_path }}/{{ external_softs.birt.filename }}"
-    dest: /tmp/birt/runtime
+    dest: "{{ eor_tmp_install_path }}/birt/runtime"
     remote_src: yes
 
 - name: find Birt WAR file
   find:
-    paths: /tmp/birt/runtime
+    paths: "{{ eor_tmp_install_path }}/birt/runtime"
     patterns: 'birt.war'
     recurse: yes
   register: find_war
@@ -50,23 +50,23 @@
   - name: uncompress Birt WAR file in a temp dir
     unarchive:
       src: "{{ find_war.files[0].path }}"
-      dest: /tmp/birt/war
+      dest: "{{ eor_tmp_install_path }}/birt/war"
       remote_src: yes
 
   - name: copy MySQL java connector on Birt war
     copy:
       src: "{{ eor_install_path }}/mysql-java-connector/{{ eor_mysql_connector_java_path | basename }}"
-      dest: /tmp/birt/war/WEB-INF/lib
+      dest: "{{ eor_tmp_install_path }}/birt/war/WEB-INF/lib"
       remote_src: yes
 
   - name: copy bmrt.rptdesign template on Birt war
     template:
       src: birt/bmrt.rptdesign.j2
-      dest: /tmp/birt/war/bmrt.rptdesign
+      dest: "{{ eor_tmp_install_path }}/birt/war/bmrt.rptdesign"
 
   - name: patch web.xml file on Birt war
     blockinfile:
-      path: /tmp/birt/war/WEB-INF/web.xml
+      path: "{{ eor_tmp_install_path }}/birt/war/WEB-INF/web.xml"
       block: |
         <context-param>
           <param-name>BIRT_VIEWER_WORKING_FOLDER</param-name>
@@ -75,7 +75,7 @@
 
   - name: compress patched birt WAR file
     archive:
-      path: /tmp/birt/war/*
+      path: "{{ eor_tmp_install_path }}/birt/war/*"
       dest: "{{ wildfly.app_path }}/wildfly/standalone/deployments/birt.war"
       format: zip
       owner: "{{ wildfly.user }}"
