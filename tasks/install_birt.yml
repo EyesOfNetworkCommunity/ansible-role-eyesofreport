@@ -31,6 +31,21 @@
     recurse: yes
   register: find_war
 
+- name: copy BIRT reports
+  synchronize:
+    src: "birt/report"
+    dest: "{{ eor_install_path }}"
+    owner: no
+    perms: no
+
+- name: set correct perms and ownership for reports
+  file:
+    dest: "{{ eor_install_path }}"
+    owner: root
+    group: "{{ eor_group }}"
+    mode: u=rwX,g=rX
+    recurse: yes
+
 - block:
 
   - name: uncompress Birt WAR file in a temp dir
