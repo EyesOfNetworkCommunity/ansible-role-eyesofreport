@@ -70,21 +70,40 @@
     create_home: no
     password_lock: yes
 
-
-
-    
-
-- name: enable and start MariaDB server
+- name: "ensure firewalld server is running"
   systemd:
-    name: mariadb
+    name: firewalld
+    state: started
+
+- name: Set public zone as default policy
+  command: firewall-cmd --set-default-zone=public
+
+- name: "add firewalld rule for {{ item }} service"
+  firewalld:
+    service: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+  - ssh
+  - snmp
+  - http
+  - https
+
+- name: "add firewalld rule for MySQL"
+  firewalld:
+    port: "{{ tcp_ports.mysql[0] }}/tcp"
+    permanent: true
+    state: enabled
+
+- name: "enable and start {{ item }} server"
+  systemd:
+    name: "{{ item }}"
     enabled: true
     state: restarted
-
-- name: enable and start Docker daemon
-  systemd:
-    name: docker
-    enabled: true
-    state: restarted
+  with_items:
+  - firewalld
+  - mariadb
+  - docker
 
 - name: clone eorweb Git repo
   git:
