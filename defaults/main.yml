@@ -10,15 +10,11 @@ eon_repo:
 # override this variable for debug purpose
 cleanup_install_files: true
 
-#eor_source_path: '/srv/eor_repo'
 eor_install_path: '/srv/eyesofreport'
 eor_tmp_install_path: '/tmp/eor-install'
 
 eor_owner: eyesofreport
 eor_group: eyesofreport
-
-
-
 
 tcp_ports:
   mysql:
@@ -41,11 +37,9 @@ eorweb_git:
   repo: 'https://github.com/EyesOfNetworkCommunity/eorweb.git'
   release: '2.2'
 
-
 ### third party packages variables #####################################
 # Refer to files/3rd_perty/README.md for instruction on how to use
 # local repos for 3rd party softwares
-
 pkg_pentaho:
   uri: 'https://sourceforge.net/projects/pentaho/files/Data%20Integration/5.4/pdi-ce-5.4.0.1-130.zip'
   sum: 'sha256:240e72e2227f1e3e4c7b7173a42157a1ba0ef0e2055ffa3122d2f633ca9e14c6'
@@ -70,7 +64,6 @@ docker_image_busybox: '1.29.1'
 ### MariaDB specific variables #########################################
 sql:
   bind: '127.0.0.1'
-#Location : /srv/eyesofreport/etl/data-integration/simple-jndi/jdbc.properties
   db:
     bp_global: global_nagiosbp
     bp_lilac: bp_group_lilac
@@ -90,7 +83,6 @@ sql_user:
       user: 'eyesofreport'
       password: 'SaintThomas,2014'
 
-
 ### ETL specific variables #############################################
 pentaho:
   path: "{{ eor_install_path }}/etl"
@@ -100,7 +92,6 @@ pentaho:
 carte:
   bind: '127.0.0.1'
   password: 'root66'
-
 
 ### Reporting specific variables #######################################
 wildfly:
