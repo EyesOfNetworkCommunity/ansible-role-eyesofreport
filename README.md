@@ -52,13 +52,11 @@ Author Information
 
 Based on The EyesOfNetwork Community team
 
-ToDo task
----------
+ToDo tasks
+----------
 
 Many tasks still pending:
-- configure firewalld
 - create dedicated users for Pentaho and Wildfly
-- simplify SQL users
 - rationalize variables
 - remove hardcoded dependencies to /srv/eyeofreport and /srv/eyesofnetwork paths (especially on eorweb)
 - etc. 
