@@ -1,3 +1,4 @@
 # third party packages should never been included into the Git repo !
 files/3rd_party/*
 !files/3rd_party/README.md
+tasks/test*
