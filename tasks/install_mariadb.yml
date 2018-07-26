@@ -36,26 +36,6 @@
     name: mariadb
     state: restarted
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 - name: copy initial SQL schemas on target
   copy:
     src: "mariadb/db/{{ item }}"
@@ -73,80 +53,87 @@
   - eor_repository.sql
   - dashbuilder.sql
 
-
-- name: create and initialize sql schemas
+- name: create and initialize sql schema for {{ sql.db.bp_global }} db
   include_tasks: db_init_schema.yml
   vars:
-    dbname: "{{ item }}"
-    schema_path: "{{ eor_tmp_install_path }}/{{ item }}.sql"
-  with_items:
-  - global_nagiosbp
-  - eor_ods
-  - eor_dwh
-  - eyesofreport
-  - bp_group_lilac
-  - eor_repository
-  - dashbuilder
+    dbname: "{{ sql.db.bp_global }}"
+    schema_path: "{{ eor_tmp_install_path }}/global_nagiosbp.sql"
 
-- name: create and initialize eorweb sql schemas
+- name: create and initialize sql schema for {{ sql.db.bp_lilac }} db
   include_tasks: db_init_schema.yml
   vars:
-    dbname: "eorweb"
+    dbname: "{{ sql.db.bp_lilac }}"
+    schema_path: "{{ eor_tmp_install_path }}/bp_group_lilac.sql"
+
+- name: create and initialize sql schema for {{ sql.db.ods }} db
+  include_tasks: db_init_schema.yml
+  vars:
+    dbname: "{{ sql.db.ods }}"
+    schema_path: "{{ eor_tmp_install_path }}/eor_ods.sql"
+
+- name: create and initialize sql schema for {{ sql.db.dwh }} db
+  include_tasks: db_init_schema.yml
+  vars:
+    dbname: "{{ sql.db.dwh }}"
+    schema_path: "{{ eor_tmp_install_path }}/eor_dwh.sql"
+
+- name: create and initialize sql schema for {{ sql.db.technical }} db
+  include_tasks: db_init_schema.yml
+  vars:
+    dbname: "{{ sql.db.technical }}"
+    schema_path: "{{ eor_tmp_install_path }}/eyesofreport.sql"
+
+- name: create and initialize sql schema for {{ sql.db.repository }} db
+  include_tasks: db_init_schema.yml
+  vars:
+    dbname: "{{ sql.db.repository }}"
+    schema_path: "{{ eor_tmp_install_path }}/eor_repository.sql"
+
+- name: create and initialize sql schema for {{ sql.db.dashbuilder }} db
+  include_tasks: db_init_schema.yml
+  vars:
+    dbname: "{{ sql.db.dashbuilder }}"
+    schema_path: "{{ eor_tmp_install_path }}/dashbuilder.sql"
+
+- name: create and initialize sql schema for {{ sql.db.eorweb }} db
+  include_tasks: db_init_schema.yml
+  vars:
+    dbname: "{{ sql.db.eorweb }}"
     schema_path: "{{ eor_install_path }}/eorweb/appliance/eorweb.sql"
 
 - name: create mariadb user for EOR databases
   mysql_user:
     check_implicit_admin: yes
     append_privs: yes
-    name: "{{ sql.eor.user }}"
-    password: "{{ sql.eor.password }}"
+    name: "{{ sql_user.internal.user }}"
+    password: "{{ sql_user.internal.password }}"
     priv: "{{ item }}.*:ALL"
     state: present
   with_items:
-  - 'eor_ods'
-  - 'eor_dwh'
-  - 'nagiosbp'
-  - 'lilac'
-  - 'thruk'
-  - 'ged'
-  - 'eorweb'
+  - "{{ sql.db.bp_global }}"
+  - "{{ sql.db.bp_lilac }}"
+  - "{{ sql.db.thruk }}"
+  - "{{ sql.db.ods }}"
+  - "{{ sql.db.dwh }}"
+  - "{{ sql.db.technical }}"
+  - "{{ sql.db.repository }}"
+  - "{{ sql.db.eorweb }}"
+  - "{{ sql.db.dashbuilder }}"
 
 # eor_repository is the only db that might need a dedicated user for
 # remote connection
-- name: create mariadb user for eor_repository
+- name: "create mariadb dedicated user for {{ sql.db.repository }}"
   mysql_user:
     check_implicit_admin: yes
     append_privs: yes
-    name: "{{ sql.repo.user }}"
-    password: "{{ sql.repo.password }}"
-    priv: "{{ sql.repo.db }}.*:ALL"
+    name: "{{ sql_user.external.user }}"
+    password: "{{ sql_user.external.password }}"
+    priv: "{{ {{ sql.db.repository }} }}.*:ALL"
     state: present
 
-- name: create mariadb user for Web databases
-  mysql_user:
-    check_implicit_admin: yes
-    append_privs: yes
-    name: "{{ sql.web.user }}"
-    password: "{{ sql.web.password }}"
-    priv: "{{ item }}.*:ALL"
-    state: present
-  with_items:
-  - global_nagiosbp
-
-- name: create mariadb user for Repository databases
-  mysql_user:
-    check_implicit_admin: yes
-    append_privs: yes
-    name: "{{ sql.repo.user }}"
-    password: "{{ sql.repo.password }}"
-    priv: "{{ item }}.*:ALL"
-    state: present
-  with_items:
-  - 'eyesofreport'
-
-- name: check if d_time_dimension data are present in eor_dwh database
+- name: check if d_time_dimension data are present in {{ sql.db.dwh }} database
   command: >
-    mysql --batch --skip-column-names eor_dwh
+    mysql --batch --skip-column-names {{ sql.db.dwh }}
     --execute="select count(*) from d_time_dimension;"
   register: mysql_timedimension_count
 
@@ -156,15 +143,15 @@
       src: mariadb/db/d_time_dimension.zip
       dest: "{{ eor_tmp_install_path }}/"
   
-  - name: inject d_time_dimension tables into eor_dwh database
-    shell: mysql -uroot eor_dwh < {{ eor_tmp_install_path }}/d_time_dimension.sql
+  - name: inject d_time_dimension tables into {{ sql.db.dwh }} database
+    shell: mysql -uroot {{ sql.db.dwh }} < {{ eor_tmp_install_path }}/d_time_dimension.sql
     args:
       executable: /bin/bash
   
   - name: creating indexes on Mariadb databases... may take a long time...
     command: >
-      mysql --batch --skip-column-names eor_dwh
-      --execute="use eor_dwh;
+      mysql --batch --skip-column-names {{ sql.db.dwh }}
+      --execute="use {{ sql.db.dwh }};
       CREATE INDEX idx_d_time_dimension_hour on d_time_dimension(epoch_hour) using btree;
       CREATE INDEX idx_d_time_dimension_day on d_time_dimension(epoch_day) using btree;
       CREATE INDEX idx_d_time_dimension_month on d_time_dimension(epoch_month) using btree;
@@ -174,7 +161,6 @@
       CREATE INDEX idx_d_time_dimension_month_num on d_time_dimension(month) using btree;"
   
   when: mysql_timedimension_count.stdout|int >= 2000000
-
 
 # todo: expect mysql secure
 

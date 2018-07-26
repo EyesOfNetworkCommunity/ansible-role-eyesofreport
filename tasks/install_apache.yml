@@ -79,7 +79,7 @@
   lineinfile:
     path: "/srv/eyesofreport/eorweb/include/config.php"
     regexp: '^\$database_host.*=.*$'
-    line: "$database_host=\"{{ sql.eorweb.host }}\";"
+    line: "$database_host=\"{{ sql.bind }}\";"
 
 - name: configure db listening port on eorweb config.php file
   lineinfile:

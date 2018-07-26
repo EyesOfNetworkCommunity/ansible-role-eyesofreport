@@ -70,6 +70,10 @@
     create_home: no
     password_lock: yes
 
+
+
+    
+
 - name: enable and start MariaDB server
   systemd:
     name: mariadb

@@ -20,17 +20,17 @@ eor_group: eyesofreport
 
 
 
-fwports:
-  tcp:
-  - 3306 # mysql
+tcp_ports:
+  mysql:
+  - 3306
+  pentaho:
   - 8181 # Pentaho
-  - 8080 # Wildfly
-  - 9990 # Wildfly admin
+  wildfly:
+  - 8080
+  - 9990
+  httpd:
   - 80
   - 443
-  udp:
-  - 161
-
 
 #TODO: get java env dynamically
 java_home: '/usr/java/jdk1.7.0_80'
@@ -69,59 +69,27 @@ docker_image_busybox: '1.29.1'
 
 ### MariaDB specific variables #########################################
 sql:
-  server: '127.0.0.1'
-  port: '3306'
-#Location : /srv/eyesofreport/etl/data-integration/simple-jndi/jdbc.properties 
-  technic:
-    db:
-    - 'eyesofreport'
-    host: 'localhost'
-    user: 'eyesofreport'
-    password: 'SaintThomas,2014'
- 
-  # Location : /srv/eyesofreport/etl/data-integration/simple-jndi/jdbc.properties
-  web:
-    db:
-    - 'global_nagiosbp'
-    host: 'localhost'
-    user: 'eyesofreport'
-    password: 'SaintThomas,2014'
+  bind: '127.0.0.1'
+#Location : /srv/eyesofreport/etl/data-integration/simple-jndi/jdbc.properties
+  db:
+    bp_global: global_nagiosbp
+    bp_lilac: bp_group_lilac
+    thruk: thruk
+    ods: eor_ods
+    dwh: eor_dwh
+    technical: eyesofreport
+    repository: eor_repository
+    eorweb: eorweb
+    dashbuilder: dashbuilder
 
-  # Location : /srv/eyesofreport/etl/data-integration/simple-jndi/jdbc.properties
-  # Location : /srv/eyesofreport/appserver/wildfly/standalone/configuration/standalone.xml for DWH and eyesofreport datasource
-  eor:
-    db:
-    - 'eor_ods'
-    - 'eor_dwh'
-    - 'nagiosbp'
-    - 'lilac'
-    - 'thruk'
-    - 'ged'
-    host: 'localhost'
-    user: 'eyesofreport'
-    password: 'SaintThomas,2014'
+sql_user:
+    external:
+      user: 'eyesofreport'
+      password: 'SaintThomas,2014'
+    internal:
+      user: 'eyesofreport'
+      password: 'SaintThomas,2014'
 
-  # Location : /srv/eyesofreport/etl/data-integration/simple-jndi/jdbc.properties
-  repo:
-    db: 'eyesofreport'
-    host: 'localhost'
-    user: 'eyesofreport'
-    password: 'SaintThomas,2014'
-
-  # Location : /srv/eyesofreport/appserver/wildfly/standalone/configuration/standalone.xml for ExampleDS datasource
-  dash:
-    db:
-    - 'dashbuilder'
-    host: 'localhost'
-    user: 'eyesofreport'
-    password: 'SaintThomas,2014'
-
-  eorweb:
-    db:
-    - eorweb
-    host: 'localhost'
-    user: 'eyesofreport'
-    password: 'SaintThomas,2014'
 
 ### ETL specific variables #############################################
 pentaho:
@@ -130,15 +98,13 @@ pentaho:
   group: root
 
 carte:
-  host: '127.0.0.1'
+  bind: '127.0.0.1'
   password: 'root66'
 
 
 ### Reporting specific variables #######################################
 wildfly:
-  server: '127.0.0.1'
-  port: 8080
-  admin: 9990
+  bind: '127.0.0.1'
   report_path: "{{ eor_install_path }}/report"
   app_path: "{{ eor_install_path }}/appserver"
   log: "{{ eor_install_path }}/report/installation_log"

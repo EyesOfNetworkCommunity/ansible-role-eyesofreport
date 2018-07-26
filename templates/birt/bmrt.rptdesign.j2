@@ -100,7 +100,7 @@ var df2= new Packages.java.text.SimpleDateFormat("yyyy-MM-dd");]]></method>
             <property name="BUSINESS_PACKAGE">Keycopter_business_package</property>
             <property name="GROUP_NAME">System</property>
             <property name="REPOSITORY_ID">1</property>
-            <property name="VANILLA_URL">http://{{ wildfly.server }}:{{ wildfly.port }}/VanillaRuntime</property>
+            <property name="VANILLA_URL">http://{{ wildfly.bind }}:{{ tcp_ports.wildfly[0] }}/VanillaRuntime</property>
         </oda-data-source>
         <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="ds_keycopter" id="1535">
             <list-property name="privateDriverProperties">
@@ -120,7 +120,7 @@ var df2= new Packages.java.text.SimpleDateFormat("yyyy-MM-dd");]]></method>
                 </ex-property>
             </list-property>
             <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
-            <property name="odaURL">jdbc:mysql://{{ sql.server }}:{{ sql.port }}/eor_dwh</property>
+            <property name="odaURL">jdbc:mysql://{{ sql.bind }}:{{ tcp_ports.mysql[0] }}/eor_dwh</property>
             <property name="odaUser">{{ sql.eor.user }}</property>
             <encrypted-property name="odaPassword" encryptionID="base64">{{ sql.eor.password }}</encrypted-property>
             <property name="odaJndiName">java:jboss/datasources/eor_dwh</property>

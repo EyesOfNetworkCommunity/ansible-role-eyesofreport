@@ -2,7 +2,7 @@
  
    <slaveserver>
      <name>master</name>
-     <hostname>{{ carte.host | regex_escape() }}</hostname>
+     <hostname>{{ carte.bind | regex_escape() }}</hostname>
      <port>8181</port>
      <master>Y</master>
    </slaveserver>
