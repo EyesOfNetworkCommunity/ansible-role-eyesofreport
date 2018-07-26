@@ -36,10 +36,10 @@ fwports:
 java_home: '/usr/java/jdk1.7.0_80'
 java_bin: "{{ java_home }}/bin/java"
 
-
+### EORWeb Git repository location #####################################
 eorweb_git:
-  repo: 'https://github.com/eric-belhomme/eorweb.git'
-  release: 'master'
+  repo: 'https://github.com/EyesOfNetworkCommunity/eorweb.git'
+  release: '2.2'
 
 
 ### third party packages variables #####################################
