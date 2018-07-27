@@ -2,13 +2,13 @@
  
    <slaveserver>
      <name>master</name>
-     <hostname>{{ carte.bind | regex_escape() }}</hostname>
+     <hostname>{{ carte.bind }}</hostname>
      <port>8181</port>
      <master>Y</master>
    </slaveserver>
  
    <repository>
-     <name>eor_repository</name>
+     <name>{{ sql.db.repository }}</name>
      <username>admin</username>
      <password>admin</password>
    </repository>

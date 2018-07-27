@@ -40,7 +40,7 @@
 
 - name: set correct perms and ownership for reports
   file:
-    dest: "{{ eor_install_path }}"
+    dest: "{{ eor_install_path }}/report"
     owner: root
     group: "{{ eor_group }}"
     mode: u=rwX,g=rX
@@ -66,13 +66,10 @@
       dest: "{{ eor_tmp_install_path }}/birt/war/bmrt.rptdesign"
 
   - name: patch web.xml file on Birt war
-    blockinfile:
-      path: "{{ eor_tmp_install_path }}/birt/war/WEB-INF/web.xml"
-      block: |
-        <context-param>
-          <param-name>BIRT_VIEWER_WORKING_FOLDER</param-name>
-          <param-value>/srv/eyesofreport/report/</param-value>
-        </context-param>
+    replace:
+      dest: "{{ eor_tmp_install_path }}/birt/war/WEB-INF/web.xml"
+      regexp: '(<param-name>BIRT_VIEWER_WORKING_FOLDER</param-name>\s*<param-value>).*(</param-value>)'
+      replace: "\\1{{ eor_install_path }}/report/\\2"
 
   - name: compress patched birt WAR file
     archive:
