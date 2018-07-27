@@ -12,9 +12,9 @@ DocumentRoot "/srv/eyesofnetwork/eorweb"
 	AuthName "Restricted"
 	AuthEonAuthoritative On
 	AuthEonMySQLSocket /var/lib/mysql/mysql.sock
-	AuthEonMySQLUsername {{ sql.eorweb.user }}
-	AuthEonMySQLPassword {{ sql.eorweb.password }}
-	AuthEonMySQLDB {{ sql.eorweb.db[0] }}
+	AuthEonMySQLUsername {{ sql_user.internal.user }}
+	AuthEonMySQLPassword {{ sql_user.internal.password }}
+	AuthEonMySQLDB {{ sql.db.eorweb }}
 	AuthEonMySQLTableSID sessions,users,groupright
 	AuthEonMySQLFieldUID sessions.user_id
 	AuthEonMySQLTableSIDCondition "`sessions`.`session_id`=$session_eor_id AND `sessions`.`user_id`=$user_id AND `users`.`user_id`=$user_id AND `users`.`user_name`=$user_name AND (`users`.`group_id`=$group_id AND `groupright`.`group_id`=$group_id OR `users`.`user_limitation`='1')"
@@ -28,9 +28,9 @@ DocumentRoot "/srv/eyesofnetwork/eorweb"
 	AuthName "Restricted"
 	AuthEonAuthoritative On
 	AuthEonMySQLSocket /var/lib/mysql/mysql.sock
-	AuthEonMySQLUsername eyesofreport
-	AuthEonMySQLPassword SaintThomas,2014
-	AuthEonMySQLDB eorweb
+	AuthEonMySQLUsername {{ sql_user.internal.user }}
+	AuthEonMySQLPassword {{ sql_user.internal.password }}
+	AuthEonMySQLDB {{ sql.db.eorweb }}
 	AuthEonMySQLTableSID sessions,users,groupright
 	AuthEonMySQLFieldUID sessions.user_id
 	AuthEonMySQLTableSIDCondition "`sessions`.`session_id`=$session_eor_id AND `sessions`.`user_id`=$user_id AND `users`.`user_id`=$user_id AND `users`.`user_name`=$user_name AND `users`.`group_id`=$group_id AND `groupright`.`group_id`=$group_id AND `groupright`.`tab_1`='1'"
@@ -44,9 +44,9 @@ DocumentRoot "/srv/eyesofnetwork/eorweb"
 	AuthName "Restricted"
 	AuthEonAuthoritative On
 	AuthEonMySQLSocket /var/lib/mysql/mysql.sock
-	AuthEonMySQLUsername eyesofreport
-	AuthEonMySQLPassword SaintThomas,2014
-	AuthEonMySQLDB eorweb
+	AuthEonMySQLUsername {{ sql_user.internal.user }}
+	AuthEonMySQLPassword {{ sql_user.internal.password }}
+	AuthEonMySQLDB {{ sql.db.eorweb }}
 	AuthEonMySQLTableSID sessions,users,groupright
 	AuthEonMySQLFieldUID sessions.user_id
 	AuthEonMySQLTableSIDCondition "`sessions`.`session_id`=$session_eor_id AND `sessions`.`user_id`=$user_id AND `users`.`user_id`=$user_id AND `users`.`user_name`=$user_name AND `users`.`group_id`=$group_id AND `groupright`.`group_id`=$group_id AND `groupright`.`tab_3`='1'"
@@ -60,9 +60,9 @@ DocumentRoot "/srv/eyesofnetwork/eorweb"
 	AuthName "Restricted"
 	AuthEonAuthoritative On
 	AuthEonMySQLSocket /var/lib/mysql/mysql.sock
-	AuthEonMySQLUsername eyesofreport
-	AuthEonMySQLPassword SaintThomas,2014
-	AuthEonMySQLDB eorweb
+	AuthEonMySQLUsername {{ sql_user.internal.user }}
+	AuthEonMySQLPassword {{ sql_user.internal.password }}
+	AuthEonMySQLDB {{ sql.db.eorweb }}
 	AuthEonMySQLTableSID sessions,users,groupright
 	AuthEonMySQLFieldUID sessions.user_id
 	AuthEonMySQLTableSIDCondition "`sessions`.`session_id`=$session_eor_id AND `sessions`.`user_id`=$user_id AND `users`.`user_id`=$user_id AND `users`.`user_name`=$user_name AND `users`.`group_id`=$group_id AND `groupright`.`group_id`=$group_id AND `groupright`.`tab_4`='1'"
@@ -76,9 +76,9 @@ DocumentRoot "/srv/eyesofnetwork/eorweb"
 	AuthName "Restricted"
 	AuthEonAuthoritative On
 	AuthEonMySQLSocket /var/lib/mysql/mysql.sock
-	AuthEonMySQLUsername eyesofreport
-	AuthEonMySQLPassword SaintThomas,2014
-	AuthEonMySQLDB eorweb
+	AuthEonMySQLUsername {{ sql_user.internal.user }}
+	AuthEonMySQLPassword {{ sql_user.internal.password }}
+	AuthEonMySQLDB {{ sql.db.eorweb }}
 	AuthEonMySQLTableSID sessions,users,groupright
 	AuthEonMySQLFieldUID sessions.user_id
 	AuthEonMySQLTableSIDCondition "`sessions`.`session_id`=$session_eor_id AND `sessions`.`user_id`=$user_id AND `users`.`user_id`=$user_id AND `users`.`user_name`=$user_name AND `users`.`group_id`=$group_id AND `groupright`.`group_id`=$group_id AND `groupright`.`tab_5`='1'"

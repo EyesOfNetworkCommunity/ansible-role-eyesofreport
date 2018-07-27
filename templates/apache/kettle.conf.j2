@@ -1,14 +1,12 @@
-
-
 ProxyPreserveHost On
 <Location /kettle>
         AuthType Basic
         AuthName "Restricted"
         AuthEonAuthoritative On
         AuthEonMySQLSocket /var/lib/mysql/mysql.sock
-	AuthEonMySQLUsername {{ sql.eorweb.user }}
-	AuthEonMySQLPassword {{ sql.eorweb.password }}
-	AuthEonMySQLDB {{ sql.eorweb.db[0] }}
+	AuthEonMySQLUsername {{ sql_user.internal.user }}
+	AuthEonMySQLPassword {{ sql_user.internal.password }}
+	AuthEonMySQLDB {{ sql.db.eorweb }}
         AuthEonMySQLTableSID sessions,users,groupright
         AuthEonMySQLFieldUID sessions.user_id
         AuthEonMySQLTableSIDCondition "`users`.`user_name`=$user_name AND `groupright`.`tab_2`='1'"

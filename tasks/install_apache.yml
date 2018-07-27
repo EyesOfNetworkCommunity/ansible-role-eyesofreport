@@ -85,19 +85,19 @@
   lineinfile:
     path: "/srv/eyesofreport/eorweb/include/config.php"
     regexp: '^\$database_port.*=.*$'
-    line: "$database_port=\"3306\";"
+    line: "$database_port=\"{{ tcp_ports.mysql[0] }}\";"
 
 - name: configure db user name on eorweb config.php file
   lineinfile:
     path: "/srv/eyesofreport/eorweb/include/config.php"
     regexp: '^\$database_username.*=.*$'
-    line: "$database_username=\"{{ sql.eorweb.user }}\";"
+    line: "$database_username=\"{{ sql_user.internal.user }}\";"
 
 - name: configure db user password on eorweb config.php file
   lineinfile:
     path: "/srv/eyesofreport/eorweb/include/config.php"
     regexp: '^\$database_password.*=.*$'
-    line: "$database_password=\"{{ sql.eorweb.password }}\";"
+    line: "$database_password=\"{{ sql_user.internal.password }}\";"
     owner: root
     group: "{{ eor_group }}"
     mode: 0640
