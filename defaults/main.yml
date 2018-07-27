@@ -65,15 +65,15 @@ docker_image_busybox: '1.29.1'
 sql:
   bind: '127.0.0.1'
   db:
-    bp_global: global_nagiosbp
-    bp_lilac: bp_group_lilac
-    thruk: thruk
-    ods: eor_ods
-    dwh: eor_dwh
-    technical: eyesofreport
-    repository: eor_repository
-    eorweb: eorweb
-    dashbuilder: dashbuilder
+    bp_global: 'global_nagiosbp'
+    bp_lilac: 'bp_group_lilac'
+    thruk: 'thruk'
+    ods: 'eor_ods'
+    dwh: 'eor_dwh'
+    technical: 'eyesofreport'
+    repository: 'eor_repository'
+    eorweb: 'eorweb'
+    dashbuilder: 'dashbuilder'
 
 sql_user:
     external:

@@ -128,7 +128,7 @@
     append_privs: yes
     name: "{{ sql_user.external.user }}"
     password: "{{ sql_user.external.password }}"
-    priv: "{{ {{ sql.db.repository }} }}.*:ALL"
+    priv: "{{ sql.db.repository }}.*:ALL"
     state: present
 
 - name: check if d_time_dimension data are present in {{ sql.db.dwh }} database
