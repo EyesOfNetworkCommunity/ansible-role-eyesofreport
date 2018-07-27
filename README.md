@@ -50,13 +50,15 @@ This is [GNU Lesser General Public License 3.0](lgpl-3.0.md)
 Author Information
 ------------------
 
-Based on The EyesOfNetwork Community team
+Based on The EyesOfNetwork Community team work:
+- [*Mickaël Aubertin*](https://github.com/maubertin/eyesofreport), [*Benoît Village*](https://github.com/benoitvillage/eyesofreport) the EOR's initiators and gurus ;)
+- The [*EyesOfNetowrkCommunity*](https://github.com/EyesOfNetworkCommunity) members, who maintain and enhance the **EOR** application
+- [*Eric Belhomme*](https://github.com/eric-belhomme), who develop and maintain this *Ansible role*
 
 ToDo tasks
 ----------
 
 Many tasks still pending:
 - create dedicated users for Pentaho and Wildfly
-- rationalize variables
 - remove hardcoded dependencies to /srv/eyeofreport and /srv/eyesofnetwork paths (especially on eorweb)
 - etc. 
