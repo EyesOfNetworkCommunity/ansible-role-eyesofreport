@@ -13,25 +13,25 @@
     group: root
     mode: 0755
 
-- name: system prerequisites
-  include_tasks: install_system.yml
-  tags:
-  - prereqs
-
-- name: install Oracle JDK
-  include_tasks: install_jdk.yml
-  tags:
-  - java
-  
-- name: install & configure MariaDB and EOR databases
-  include_tasks: install_mariadb.yml
-  tags:
-  - databases
-
-- name: install & configure Docker
-  include_tasks: install_docker.yml
-  tags:
-  - docker
+#- name: system prerequisites
+#  include_tasks: install_system.yml
+#  tags:
+#  - prereqs
+#
+#- name: install Oracle JDK
+#  include_tasks: install_jdk.yml
+#  tags:
+#  - java
+#  
+#- name: install & configure MariaDB and EOR databases
+#  include_tasks: install_mariadb.yml
+#  tags:
+#  - databases
+#
+#- name: install & configure Docker
+#  include_tasks: install_docker.yml
+#  tags:
+#  - docker
 
 - name: install & configure Pentaho ETL software
   include_tasks: install_pentaho.yml

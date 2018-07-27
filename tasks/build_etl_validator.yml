@@ -16,6 +16,14 @@
     dest: "{{ eor_tmp_install_path }}/{{ etl_name }}/{{ eor_mysql_connector_java_path | basename }}"
     remote_src: yes
 
+- name: ensure META-INF exists
+  file:
+    path: "{{ eor_tmp_install_path }}/{{ etl_name }}/META-INF"
+    owner: "{{ wildfly.user }}"
+    group: "{{ wildfly.group }}"
+    state: directory
+    mode: 0755
+
 - name: put Manifest for {{ etl_name }}
   template:
     src: "pentaho/{{ etl_name }}/META-INF/MANIFEST.MF.j2"
