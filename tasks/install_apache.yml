@@ -16,7 +16,7 @@
 - name: set correct ownership and privileges
   file:
     path: '/srv/eyesofreport/eorweb'
-    owner: "{{ eor_owner }}"
+    owner: "{{ httpd_owner }}"
     group: "{{ eor_group }}"
     mode: u=rwX,go=rX
     recurse: yes

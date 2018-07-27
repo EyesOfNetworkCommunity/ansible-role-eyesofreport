@@ -15,6 +15,7 @@ eor_tmp_install_path: '/tmp/eor-install'
 
 eor_owner: eyesofreport
 eor_group: eyesofreport
+httpd_owner: apache
 
 tcp_ports:
   mysql:
