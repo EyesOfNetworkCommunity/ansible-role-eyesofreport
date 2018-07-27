@@ -1,4 +1,9 @@
 # third party packages should never been included into the Git repo !
 files/3rd_party/*
 !files/3rd_party/README.md
+
+# my try/fail tests
 tasks/test*
+
+# don't care about vim swap files
+*.swp
