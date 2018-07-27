@@ -13,8 +13,8 @@ ProxyPreserveHost On
 	AuthEonPageLogin /login.php
 	AuthEonSessionCookies On
 	Require valid-user 
-	ProxyPass http://localhost:8080/birt
-	ProxyPassReverse http://localhost:8080/birt
+	ProxyPass http://{{ wildfly.bind }}:{{ tcp_ports.wildfly[0] }}/birt
+	ProxyPassReverse http://{{ wildfly.bind }}:{{ tcp_ports.wildfly[0] }}/birt
 	ProxyPassReverseCookiePath / /birt
 	ProxyPassReverseCookiePath /birt /birt  
 </Location>

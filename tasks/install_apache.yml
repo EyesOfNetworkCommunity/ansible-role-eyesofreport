@@ -98,7 +98,7 @@
     path: "/srv/eyesofreport/eorweb/include/config.php"
     regexp: '^\$database_password.*=.*$'
     line: "$database_password=\"{{ sql_user.internal.password }}\";"
-    owner: root
+    owner: "{{ httpd_owner }}"
     group: "{{ eor_group }}"
     mode: 0640
 

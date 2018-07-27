@@ -14,8 +14,8 @@ ProxyPreserveHost On
         AuthEonSessionCookies On
         Require valid-user 
 	RequestHeader set Authorization "Basic Y2x1c3Rlcjpyb290NjY="
-        ProxyPass http://localhost:8181/kettle
-        ProxyPassReverse http://localhost:8181/kettle
+        ProxyPass http://{{ wildfly.bind }}:{{ tcp_ports.pentaho[0] }}/kettle
+        ProxyPassReverse http://{{ wildfly.bind }}:{{ tcp_ports.pentaho[0] }}/kettle
         ProxyPassReverseCookiePath / /kettle
         ProxyPassReverseCookiePath /kettle /kettle  
 </Location>
