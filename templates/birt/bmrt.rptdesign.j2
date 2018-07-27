@@ -121,8 +121,8 @@ var df2= new Packages.java.text.SimpleDateFormat("yyyy-MM-dd");]]></method>
             </list-property>
             <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
             <property name="odaURL">jdbc:mysql://{{ sql.bind }}:{{ tcp_ports.mysql[0] }}/eor_dwh</property>
-            <property name="odaUser">{{ sql.eor.user }}</property>
-            <encrypted-property name="odaPassword" encryptionID="base64">{{ sql.eor.password }}</encrypted-property>
+            <property name="odaUser">{{ sql_user.internal.user }}</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">{{ sql_user.internal.password }}</encrypted-property>
             <property name="odaJndiName">java:jboss/datasources/eor_dwh</property>
         </oda-data-source>
     </data-sources>
