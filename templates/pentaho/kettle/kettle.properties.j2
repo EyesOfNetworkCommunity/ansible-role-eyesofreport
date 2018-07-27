@@ -7,14 +7,13 @@
 # Server Développement= thor
 #
 # Note: les lignes précédées par # sont des commentaires
-#
-PDI_Error_File={{ eor_install_path }}/etl/dti_error_log
-validator_folder={{ eor_install_path }}/etl/validator
-slave=localhost
-Repertoire_Contrat=/var/archive/eyesofreport/Contract_Monthly
-#Separate mail with space
-Destinataire_Rapport_Contrat=benoit.village@axians.com
-SERVEUR_SMTP=${serveur_smtp}
-PORT_SERVEUR_SMTP=25
 
-# TODO: variabilize SMTP variables
+PDI_Error_File = {{ eor_install_path }}/etl/dti_error_log
+validator_folder = {{ eor_install_path }}/etl/validator
+slave=localhost
+Repertoire_Contrat = {{ eor_archive_path }}/Contract_Monthly
+
+#Separate mail with space
+Destinataire_Rapport_Contrat = {% for recipient in eor_repot_mail_recipients %}{{ recipient }} {% endfor %}
+SERVEUR_SMTP = {{ eor_smtp.relay }}
+PORT_SERVEUR_SMTP = {{ eor_smtp.port }}

@@ -11,6 +11,7 @@ eon_repo:
 cleanup_install_files: true
 
 eor_install_path: '/srv/eyesofreport'
+eor_archive_path: '/var/archive/eyesofreport'
 eor_tmp_install_path: '/tmp/eor-install'
 
 eor_owner: eyesofreport
@@ -28,6 +29,14 @@ tcp_ports:
   httpd:
   - 80
   - 443
+
+eor_smtp:
+  relay: '127.0.0.1'
+  port: '25'
+
+# Pentaho report email recipients
+eor_repot_mail_recipients:
+  - 'eor@eyesofnetwork.net.invalid'
 
 #TODO: get java env dynamically
 java_home: '/usr/java/jdk1.7.0_80'
