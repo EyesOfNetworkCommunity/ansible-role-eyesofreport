@@ -110,3 +110,14 @@
     repo: "{{ eorweb_git.repo }}"
     dest: "{{ eor_install_path }}/eorweb"
     version: "{{ eorweb_git.release }}"
+
+
+- name: ensure EOR archive directory exists
+  file:
+    path: "{{ eor_archive_path }}"
+    state: directory
+    owner: root
+    group: "{{ eor_group }}"
+    mode: 0750
+
+  
