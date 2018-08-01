@@ -91,13 +91,13 @@
   lineinfile:
     path: "/srv/eyesofreport/eorweb/include/config.php"
     regexp: '^\$database_username.*=.*$'
-    line: "$database_username=\"{{ sql_user.internal.user }}\";"
+    line: "$database_username=\"{{ sql_internal_user }}\";"
 
 - name: configure db user password on eorweb config.php file
   lineinfile:
     path: "/srv/eyesofreport/eorweb/include/config.php"
     regexp: '^\$database_password.*=.*$'
-    line: "$database_password=\"{{ sql_user.internal.password }}\";"
+    line: "$database_password=\"{{ sql_internal_pwd }}\";"
     owner: "{{ httpd_owner }}"
     group: "{{ eor_group }}"
     mode: 0640

@@ -69,7 +69,7 @@ MariaDB specific variables:
 | sql.db.repository | eor_repository | The database name for **EOR repository** |
 | sql.db.eorweb | eorweb | The database name for **eorweb** |
 | sql.db.dashbuilder | dashbuilder | The database name for **Dashbuilder** |
-| sql_user.internal.user     | eyesofreport | SQL username for internal access |
-| sql_user.internal.password | - | SQL password for internal access |
-| sql_user.external.user     | eyesofreport | SQL username for external access |
-| sql_user.external.password | - | SQL password for external access |
+| sql_internal_user     | eyesofreport | SQL username for internal access |
+| sql_internal_pwd | - | SQL password for internal access |
+| sql_external_user     | eyesofreport | SQL username for external access |
+| sql_external_pwd | - | SQL password for external access |

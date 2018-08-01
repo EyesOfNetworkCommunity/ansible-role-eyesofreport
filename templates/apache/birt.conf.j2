@@ -4,8 +4,8 @@ ProxyPreserveHost On
 	AuthName "Restricted"
 	AuthEonAuthoritative On
 	AuthEonMySQLSocket /var/lib/mysql/mysql.sock
-	AuthEonMySQLUsername {{ sql_user.internal.user }}
-	AuthEonMySQLPassword {{ sql_user.internal.password }}
+	AuthEonMySQLUsername {{ sql_internal_user }}
+	AuthEonMySQLPassword {{ sql_internal_pwd }}
 	AuthEonMySQLDB {{ sql.db.eorweb }}
 	AuthEonMySQLTableSID sessions,users,groupright
 	AuthEonMySQLFieldUID sessions.user_id

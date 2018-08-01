@@ -1,5 +1,11 @@
 ---
 # defaults file for ansible-role-eyesofreport
+#
+# You should *NOT* overide any variable here, unless you think the
+# choosen default values are incorrect...
+# 
+# Instead create a YaML file in vars/ in the role, or better, in your
+# playbook !
 
 ### common variables ###################################################
 eon_repo:
@@ -85,13 +91,9 @@ sql:
     eorweb: 'eorweb'
     dashbuilder: 'dashbuilder'
 
-sql_user:
-    external:
-      user: 'eyesofreport'
-      password: 'SaintThomas,2014'
-    internal:
-      user: 'eyesofreport'
-      password: 'SaintThomas,2014'
+sql_internal_user: 'eyesofreport'
+sql_external_user: 'eyesofreport'
+
 
 ### ETL specific variables #############################################
 pentaho:
@@ -101,7 +103,8 @@ pentaho:
 
 carte:
   bind: '127.0.0.1'
-  password: 'root66'
+
+
 
 ### Reporting specific variables #######################################
 wildfly:
@@ -111,3 +114,8 @@ wildfly:
   log: "{{ eor_install_path }}/report/installation_log"
   user: root
   group: root
+
+### Default passwords - *DO NOT* overide passwords here !!! ############
+sql_internal_pwd: ''
+sql_external_pwd: ''
+pentaho_pwd: ''

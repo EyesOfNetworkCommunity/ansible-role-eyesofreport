@@ -5,6 +5,15 @@
 #
 # Eric Belhomme <rico-github@ricozome.net> - 2018-07-22
 
+- name: fail execution if pwd variables are not overidden
+  fail:
+    msg: |
+      "Error: you *MUST* define in your playbook custom passwords for the following variables:"
+      sql_internal_pwd
+      sql_external_pwd
+      pentaho_pwd
+  when: not sql_internal_pwd or not sql_external_pwd or not pentaho_pwd
+
 - name: create temporary directory for installation purpose
   file:
     path: "{{ eor_tmp_install_path }}"

@@ -105,8 +105,8 @@
   mysql_user:
     check_implicit_admin: yes
     append_privs: yes
-    name: "{{ sql_user.internal.user }}"
-    password: "{{ sql_user.internal.password }}"
+    name: "{{ sql_internal_user }}"
+    password: "{{ sql_internal_pwd }}"
     priv: "{{ item }}.*:ALL"
     state: present
   with_items:
@@ -126,8 +126,8 @@
   mysql_user:
     check_implicit_admin: yes
     append_privs: yes
-    name: "{{ sql_user.external.user }}"
-    password: "{{ sql_user.external.password }}"
+    name: "{{ sql_external_user }}"
+    password: "{{ sql_external_pwd }}"
     priv: "{{ sql.db.repository }}.*:ALL"
     state: present
 

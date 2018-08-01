@@ -109,7 +109,7 @@
 
 - name: initialize carte_config
   shell: |
-    echo "cluster: $({{ pentaho.path }}/data-integration/encr.sh -carte {{ carte.password }})" > {{ pentaho.path }}/data-integration/pwd/kettle.pwd
+    echo "cluster: $({{ pentaho.path }}/data-integration/encr.sh -carte {{ pentaho_pwd }})" > {{ pentaho.path }}/data-integration/pwd/kettle.pwd
   args:
     executable: /bin/bash
 

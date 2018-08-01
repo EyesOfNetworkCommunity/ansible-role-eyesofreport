@@ -33,7 +33,7 @@ if (outcome != success) of /subsystem=datasources/data-source=DWH:read-resource
   data-source  add --name=DWH --driver-name=mysql --jta=true --use-java-context=true --use-ccm=true \
         --jndi-name=java:jboss/datasources/DWH \
         --connection-url=jdbc:mysql://{{ sql.bind }}:{{ tcp_ports.mysql[0] }}/eor_dwh \
-        --user-name={{ sql_user.internal.user }} --password="{{ sql_user.internal.password }}" 
+        --user-name={{ sql_internal_user }} --password="{{ sql_internal_pwd }}" 
 end-if
 
 if (outcome != success) of /subsystem=datasources/data-source=eyesofreport:read-resource
@@ -41,7 +41,7 @@ if (outcome != success) of /subsystem=datasources/data-source=eyesofreport:read-
   data-source  add --name=eyesofreport --driver-name=mysql --jta=true --use-java-context=true --use-ccm=true \
         --jndi-name=java:jboss/datasources/eyesofreport \
         --connection-url=jdbc:mysql://{{ sql.bind }}:{{ tcp_ports.mysql[0] }}/eyesofreport \
-        --user-name={{ sql_user.internal.user }} --password="{{ sql_user.internal.password }}" 
+        --user-name={{ sql_internal_user }} --password="{{ sql_internal_pwd }}" 
 end-if
 
 if (outcome != success) of /subsystem=datasources/data-source=ExampleDS:read-resource
@@ -49,5 +49,5 @@ if (outcome != success) of /subsystem=datasources/data-source=ExampleDS:read-res
   data-source  add --name=ExampleDS --driver-name=mysql --jta=true --use-java-context=true --use-ccm=true \
         --jndi-name=java:jboss/datasources/ExampleDS \
         --connection-url=jdbc:mysql://{{ sql.bind }}:{{ tcp_ports.mysql[0] }}/dashbuilder \
-        --user-name={{ sql_user.internal.user }} --password="{{ sql_user.internal.password }}" 
+        --user-name={{ sql_internal_user }} --password="{{ sql_internal_pwd }}" 
 end-if
