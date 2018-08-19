@@ -1,0 +1,23 @@
+---
+# vim: set bs=2 sw=2 expandtab:
+#
+# Install Docker source
+#
+# Eric Belhomme <rico-github@ricozome.net> - 2018-08-19
+
+### TODO: Ansibilize source creation...
+### until that, SOURCE/ directory is copied "as is" in EOR_Repo directory
+### from its legacy eyesofreports Github repo
+
+# As fetching only a sub-directory from a Git repo implies Git 2.0+ because
+# of sparse checkout and shallow clone features, we'll use SVN, which is
+# still available on Github
+- name: install svn package
+  yum:
+    name: svn
+    state: present
+
+- name: source `SOURCE` directory from legacy eyesofreport Github repo
+  command: svn export https://github.com/EyesOfNetworkCommunity/eyesofreport/trunk/SOURCES
+  args:
+    chdir: "{{ eor_install_path }}"

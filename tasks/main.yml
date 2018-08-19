@@ -61,6 +61,11 @@
   include_tasks: install_apache.yml
   tags:
   - web
+  
+- name: install & Docker sources
+  include_tasks: install_source.yml
+  tags:
+  - source
 
 - name: cleanup temporary installation dir
   file:
