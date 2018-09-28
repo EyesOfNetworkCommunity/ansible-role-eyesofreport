@@ -111,6 +111,12 @@
     dest: "{{ eor_install_path }}/eorweb"
     version: "{{ eorweb_git.release }}"
 
+- name: copy eorweb config.php sample file
+  copy:
+    remote_src: yes
+    force: no
+    src: "{{ eor_install_path }}/eorweb/include/config_sample.php"
+    dest: "{{ eor_install_path }}/eorweb/include/config.php"
 
 - name: ensure EOR archive directory exists
   file:
