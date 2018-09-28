@@ -21,3 +21,4 @@
   command: svn export https://github.com/EyesOfNetworkCommunity/eyesofreport/trunk/SOURCES
   args:
     chdir: "{{ eor_install_path }}"
+    creates: "{{ eor_install_path }}/SOURCES/build_docker_source"

@@ -32,7 +32,10 @@
 - name: put properties file for {{ etl_name }}
   template:
     src: "pentaho/{{ etl_name }}/{{ properties_name }}.properties.j2"
-    dest: "{{ eor_tmp_install_path }}/{{ etl_name }}/{{ properties_name }}.properties"
+    dest: "{{ item }}/{{ properties_name }}.properties"
+  with_items:
+  - "{{ eor_tmp_install_path }}/{{ etl_name }}"
+  - "{{ pentaho.path }}/validator"
 
 - name: build JAR file {{ etl_name }}.jar
   archive:
