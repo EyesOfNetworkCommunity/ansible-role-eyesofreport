@@ -37,7 +37,7 @@
 - name: build JAR file {{ etl_name }}.jar
   archive:
     format: zip
-    path: "{{ eor_tmp_install_path }}/{{ etl_name }}"
+    path: "{{ eor_tmp_install_path }}/{{ etl_name }}/*"
     dest: "{{ pentaho.path }}/validator/{{ etl_name }}.jar"
     owner: "{{ pentaho.user }}"
     group: "{{ pentaho.group }}"
