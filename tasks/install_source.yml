@@ -22,3 +22,13 @@
   args:
     chdir: "{{ eor_install_path }}"
     creates: "{{ eor_install_path }}/SOURCES/build_docker_source"
+
+- name: copy gen nagios container
+  template:
+    src: 'source/generate_nagios_container.sh'
+    dest: "{{ eor_install_path }}/SOURCES/build_docker_source/centos_nagios/generate_nagios_container.sh"
+
+- name: copy create_nagios_source_env
+  template:
+    src: 'source/create_nagios_source_env.sh'
+    dest: "{{ eor_install_path }}/SOURCES/build_docker_source/create_nagios_source_env.sh"

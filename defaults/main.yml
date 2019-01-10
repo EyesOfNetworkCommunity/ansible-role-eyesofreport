@@ -118,4 +118,5 @@ wildfly:
 ### Default passwords - *DO NOT* overide passwords here !!! ############
 sql_internal_pwd: ''
 sql_external_pwd: ''
+sql_root_pwd: ''
 pentaho_pwd: ''
