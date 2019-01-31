@@ -39,6 +39,10 @@
     <property name="cube_appli_month_link.ds_application_link_day.y">80</property>
     <property name="cube_appli_category.ds_appli_link_month_category_sql.x">135</property>
     <property name="cube_appli_category.ds_appli_link_month_category_sql.y">80</property>
+    <simple-property-list name="includeResource">
+        <value>eor</value>
+        <value>eor_fr</value>
+    </simple-property-list>
     <list-property name="propertyBindings">
         <structure>
             <property name="name">queryText</property>
@@ -77,67 +81,88 @@ reportContext.setPersistentGlobalVariable("RemoteHost", request.getRemoteHost())
     <property name="bidiLayoutOrientation">ltr</property>
     <property name="imageDPI">96</property>
     <parameters>
-        <parameter-group name="DateParameters" id="1532">
-            <text-property name="displayName">Choisissez une date</text-property>
+        <cascading-parameter-group name="date" id="2941">
+            <text-property name="promptText" key="label.param_date"></text-property>
+            <property name="dataSet">ds_param_year</property>
+            <property name="dataSetMode">multiple</property>
             <parameters>
-                <scalar-parameter name="Year" id="1533">
-                    <text-property name="promptText">Année</text-property>
+                <scalar-parameter name="Year" id="2942">
+                    <text-property name="promptText" key="label.param_year"></text-property>
                     <property name="valueType">dynamic</property>
                     <property name="isRequired">true</property>
-                    <property name="dataSetName">ds_datetime</property>
-                    <expression name="valueExpr" type="javascript">dataSetRow["year"]</expression>
-                    <expression name="labelExpr" type="javascript">dataSetRow["year"]</expression>
+                    <property name="dataSetName">ds_param_year</property>
+                    <expression name="valueExpr">row["year"]</expression>
+                    <expression name="labelExpr">row["year"]</expression>
                     <expression name="sortByColumn">dataSetRow["year"]</expression>
-                    <property name="sortDirection">asc</property>
+                    <property name="sortDirection">desc</property>
                     <property name="dataType">string</property>
-                    <property name="distinct">true</property>
-                    <simple-property-list name="defaultValue">
-                        <value type="javascript">BirtDateTime.year(BirtDateTime.now());</value>
-                    </simple-property-list>
-                    <list-property name="selectionList"/>
                     <property name="paramType">simple</property>
+                    <property name="concealValue">false</property>
                     <property name="controlType">list-box</property>
                     <property name="mustMatch">true</property>
                     <property name="fixedOrder">false</property>
-                    <structure name="format">
-                        <property name="category">Unformatted</property>
-                    </structure>
+                    <structure name="format"/>
                 </scalar-parameter>
-                <scalar-parameter name="Month" id="1534">
-                    <text-property name="promptText">Mois</text-property>
+                <scalar-parameter name="Month" id="2943">
+                    <text-property name="promptText" key="label.param_month"></text-property>
                     <property name="valueType">dynamic</property>
                     <property name="isRequired">true</property>
-                    <property name="dataSetName">ds_datetime</property>
-                    <expression name="valueExpr" type="javascript">dataSetRow["month"]</expression>
-                    <expression name="labelExpr" type="javascript">dataSetRow["month"]</expression>
+                    <property name="dataSetName">ds_param_month</property>
+                    <expression name="valueExpr">row["month"]</expression>
+                    <expression name="labelExpr">row["month"]</expression>
                     <expression name="sortByColumn">dataSetRow["month"]</expression>
-                    <property name="sortDirection">asc</property>
+                    <property name="sortDirection">desc</property>
                     <property name="dataType">string</property>
-                    <property name="distinct">true</property>
-                    <simple-property-list name="defaultValue">
-                        <value type="javascript">if (BirtDateTime.month(BirtDateTime.now(),1) &lt; 10 )&#13;
-	"0" + BirtDateTime.month(BirtDateTime.now(),1);&#13;
-else &#13;
-	BirtDateTime.month(BirtDateTime.now(),1);</value>
-                    </simple-property-list>
-                    <list-property name="selectionList"/>
                     <property name="paramType">simple</property>
+                    <property name="concealValue">false</property>
                     <property name="controlType">list-box</property>
                     <property name="mustMatch">true</property>
                     <property name="fixedOrder">false</property>
-                    <structure name="format">
-                        <property name="category">Unformatted</property>
-                    </structure>
+                    <structure name="format"/>
+                </scalar-parameter>
+                <scalar-parameter name="first_day" id="2945">
+                    <text-property name="promptText" key="label.param_first_day"></text-property>
+                    <property name="valueType">dynamic</property>
+                    <property name="isRequired">true</property>
+                    <property name="dataSetName">ds_param_day</property>
+                    <expression name="valueExpr">row["day"]</expression>
+                    <expression name="labelExpr">row["day"]</expression>
+                    <expression name="sortByColumn">dataSetRow["day"]</expression>
+                    <property name="sortDirection">asc</property>
+                    <property name="dataType">string</property>
+                    <property name="paramType">simple</property>
+                    <property name="concealValue">false</property>
+                    <property name="controlType">list-box</property>
+                    <property name="mustMatch">true</property>
+                    <property name="fixedOrder">false</property>
+                    <structure name="format"/>
+                </scalar-parameter>
+                <scalar-parameter name="last_day" id="2946">
+                    <text-property name="promptText" key="label.param_last_day"></text-property>
+                    <property name="valueType">dynamic</property>
+                    <property name="isRequired">true</property>
+                    <property name="dataSetName">ds_param_day</property>
+                    <expression name="valueExpr">row["day"]</expression>
+                    <expression name="labelExpr">row["day"]</expression>
+                    <expression name="sortByColumn">dataSetRow["day"]</expression>
+                    <property name="sortDirection">desc</property>
+                    <property name="dataType">string</property>
+                    <property name="paramType">simple</property>
+                    <property name="concealValue">false</property>
+                    <property name="controlType">list-box</property>
+                    <property name="mustMatch">true</property>
+                    <property name="fixedOrder">false</property>
+                    <structure name="format"/>
                 </scalar-parameter>
             </parameters>
-        </parameter-group>
+        </cascading-parameter-group>
         <cascading-parameter-group name="Contract_context_application2" id="2815">
-            <text-property name="promptText">Contexte de contrat applicatif</text-property>
+            <text-property name="promptText" key="label.param_contract_ctx_app">Contexte de contrat applicatif</text-property>
             <property name="dataSet">ds_application_sql</property>
             <property name="dataSetMode">single</property>
             <parameters>
                 <scalar-parameter name="Niveau" id="2816">
-                    <text-property name="promptText">Niveau</text-property>
+                    <text-property name="promptText" key="label.param_level">Niveau</text-property>
                     <property name="valueType">dynamic</property>
                     <property name="isRequired">true</property>
                     <property name="dataSetName">ds_application_sql</property>
@@ -152,7 +177,7 @@ else &#13;
                     <structure name="format"/>
                 </scalar-parameter>
                 <scalar-parameter name="Application" id="2817">
-                    <text-property name="promptText">Application</text-property>
+                    <text-property name="promptText" key="label.param_application">Application</text-property>
                     <property name="valueType">dynamic</property>
                     <property name="isRequired">true</property>
                     <property name="dataSetName">ds_application_sql</property>
@@ -167,7 +192,7 @@ else &#13;
                     <structure name="format"/>
                 </scalar-parameter>
                 <scalar-parameter name="Contract_ctxt" id="2818">
-                    <text-property name="promptText">Contexte de contrat</text-property>
+                    <text-property name="promptText" key="label.param_contract_ctx">Contexte de contrat</text-property>
                     <property name="valueType">dynamic</property>
                     <property name="isRequired">true</property>
                     <property name="dataSetName">ds_application_sql</property>
@@ -1955,6 +1980,978 @@ and aum_epoch_month = epoch_month and aum_contract_context_id = time_application
   </design:ResultSets>
 </model:DesignValues>]]></xml-property>
         </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="ds_appli_current_month_sql" id="2948">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">dap_name</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">dap_name</text-property>
+                    <text-property name="heading">dap_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">year</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">year</text-property>
+                    <text-property name="heading">year</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">month</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">month</text-property>
+                    <text-property name="heading">month</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">seuil</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">seuil</text-property>
+                    <text-property name="heading">seuil</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">availability_rate</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">availability_rate</text-property>
+                    <text-property name="heading">availability_rate</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">availability_rate_down</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">availability_rate_down</text-property>
+                    <text-property name="heading">availability_rate_down</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">unavailability_day</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">unavailability_day</text-property>
+                    <text-property name="heading">unavailability_day</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">unavailability_down_day</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">unavailability_down_day</text-property>
+                    <text-property name="heading">unavailability_down_day</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">unavailability_day_hour</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">unavailability_day_hour</text-property>
+                    <text-property name="heading">unavailability_day_hour</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">unavailability_down_day_hour</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">unavailability_down_day_hour</text-property>
+                    <text-property name="heading">unavailability_down_day_hour</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">unavailability_day_minute</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">unavailability_day_minute</text-property>
+                    <text-property name="heading">unavailability_day_minute</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">unavailability_down_day_minute</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">unavailability_down_day_minute</text-property>
+                    <text-property name="heading">unavailability_down_day_minute</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dap_category</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">dap_category</text-property>
+                    <text-property name="heading">dap_category</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dap_source</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">dap_source</text-property>
+                    <text-property name="heading">dap_source</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">application_label</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">application_label</text-property>
+                    <text-property name="heading">application_label</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">order</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">order</text-property>
+                    <text-property name="heading">order</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">last_day_month</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">last_day_month</text-property>
+                    <text-property name="heading">last_day_month</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">kpi_name</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">kpi_name</text-property>
+                    <text-property name="heading">kpi_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dco_name</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">dco_name</text-property>
+                    <text-property name="heading">dco_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">tpr_name</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">tpr_name</text-property>
+                    <text-property name="heading">tpr_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dap_id</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">dap_id</text-property>
+                    <text-property name="heading">dap_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dsg_step_1_max</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">dsg_step_1_max</text-property>
+                    <text-property name="heading">dsg_step_1_max</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dsg_step_2_max</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">dsg_step_2_max</text-property>
+                    <text-property name="heading">dsg_step_2_max</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dsg_step_3_max</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">dsg_step_3_max</text-property>
+                    <text-property name="heading">dsg_step_3_max</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dsg_step_4_max</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">dsg_step_4_max</text-property>
+                    <text-property name="heading">dsg_step_4_max</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">Application</property>
+                    <property name="paramName">Application</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Contract_context</property>
+                    <property name="paramName">Contract_ctxt</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">year</property>
+                    <property name="paramName">Year</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">month</property>
+                    <property name="paramName">Month</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">4</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">first_day</property>
+                    <property name="paramName">first_day</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">5</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">year2</property>
+                    <property name="paramName">Year</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">6</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">month2</property>
+                    <property name="paramName">Month</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">7</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">last_day</property>
+                    <property name="paramName">last_day</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">8</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">year3</property>
+                    <property name="paramName">Year</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">9</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">month3</property>
+                    <property name="paramName">Month</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">10</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">dap_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">year</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">month</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">seuil</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">availability_rate</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">availability_rate_down</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">unavailability_day</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">unavailability_down_day</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">unavailability_day_hour</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">unavailability_down_day_hour</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">unavailability_day_minute</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">unavailability_down_day_minute</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">dap_category</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">dap_source</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">application_label</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">order</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">last_day_month</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">kpi_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">dco_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">20</property>
+                        <property name="name">tpr_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">21</property>
+                        <property name="name">dap_id</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">22</property>
+                        <property name="name">dsg_step_1_max</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">23</property>
+                        <property name="name">dsg_step_2_max</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">24</property>
+                        <property name="name">dsg_step_3_max</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">25</property>
+                        <property name="name">dsg_step_4_max</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">ds_keycopter</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">dap_name</property>
+                    <property name="nativeName">dap_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">year</property>
+                    <property name="nativeName">year</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">month</property>
+                    <property name="nativeName">month</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">seuil</property>
+                    <property name="nativeName">seuil</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">availability_rate</property>
+                    <property name="nativeName">availability_rate</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">availability_rate_down</property>
+                    <property name="nativeName">availability_rate_down</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">unavailability_day</property>
+                    <property name="nativeName">unavailability_day</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">3</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">unavailability_down_day</property>
+                    <property name="nativeName">unavailability_down_day</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">3</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">unavailability_day_hour</property>
+                    <property name="nativeName">unavailability_day_hour</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">unavailability_down_day_hour</property>
+                    <property name="nativeName">unavailability_down_day_hour</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">unavailability_day_minute</property>
+                    <property name="nativeName">unavailability_day_minute</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">3</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">unavailability_down_day_minute</property>
+                    <property name="nativeName">unavailability_down_day_minute</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">3</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">dap_category</property>
+                    <property name="nativeName">dap_category</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">dap_source</property>
+                    <property name="nativeName">dap_source</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">application_label</property>
+                    <property name="nativeName">application_label</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">order</property>
+                    <property name="nativeName">order</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">17</property>
+                    <property name="name">last_day_month</property>
+                    <property name="nativeName">last_day_month</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">-6</property>
+                </structure>
+                <structure>
+                    <property name="position">18</property>
+                    <property name="name">kpi_name</property>
+                    <property name="nativeName">kpi_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">19</property>
+                    <property name="name">dco_name</property>
+                    <property name="nativeName">dco_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">20</property>
+                    <property name="name">tpr_name</property>
+                    <property name="nativeName">tpr_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">21</property>
+                    <property name="name">dap_id</property>
+                    <property name="nativeName">dap_id</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">22</property>
+                    <property name="name">dsg_step_1_max</property>
+                    <property name="nativeName">dsg_step_1_max</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">23</property>
+                    <property name="name">dsg_step_2_max</property>
+                    <property name="nativeName">dsg_step_2_max</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">24</property>
+                    <property name="name">dsg_step_3_max</property>
+                    <property name="nativeName">dsg_step_3_max</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">25</property>
+                    <property name="name">dsg_step_4_max</property>
+                    <property name="nativeName">dsg_step_4_max</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT time_application.dap_name,
+time_application.year, 
+time_application.month, 
+CASE WHEN replace(format((nb_seconds_month - case when aum_unavailability_down is null then 0 else aum_unavailability_down end) / nb_seconds_month * 100,3),',','.') < dsg_step_1_max THEN 1 
+WHEN replace(format((nb_seconds_month - case when aum_unavailability_down is null then 0 else aum_unavailability_down end) / nb_seconds_month * 100,3),',','.') < dsg_step_2_max  THEN 2 
+WHEN  replace(format((nb_seconds_month - case when aum_unavailability_down is null then 0 else aum_unavailability_down end) / nb_seconds_month * 100,3),',','.') < dsg_step_3_max THEN 3 
+ELSE 4 END AS seuil,
+replace(format((nb_seconds_month - case when aum_unavailability is null then 0 else aum_unavailability end) / nb_seconds_month * 100,3),',','.') as availability_rate,
+replace(format((nb_seconds_month - case when aum_unavailability_down is null then 0 else aum_unavailability_down end) / nb_seconds_month * 100,3),',','.') as availability_rate_down,
+case when aum_unavailability is null then 0 else aum_unavailability end as unavailability_day,
+case when aum_unavailability_down is null then 0 else aum_unavailability_down end as unavailability_down_day,
+case when aum_unavailability is null then 0 else aum_unavailability div 3600 end as unavailability_day_hour,
+case when aum_unavailability_down is null then 0 else aum_unavailability_down div 3600 end as unavailability_down_day_hour,
+case when aum_unavailability is null then 0 else round((aum_unavailability / 3600 -  aum_unavailability div 3600) * 60) end as unavailability_day_minute,
+case when aum_unavailability_down is null then 0 else round((aum_unavailability_down / 3600 - aum_unavailability_down div 3600) * 60) end as unavailability_down_day_minute,
+time_application.dap_category, time_application.dap_source,
+case when time_application.DAP_NAME = 'test' then 'test' 
+else time_application.DAP_NAME end AS application_label, 
+1 AS 'order',
+last_day_month,
+time_application.kpi_name,
+time_application.dco_name,
+time_application.tpr_name,
+time_application.dap_id,
+time_application.dsg_step_1_max,
+time_application.dsg_step_2_max,
+time_application.dsg_step_3_max,
+time_application.dsg_step_4_max
+FROM (Select a.*, b.dap_id, b.dap_name, b.dap_priority, b.dap_category, b.dap_source, c.dcc_id, d.dco_name,
+		     e.tpr_name, f.kpi_name, e.tpr_id,i.*
+	  from (select distinct epoch_month, year, month, last_day_month
+	  		from d_time_dimension) a,
+	   d_application b INNER JOIN d_application_contract_link on ack_appli_id = ? and ack_appli_id = b.dap_id
+	   INNER JOIN d_contract_context c on dcc_id = ? and dcc_id = ack_dcc_id
+	   inner join d_contract d on  dco_id = dcc_dco_id 
+	   inner join d_time_period e on tpr_id = dcc_tpr_id
+	   inner join d_kpi f on kpi_id = dcc_kpi_id
+	   inner join d_step_group i on dsg_id = dcc_dsg_id
+	   where dap_id in (SELECT ack_appli_id from d_application_contract_link)) time_application
+	   inner join (select *, nb_secondes as nb_seconds_month from d_time_period_month)a
+             on tpm_year = year and tpm_month = month and tpm_tpr_id = tpr_id
+       left join (SELECT
+	aum_epoch_month,
+	aum_year, aum_month,
+	aum_source,
+	aum_appli,
+	aum_contract_context_id,
+	aum_kpi_id,
+	aum_time_period_id,
+	aum_contract_id,
+	aum_category,
+	SUM(aud_unavailability) AS aum_unavailability,
+	SUM(aud_unavailability_down) AS aum_unavailability_down,
+	SUM(aud_downtime_duration) AS aum_downtime_duration
+FROM 
+	(SELECT *
+	FROM f_dtm_appli_unavailability_month)a ,
+	(SELECT *
+	FROM f_dtm_appli_unavailability_day
+		WHERE str_to_date(CONCAT(?,'-',?,'-',?), '%Y-%m-%d') <= aud_date
+			AND str_to_date(CONCAT(?,'-',?,'-',?), '%Y-%m-%d') >= aud_date)b
+	WHERE aum_source = aud_source
+		AND aud_category = aum_category
+		AND aud_contract_id = aum_contract_id
+		AND aud_contract_context_id = aum_contract_context_id
+		AND aum_appli = aud_appli
+		AND aud_kpi_id = aum_kpi_id
+		AND aud_time_period_id = aum_time_period_id
+GROUP BY aum_epoch_month, aum_source, aum_appli, aum_contract_context_id, aum_kpi_id, aum_time_period_id, aum_contract_id, aum_category)c on aum_appli = time_application.dap_id 
+and aum_epoch_month = epoch_month and aum_contract_context_id = time_application.dcc_id
+WHERE year = ?
+	AND month = ?]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <DataSetParameters>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>9</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>10</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+  </DataSetParameters>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>DAP_NAME</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>150</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>application_name</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>application_name</design:label>
+            <design:formattingHints>
+              <design:displaySize>150</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>seuil</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>seuil</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>seuil</design:label>
+            <design:formattingHints>
+              <design:displaySize>0</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>FXW_MONTH</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>appli_month_state_statedown_month</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>appli_month_state_statedown_month</design:label>
+            <design:formattingHints>
+              <design:displaySize>2</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>FXW_STATE_CAT</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>appli_month_state_statedown_state_cat</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>appli_month_state_statedown_state_cat</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>FXW_YEAR</design:name>
+              <design:position>5</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>4</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>appli_month_state_statedown_year</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>appli_month_state_statedown_year</design:label>
+            <design:formattingHints>
+              <design:displaySize>4</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>CAA_LABEL</design:name>
+              <design:position>6</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>category_analysis_label</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>category_analysis_label</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>CAT_LABEL</design:name>
+              <design:position>7</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>category_label</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>category_label</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>order</design:name>
+              <design:position>8</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>2</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>order</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>order</design:label>
+            <design:formattingHints>
+              <design:displaySize>2</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>application_label</design:name>
+              <design:position>9</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>150</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>application_label</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>application_label</design:label>
+            <design:formattingHints>
+              <design:displaySize>150</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>month_availability_rate</design:name>
+              <design:position>10</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>58</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>month_availability_rate</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>month_availability_rate</design:label>
+            <design:formattingHints>
+              <design:displaySize>58</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>state_cat_order</design:name>
+              <design:position>11</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>0</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>state_cat_order</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>state_cat_order</design:label>
+            <design:formattingHints>
+              <design:displaySize>0</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>Last_Day</design:name>
+              <design:position>12</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>2</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>Last_Day</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>Last_Day</design:label>
+            <design:formattingHints>
+              <design:displaySize>2</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>month_integer</design:name>
+              <design:position>13</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>month_integer</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>month_integer</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>appli_month_state_statedown_value</design:name>
+              <design:position>14</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>3</design:nativeDataTypeCode>
+            <design:precision>32</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>appli_month_state_statedown_value</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>appli_month_state_statedown_value</design:label>
+            <design:formattingHints>
+              <design:displaySize>33</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="ds_appli_day_sql" id="1538">
             <property name="nullsOrdering">nulls lowest</property>
             <list-property name="columnHints">
@@ -2089,12 +3086,72 @@ and aum_epoch_month = epoch_month and aum_contract_context_id = time_application
                     <property name="isOutput">false</property>
                 </structure>
                 <structure>
+                    <property name="name">Year2</property>
+                    <property name="paramName">Year</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Month2</property>
+                    <property name="paramName">Month</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">4</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">first_day</property>
+                    <property name="paramName">first_day</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">5</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Year3</property>
+                    <property name="paramName">Year</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">6</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Month3</property>
+                    <property name="paramName">Month</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">7</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">last_day</property>
+                    <property name="paramName">last_day</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">8</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
                     <property name="name">Application</property>
                     <property name="paramName">Application</property>
                     <property name="nativeName"></property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">-1</property>
-                    <property name="position">3</property>
+                    <property name="position">9</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -2104,7 +3161,7 @@ and aum_epoch_month = epoch_month and aum_contract_context_id = time_application
                     <property name="nativeName"></property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">-1</property>
-                    <property name="position">4</property>
+                    <property name="position">10</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -2124,12 +3181,12 @@ and aum_epoch_month = epoch_month and aum_contract_context_id = time_application
                     <structure>
                         <property name="position">3</property>
                         <property name="name">unavailability_day</property>
-                        <property name="dataType">integer</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
                         <property name="name">unavailability_down_day</property>
-                        <property name="dataType">integer</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">5</property>
@@ -2223,15 +3280,15 @@ and aum_epoch_month = epoch_month and aum_contract_context_id = time_application
                     <property name="position">3</property>
                     <property name="name">unavailability_day</property>
                     <property name="nativeName">unavailability_day</property>
-                    <property name="dataType">integer</property>
-                    <property name="nativeDataType">4</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
                     <property name="name">unavailability_down_day</property>
                     <property name="nativeName">unavailability_down_day</property>
-                    <property name="dataType">integer</property>
-                    <property name="nativeDataType">4</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
                 </structure>
                 <structure>
                     <property name="position">5</property>
@@ -2352,7 +3409,9 @@ FROM (Select a.*, b.dap_id, b.dap_name, b.dap_priority, b.dap_category, b.dap_so
 				d.dco_name, e.tpr_name, e.tpr_id, f.kpi_name, c.dcc_id
 	  from (select distinct epoch_month, epoch_day, db_date, year, month, day
 	  		from d_time_dimension
-	  		where epoch_month = unix_timestamp(concat(?,'-',?,'-01'))) a, 
+	  		where epoch_month = unix_timestamp(concat(?,'-',?,'-01'))
+	  		AND epoch_day >= unix_timestamp(concat(?,'-',?,'-',?))
+			AND epoch_day <= unix_timestamp(concat(?,'-',?,'-',?))) a, 
 	   d_application b inner join d_application_contract_link on ack_appli_id = ? and ack_appli_id = b.dap_id
 	   INNER JOIN d_contract_context c on dcc_id = ? and dcc_id = ack_dcc_id
 	   inner join d_contract d on dco_id = dcc_dco_id 
@@ -2373,7 +3432,7 @@ and aud_epoch_day = epoch_day and aud_contract_context_id = time_application.dcc
         <design:attributes>
           <design:identifier>
             <design:name></design:name>
-            <design:position>1</design:position>
+            <design:position>5</design:position>
           </design:identifier>
           <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
           <design:precision>0</design:precision>
@@ -2388,7 +3447,7 @@ and aud_epoch_day = epoch_day and aud_contract_context_id = time_application.dcc
         <design:attributes>
           <design:identifier>
             <design:name></design:name>
-            <design:position>2</design:position>
+            <design:position>6</design:position>
           </design:identifier>
           <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
           <design:precision>0</design:precision>
@@ -2403,7 +3462,7 @@ and aud_epoch_day = epoch_day and aud_contract_context_id = time_application.dcc
         <design:attributes>
           <design:identifier>
             <design:name></design:name>
-            <design:position>3</design:position>
+            <design:position>7</design:position>
           </design:identifier>
           <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
           <design:precision>0</design:precision>
@@ -2418,7 +3477,37 @@ and aud_epoch_day = epoch_day and aud_contract_context_id = time_application.dcc
         <design:attributes>
           <design:identifier>
             <design:name></design:name>
-            <design:position>4</design:position>
+            <design:position>8</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>9</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>10</design:position>
           </design:identifier>
           <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
           <design:precision>0</design:precision>
@@ -3002,7 +4091,7 @@ where dap_id in (select distinct dla_app_master_id
                     <text-property name="heading">dap_source</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">dap_name_13</property>
+                    <property name="columnName">application_label</property>
                     <property name="alias">application_label</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">application_label</text-property>
@@ -3061,12 +4150,72 @@ where dap_id in (select distinct dla_app_master_id
                     <property name="isOutput">false</property>
                 </structure>
                 <structure>
+                    <property name="name">Year2</property>
+                    <property name="paramName">Year</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Month2</property>
+                    <property name="paramName">Month</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">4</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">first_day</property>
+                    <property name="paramName">first_day</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">5</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Year3</property>
+                    <property name="paramName">Year</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">6</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">Month3</property>
+                    <property name="paramName">Month</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">7</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">last_day</property>
+                    <property name="paramName">last_day</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">8</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
                     <property name="name">application</property>
                     <property name="paramName">Application</property>
                     <property name="nativeName"></property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">-1</property>
-                    <property name="position">3</property>
+                    <property name="position">9</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -3076,7 +4225,7 @@ where dap_id in (select distinct dla_app_master_id
                     <property name="nativeName"></property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">-1</property>
-                    <property name="position">4</property>
+                    <property name="position">10</property>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -3126,12 +4275,12 @@ where dap_id in (select distinct dla_app_master_id
                     <structure>
                         <property name="position">9</property>
                         <property name="name">unavailability_day</property>
-                        <property name="dataType">integer</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">10</property>
                         <property name="name">unavailability_down_day</property>
-                        <property name="dataType">integer</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">11</property>
@@ -3237,15 +4386,15 @@ where dap_id in (select distinct dla_app_master_id
                     <property name="position">9</property>
                     <property name="name">unavailability_day</property>
                     <property name="nativeName">unavailability_day</property>
-                    <property name="dataType">integer</property>
-                    <property name="nativeDataType">4</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
                 </structure>
                 <structure>
                     <property name="position">10</property>
                     <property name="name">unavailability_down_day</property>
                     <property name="nativeName">unavailability_down_day</property>
-                    <property name="dataType">integer</property>
-                    <property name="nativeDataType">4</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
                 </structure>
                 <structure>
                     <property name="position">11</property>
@@ -3263,7 +4412,7 @@ where dap_id in (select distinct dla_app_master_id
                 </structure>
                 <structure>
                     <property name="position">13</property>
-                    <property name="name">dap_name_13</property>
+                    <property name="name">application_label</property>
                     <property name="nativeName">dap_name</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
@@ -3323,7 +4472,9 @@ FROM (Select a.*, b.dap_id, b.dap_name, b.dap_priority, b.dap_category, b.dap_so
 	  from (select distinct epoch_month, year, month, epoch_hour, hour, last_day_month, nb_seconds_month, 
 	  		nb_seconds_hour
 	  		from d_time_dimension
-	  		where epoch_month = unix_timestamp(concat(?,'-',?,'-01'))) a,
+	  		where epoch_month = unix_timestamp(concat(?,'-',?,'-01'))
+	  		AND epoch_day >= unix_timestamp(concat(?,'-',?,'-',?))
+			AND epoch_day <= unix_timestamp(concat(?,'-',?,'-',?))) a,
 	   d_application b inner join d_application_contract_link on ack_appli_id = ? and ack_appli_id = b.dap_id
 	   INNER JOIN d_contract_context c on dcc_id = ? and dcc_id = ack_dcc_id
 	   inner join d_contract d on  dco_id = dcc_dco_id 
@@ -3342,7 +4493,7 @@ and auh_epoch_hour = epoch_hour and auh_contract_context_id = time_application.d
         <design:attributes>
           <design:identifier>
             <design:name></design:name>
-            <design:position>1</design:position>
+            <design:position>5</design:position>
           </design:identifier>
           <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
           <design:precision>0</design:precision>
@@ -3357,7 +4508,7 @@ and auh_epoch_hour = epoch_hour and auh_contract_context_id = time_application.d
         <design:attributes>
           <design:identifier>
             <design:name></design:name>
-            <design:position>2</design:position>
+            <design:position>6</design:position>
           </design:identifier>
           <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
           <design:precision>0</design:precision>
@@ -3372,7 +4523,7 @@ and auh_epoch_hour = epoch_hour and auh_contract_context_id = time_application.d
         <design:attributes>
           <design:identifier>
             <design:name></design:name>
-            <design:position>3</design:position>
+            <design:position>7</design:position>
           </design:identifier>
           <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
           <design:precision>0</design:precision>
@@ -3387,7 +4538,37 @@ and auh_epoch_hour = epoch_hour and auh_contract_context_id = time_application.d
         <design:attributes>
           <design:identifier>
             <design:name></design:name>
-            <design:position>4</design:position>
+            <design:position>8</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>9</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>10</design:position>
           </design:identifier>
           <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
           <design:precision>0</design:precision>
@@ -4637,22 +5818,14 @@ and aam_contract_context_id=time_application.dcc_id;]]></xml-property>
   </design:ResultSets>
 </model:DesignValues>]]></xml-property>
         </oda-data-set>
-        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="ds_datetime" id="2648">
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="ds_param_year" id="2939">
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">year</property>
-                    <property name="analysis">measure</property>
                     <text-property name="displayName">year</text-property>
                     <text-property name="heading">year</text-property>
                 </structure>
-                <structure>
-                    <property name="columnName">month</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">month</text-property>
-                    <text-property name="heading">month</text-property>
-                </structure>
             </list-property>
-            <list-property name="parameters"/>
             <structure name="cachedMetaData">
                 <list-property name="resultSet">
                     <structure>
@@ -4660,33 +5833,21 @@ and aam_contract_context_id=time_application.dcc_id;]]></xml-property>
                         <property name="name">year</property>
                         <property name="dataType">integer</property>
                     </structure>
-                    <structure>
-                        <property name="position">2</property>
-                        <property name="name">month</property>
-                        <property name="dataType">string</property>
-                    </structure>
                 </list-property>
             </structure>
             <property name="dataSource">ds_keycopter</property>
             <list-property name="resultSet">
                 <structure>
-                    <property name="position">2</property>
+                    <property name="position">1</property>
                     <property name="name">year</property>
                     <property name="nativeName">year</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
-                <structure>
-                    <property name="position">3</property>
-                    <property name="name">month</property>
-                    <property name="nativeName">month</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select distinct year, month
-from d_time_date where year >= 2016
-order by date]]></xml-property>
+            <xml-property name="queryText"><![CDATA[SELECT DISTINCT year
+FROM d_time_date
+WHERE year >= 2016]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
@@ -4702,7 +5863,7 @@ order by date]]></xml-property>
             <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
             <design:precision>11</design:precision>
             <design:scale>0</design:scale>
-            <design:nullability>NotNullable</design:nullability>
+            <design:nullability>Nullable</design:nullability>
             <design:uiHints>
               <design:displayName>year</design:displayName>
             </design:uiHints>
@@ -4714,22 +5875,213 @@ order by date]]></xml-property>
             </design:formattingHints>
           </design:usageHints>
         </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="ds_param_month" id="2940">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">month</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">month</text-property>
+                    <text-property name="heading">month</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">year</property>
+                    <property name="paramName">Year</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">month</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">ds_keycopter</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">month</property>
+                    <property name="nativeName">month</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT DISTINCT month
+FROM d_time_date
+WHERE year = ?]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <DataSetParameters>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>1</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+  </DataSetParameters>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
         <design:resultColumnDefinitions>
           <design:attributes>
             <design:identifier>
               <design:name>month</design:name>
-              <design:position>2</design:position>
+              <design:position>1</design:position>
             </design:identifier>
             <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
             <design:precision>2</design:precision>
             <design:scale>0</design:scale>
-            <design:nullability>NotNullable</design:nullability>
+            <design:nullability>Nullable</design:nullability>
             <design:uiHints>
               <design:displayName>month</design:displayName>
             </design:uiHints>
           </design:attributes>
           <design:usageHints>
             <design:label>month</design:label>
+            <design:formattingHints>
+              <design:displaySize>2</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="ds_param_day" id="2944">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">day</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">day</text-property>
+                    <text-property name="heading">day</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">year</property>
+                    <property name="paramName">Year</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">month</property>
+                    <property name="paramName">Month</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">day</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">ds_keycopter</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">day</property>
+                    <property name="nativeName">day</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT DISTINCT day
+FROM d_time_date
+WHERE year = ?
+	AND month = ?]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <DataSetParameters>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>1</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>2</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+  </DataSetParameters>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>day</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>2</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>day</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>day</design:label>
             <design:formattingHints>
               <design:displaySize>2</design:displaySize>
             </design:formattingHints>
@@ -5196,7 +6548,8 @@ else "Accès utilisateurs";</expression>
                                 <property name="color">#0B65A2</property>
                                 <property name="marginTop">0pt</property>
                                 <property name="marginLeft">20pt</property>
-                                <expression name="valueExpr">"Rapport disponibilité applicative " + BirtDateTime.month( df.parse(params["Year"].value + "-" + params["Month"].value + "-01"), 2 ) + " " + params["Year"].value</expression>
+                                <expression name="valueExpr">reportContext.getMessage("label.title", reportContext.getLocale()) + " - " +&#13;
+BirtDateTime.month( df.parse(params["Year"].value + "-" + params["Month"].value + "-01"), 2 ) + " " + params["Year"].value</expression>
                                 <property name="contentType">html</property>
                             </text-data>
                         </cell>
@@ -5469,6 +6822,18 @@ else "Accès utilisateurs";</expression>
                     <expression name="filterExpr" type="javascript">dataSetRow["dap_id"] == params["Application"].value &amp;&amp; dataSetRow["year"] == params["Year"].value &amp;&amp; dataSetRow["month"] == params["Month"].value</expression>
                     <property name="allowExport">true</property>
                 </structure>
+                <structure>
+                    <property name="name">test</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">AVE</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["agg_unavailability_down_month_hour"]</expression>
+                        </structure>
+                    </list-property>
+                    <property name="allowExport">true</property>
+                </structure>
             </list-property>
             <column id="708">
                 <property name="width">2.5833333333333335in</property>
@@ -5484,28 +6849,31 @@ else "Accès utilisateurs";</expression>
                 <cell id="984">
                     <property name="colSpan">3</property>
                     <property name="rowSpan">1</property>
-                    <text-data id="916">
+                    <text-data id="2909">
                         <property name="fontFamily">"Calibri"</property>
                         <property name="fontSize">20pt</property>
                         <property name="color">#A02B69</property>
                         <property name="marginTop">10pt</property>
                         <property name="marginBottom">10pt</property>
                         <expression name="bookmark" type="javascript">"Applications monthly availability rates - August 2014"</expression>
-                        <expression name="valueExpr">reportContext.getParameterDisplayText("Application") + " - " + BirtDateTime.month( df.parse(params["Year"].value + "-" + params["Month"].value + "-01"), 2 ) + " " + params["Year"].value + " (" + reportContext.getParameterDisplayText("Contract_ctxt") + ")"</expression>
+                        <expression name="valueExpr">reportContext.getParameterDisplayText("Application") + " - " +&#13;
+BirtDateTime.month( df.parse(params["Year"].value + "-" + params["Month"].value + "-01"), 2 ) + " " + params["Year"].value + " (" + reportContext.getParameterDisplayText("Contract_ctxt") + ")"</expression>
                         <property name="contentType">html</property>
                     </text-data>
-                    <text-data id="914">
+                    <text-data id="2910">
                         <property name="fontFamily">"Calibri"</property>
                         <property name="fontSize">14pt</property>
                         <property name="color">#0B65A2</property>
                         <property name="marginTop">10pt</property>
                         <property name="marginLeft">0pt</property>
                         <property name="marginBottom">10pt</property>
-                        <expression name="bookmark" type="javascript">"Monthly Overview"</expression>
+                        <expression name="bookmark" type="javascript">"monthly Overview"</expression>
                         <structure name="toc">
                             <expression name="expressionValue" type="javascript">"Global SLA per application (maintenance and planned downtime excluded"</expression>
                         </structure>
-                        <expression name="valueExpr">"Résumé mois"</expression>
+                        <expression name="valueExpr">reportContext.getMessage("label.month_summary", reportContext.getLocale()) + " - " +&#13;
+params["first_day"].value + " " + reportContext.getMessage("label.to", reportContext.getLocale()) +&#13;
+" "  + params["last_day"].value</expression>
                         <property name="contentType">html</property>
                     </text-data>
                 </cell>
@@ -6763,7 +8131,7 @@ else "Accès utilisateurs";</expression>
                         <property name="marginRight">0.9pt</property>
                         <property name="height">1.2in</property>
                         <property name="width">2.5833333333333335in</property>
-                        <property name="dataSet">ds_appli_month_sql</property>
+                        <property name="dataSet">ds_appli_current_month_sql</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">dap_name</property>
@@ -6805,13 +8173,13 @@ else "Accès utilisateurs";</expression>
                                 <property name="name">unavailability_day</property>
                                 <text-property name="displayName">unavailability_day</text-property>
                                 <expression name="expression" type="javascript">dataSetRow["unavailability_day"]</expression>
-                                <property name="dataType">integer</property>
+                                <property name="dataType">decimal</property>
                             </structure>
                             <structure>
                                 <property name="name">unavailability_down_day</property>
                                 <text-property name="displayName">unavailability_down_day</text-property>
                                 <expression name="expression" type="javascript">dataSetRow["unavailability_down_day"]</expression>
-                                <property name="dataType">integer</property>
+                                <property name="dataType">decimal</property>
                             </structure>
                             <structure>
                                 <property name="name">unavailability_day_hour</property>
@@ -6829,13 +8197,13 @@ else "Accès utilisateurs";</expression>
                                 <property name="name">unavailability_day_minute</property>
                                 <text-property name="displayName">unavailability_day_minute</text-property>
                                 <expression name="expression" type="javascript">dataSetRow["unavailability_day_minute"]</expression>
-                                <property name="dataType">float</property>
+                                <property name="dataType">decimal</property>
                             </structure>
                             <structure>
                                 <property name="name">unavailability_down_day_minute</property>
                                 <text-property name="displayName">unavailability_down_day_minute</text-property>
                                 <expression name="expression" type="javascript">dataSetRow["unavailability_down_day_minute"]</expression>
-                                <property name="dataType">float</property>
+                                <property name="dataType">decimal</property>
                             </structure>
                             <structure>
                                 <property name="name">dap_category</property>
@@ -6924,7 +8292,16 @@ else "Accès utilisateurs";</expression>
                         <property name="marginRight">3pt</property>
                         <property name="textAlign">center</property>
                         <property name="display">inline</property>
-                        <expression name="valueExpr">row["application_rate_down"] + " %"</expression>
+                        <property name="dataSet">ds_appli_current_month_sql</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">availability_rate</property>
+                                <text-property name="displayName">availability_rate</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["availability_rate"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <expression name="valueExpr">row["availability_rate"] + " %"</expression>
                         <property name="contentType">html</property>
                     </text-data>
                     <text-data id="721">
@@ -6933,7 +8310,16 @@ else "Accès utilisateurs";</expression>
                         <property name="color">#0B65A2</property>
                         <property name="textAlign">center</property>
                         <property name="display">inline</property>
-                        <expression name="valueExpr">"(" + row["application_rate"] + "%)*"</expression>
+                        <property name="dataSet">ds_appli_current_month_sql</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">availability_rate_down</property>
+                                <text-property name="displayName">availability_rate_down</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["availability_rate_down"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <expression name="valueExpr">"(" + row["availability_rate_down"] + "%)*"</expression>
                         <property name="contentType">html</property>
                     </text-data>
                 </cell>
@@ -7169,12 +8555,10 @@ else "Accès utilisateurs";</expression>
                                 <property name="colSpan">2</property>
                                 <property name="rowSpan">1</property>
                                 <property name="backgroundColor">#FFFFFF</property>
-                                <label id="581">
-                                    <property name="fontSize">9pt</property>
-                                    <property name="fontWeight">bold</property>
-                                    <property name="marginTop">2pt</property>
-                                    <text-property name="text">Légende</text-property>
-                                </label>
+                                <text-data id="2911">
+                                    <expression name="valueExpr">reportContext.getMessage("label.legend", reportContext.getLocale())</expression>
+                                    <property name="contentType">html</property>
+                                </text-data>
                             </cell>
                         </row>
                         <row id="557">
@@ -7208,7 +8592,8 @@ else "Accès utilisateurs";</expression>
                                 <text-data id="2652">
                                     <property name="fontFamily">"Calibri"</property>
                                     <property name="marginLeft">3pt</property>
-                                    <expression name="valueExpr">" > " + Formatter.format(row["step_2_max"],"#.###") + "% and &lt; " + Formatter.format(row["step_3_max"],"#.###") + "%"</expression>
+                                    <expression name="valueExpr">" > " + Formatter.format(row["step_2_max"],"#.###") + "% " + reportContext.getMessage("label.and", reportContext.getLocale())&#13;
++ " &lt; " + Formatter.format(row["step_3_max"],"#.###") + "%"</expression>
                                     <property name="contentType">html</property>
                                 </text-data>
                             </cell>
@@ -7226,7 +8611,8 @@ else "Accès utilisateurs";</expression>
                                 <text-data id="2653">
                                     <property name="fontFamily">"Calibri"</property>
                                     <property name="marginLeft">3pt</property>
-                                    <expression name="valueExpr">" > " + Formatter.format(row["step_1_max"],"#.###") + "% and &lt; " + Formatter.format(row["step_2_max"],"#.###") + "%"</expression>
+                                    <expression name="valueExpr">" > " + Formatter.format(row["step_1_max"],"#.###") + "% " + reportContext.getMessage("label.and", reportContext.getLocale())&#13;
++ " &lt; " + Formatter.format(row["step_2_max"],"#.###") + "%"</expression>
                                     <property name="contentType">html</property>
                                 </text-data>
                             </cell>
@@ -7274,7 +8660,7 @@ else "Accès utilisateurs";</expression>
                             <cell id="2533">
                                 <property name="backgroundColor">#FFFFFF</property>
                                 <property name="verticalAlign">top</property>
-                                <text-data id="2472">
+                                <text-data id="2912">
                                     <property name="backgroundColor">#FFFFFF</property>
                                     <property name="fontFamily">"Calibri"</property>
                                     <property name="fontSize">18pt</property>
@@ -7284,7 +8670,8 @@ else "Accès utilisateurs";</expression>
                                     <property name="marginRight">3pt</property>
                                     <property name="textAlign">center</property>
                                     <property name="display">block</property>
-                                    <expression name="valueExpr">"Indisponibilité " + BirtDateTime.month( df.parse(params["Year"].value + "-" + params["Month"].value + "-01"), 2 )</expression>
+                                    <expression name="valueExpr">reportContext.getMessage("label.unavailability", reportContext.getLocale()) + " " +&#13;
+BirtDateTime.month( df.parse(params["Year"].value + "-" + params["Month"].value + "-01"), 2 )</expression>
                                     <property name="contentType">html</property>
                                 </text-data>
                             </cell>
@@ -7302,7 +8689,7 @@ else "Accès utilisateurs";</expression>
                                     <property name="marginRight">3pt</property>
                                     <property name="textAlign">center</property>
                                     <property name="display">inline</property>
-                                    <property name="dataSet">ds_appli_month_sql</property>
+                                    <property name="dataSet">ds_appli_current_month_sql</property>
                                     <list-property name="boundDataColumns">
                                         <structure>
                                             <property name="name">dap_name</property>
@@ -7339,6 +8726,18 @@ else "Accès utilisateurs";</expression>
                                             <text-property name="displayName">availability_rate_down</text-property>
                                             <expression name="expression" type="javascript">dataSetRow["availability_rate_down"]</expression>
                                             <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">unavailability_day</property>
+                                            <text-property name="displayName">unavailability_day</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["unavailability_day"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">unavailability_down_day</property>
+                                            <text-property name="displayName">unavailability_down_day</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["unavailability_down_day"]</expression>
+                                            <property name="dataType">decimal</property>
                                         </structure>
                                         <structure>
                                             <property name="name">unavailability_day_hour</property>
@@ -7412,8 +8811,39 @@ else "Accès utilisateurs";</expression>
                                             <expression name="expression" type="javascript">dataSetRow["tpr_name"]</expression>
                                             <property name="dataType">string</property>
                                         </structure>
+                                        <structure>
+                                            <property name="name">dap_id</property>
+                                            <text-property name="displayName">dap_id</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["dap_id"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">dsg_step_1_max</property>
+                                            <text-property name="displayName">dsg_step_1_max</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["dsg_step_1_max"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">dsg_step_2_max</property>
+                                            <text-property name="displayName">dsg_step_2_max</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["dsg_step_2_max"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">dsg_step_3_max</property>
+                                            <text-property name="displayName">dsg_step_3_max</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["dsg_step_3_max"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">dsg_step_4_max</property>
+                                            <text-property name="displayName">dsg_step_4_max</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["dsg_step_4_max"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
                                     </list-property>
-                                    <expression name="valueExpr">row._outer["agg_unavailability_down_month_hour"] + "h" + pad(row._outer["agg_unavailability_down_month_minute"],2) + "min"</expression>
+                                    <expression name="valueExpr">row["unavailability_down_day_hour"] + "h" +&#13;
+pad(row["unavailability_down_day_minute"],2) + "min"</expression>
                                     <property name="contentType">html</property>
                                 </text-data>
                             </cell>
@@ -7429,7 +8859,7 @@ else "Accès utilisateurs";</expression>
                                     <property name="color">#0B65A2</property>
                                     <property name="textAlign">center</property>
                                     <property name="display">inline</property>
-                                    <property name="dataSet">ds_appli_month_sql</property>
+                                    <property name="dataSet">ds_appli_current_month_sql</property>
                                     <list-property name="boundDataColumns">
                                         <structure>
                                             <property name="name">dap_name</property>
@@ -7466,6 +8896,18 @@ else "Accès utilisateurs";</expression>
                                             <text-property name="displayName">availability_rate_down</text-property>
                                             <expression name="expression" type="javascript">dataSetRow["availability_rate_down"]</expression>
                                             <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">unavailability_day</property>
+                                            <text-property name="displayName">unavailability_day</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["unavailability_day"]</expression>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">unavailability_down_day</property>
+                                            <text-property name="displayName">unavailability_down_day</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["unavailability_down_day"]</expression>
+                                            <property name="dataType">decimal</property>
                                         </structure>
                                         <structure>
                                             <property name="name">unavailability_day_hour</property>
@@ -7539,8 +8981,38 @@ else "Accès utilisateurs";</expression>
                                             <expression name="expression" type="javascript">dataSetRow["tpr_name"]</expression>
                                             <property name="dataType">string</property>
                                         </structure>
+                                        <structure>
+                                            <property name="name">dap_id</property>
+                                            <text-property name="displayName">dap_id</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["dap_id"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">dsg_step_1_max</property>
+                                            <text-property name="displayName">dsg_step_1_max</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["dsg_step_1_max"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">dsg_step_2_max</property>
+                                            <text-property name="displayName">dsg_step_2_max</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["dsg_step_2_max"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">dsg_step_3_max</property>
+                                            <text-property name="displayName">dsg_step_3_max</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["dsg_step_3_max"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">dsg_step_4_max</property>
+                                            <text-property name="displayName">dsg_step_4_max</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["dsg_step_4_max"]</expression>
+                                            <property name="dataType">float</property>
+                                        </structure>
                                     </list-property>
-                                    <expression name="valueExpr">"(" +  row._outer["agg_unavailability_month_hour"]+"h" + pad(row._outer["agg_unavailability_month_minute"],2) + "min)*"</expression>
+                                    <expression name="valueExpr">"(" +  row["unavailability_day_hour"]+"h" + pad(row["unavailability_day_minute"],2) + "min)*"</expression>
                                     <property name="contentType">html</property>
                                 </text-data>
                             </cell>
@@ -7558,13 +9030,11 @@ else "Accès utilisateurs";</expression>
                     <property name="borderRightStyle">none</property>
                     <property name="borderTopStyle">none</property>
                     <property name="textAlign">center</property>
-                    <label id="533">
-                        <property name="fontFamily">"Arial"</property>
-                        <property name="fontSize">9pt</property>
-                        <property name="fontStyle">italic</property>
+                    <text-data id="2914">
                         <property name="textAlign">left</property>
-                        <text-property name="text">* Incidents durant maintenance inclus</text-property>
-                    </label>
+                        <expression name="valueExpr">reportContext.getMessage("message.incident_include", reportContext.getLocale())</expression>
+                        <property name="contentType">html</property>
+                    </text-data>
                 </cell>
             </row>
             <row id="2601">
@@ -7581,7 +9051,13 @@ else "Accès utilisateurs";</expression>
                         <property name="marginBottom">5pt</property>
                         <property name="textAlign">left</property>
                         <expression name="bookmark" type="javascript">"Availability rates excluding including maintenance slots : September 2013 to August 2014"</expression>
-                        <expression name="valueExpr">"Taux de disponibilité : " +  BirtDateTime.month(BirtDateTime.addMonth(df.parse(params["Year"].value + "-" + params["Month"].value + "-01"),-11),2)  + " " +  BirtDateTime.year(BirtDateTime.addMonth(df.parse(params["Year"].value + "-" + params["Month"].value + "-01"),-11)) + " à "  + BirtDateTime.month( df.parse(params["Year"].value + "-" + params["Month"].value + "-01"), 2 ) + " " + params["Year"].value</expression>
+                        <expression name="valueExpr">reportContext.getMessage("label.availability_rate", reportContext.getLocale()) + " : " +&#13;
+BirtDateTime.month(BirtDateTime.addMonth(df.parse(params["Year"].value + "-" +&#13;
+params["Month"].value + "-01"),-11),2)  + " " +&#13;
+BirtDateTime.year(BirtDateTime.addMonth(df.parse(params["Year"].value + "-" + params["Month"].value +&#13;
+"-01"),-11)) + " " + reportContext.getMessage("label.to", reportContext.getLocale()) + " "  +&#13;
+BirtDateTime.month( df.parse(params["Year"].value + "-" + params["Month"].value + "-01"), 2 ) +&#13;
+ " " + params["Year"].value</expression>
                         <property name="contentType">html</property>
                     </text-data>
                 </cell>
@@ -7595,7 +9071,7 @@ else "Accès utilisateurs";</expression>
                     <property name="textAlign">left</property>
                     <extended-item extensionName="Chart" id="2608">
                         <xml-property name="xmlRepresentation"><![CDATA[<model:ChartWithAxes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:attribute="http://www.birt.eclipse.org/ChartModelAttribute" xmlns:data="http://www.birt.eclipse.org/ChartModelData" xmlns:layout="http://www.birt.eclipse.org/ChartModelLayout" xmlns:model="http://www.birt.eclipse.org/ChartModel" xmlns:type="http://www.birt.eclipse.org/ChartModelType">
-  <Version>2.6</Version>
+  <Version>2.6.1</Version>
   <Type>Line Chart</Type>
   <SubType>Overlay</SubType>
   <Block>
@@ -8241,7 +9717,7 @@ else "Accès utilisateurs";</expression>
               <AggregateParameters>1</AggregateParameters>
             </Grouping>
           </DataDefinition>
-          <SeriesIdentifier>Taux dispo contractuel</SeriesIdentifier>
+          <SeriesIdentifier>label.contractual_availability_rate=&lt;Value of key 'label.contractual_availability_rate'></SeriesIdentifier>
           <DataPoint>
             <Components>
               <Type>Orthogonal_Value</Type>
@@ -8541,7 +10017,7 @@ else "Accès utilisateurs";</expression>
               <AggregateExpression>Average</AggregateExpression>
             </Grouping>
           </DataDefinition>
-          <SeriesIdentifier>Taux dispo non contractuel (indispo durant maintenance comprise)</SeriesIdentifier>
+          <SeriesIdentifier>label.total_availability_rate=&lt;Value of key 'label.total_availability_rate'></SeriesIdentifier>
           <DataPoint>
             <Components>
               <Type>Orthogonal_Value</Type>
@@ -9231,7 +10707,14 @@ else "Accès utilisateurs";</expression>
                         <property name="marginBottom">5pt</property>
                         <property name="textAlign">left</property>
                         <expression name="bookmark" type="javascript">"Unavailability : September 2013 to August 2014"</expression>
-                        <expression name="valueExpr">"Durée d'indisponibilité mensuelle : " + BirtDateTime.month(BirtDateTime.addMonth(df.parse(params["Year"].value + "-" + params["Month"].value + "-01"),-11),2)  + " " +  BirtDateTime.year(BirtDateTime.addMonth(df.parse(params["Year"].value + "-" + params["Month"].value + "-01"),-11)) + " à "  + BirtDateTime.month( df.parse(params["Year"].value + "-" + params["Month"].value + "-01"), 2 ) + " " + params["Year"].value</expression>
+                        <expression name="valueExpr">reportContext.getMessage("label.monthly_unavailibility", reportContext.getLocale()) + " : " +&#13;
+BirtDateTime.month(BirtDateTime.addMonth(df.parse(params["Year"].value + "-" +&#13;
+params["Month"].value + "-01"),-11),2)  + " " +&#13;
+BirtDateTime.year(BirtDateTime.addMonth(df.parse(params["Year"].value + "-" +&#13;
+params["Month"].value + "-01"),-11)) + " "  +&#13;
+reportContext.getMessage("label.to", reportContext.getLocale()) + " "  +&#13;
+BirtDateTime.month( df.parse(params["Year"].value +&#13;
+"-" + params["Month"].value + "-01"), 2 ) + " " + params["Year"].value</expression>
                         <property name="contentType">html</property>
                     </text-data>
                 </cell>
@@ -9245,7 +10728,7 @@ else "Accès utilisateurs";</expression>
                     <property name="textAlign">left</property>
                     <extended-item extensionName="Chart" id="2606">
                         <xml-property name="xmlRepresentation"><![CDATA[<model:ChartWithAxes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:attribute="http://www.birt.eclipse.org/ChartModelAttribute" xmlns:data="http://www.birt.eclipse.org/ChartModelData" xmlns:layout="http://www.birt.eclipse.org/ChartModelLayout" xmlns:model="http://www.birt.eclipse.org/ChartModel" xmlns:type="http://www.birt.eclipse.org/ChartModelType">
-  <Version>2.6</Version>
+  <Version>2.6.1</Version>
   <Type>Bar Chart</Type>
   <SubType>Side-by-side</SubType>
   <Block>
@@ -9890,7 +11373,7 @@ else "Accès utilisateurs";</expression>
               <AggregateExpression>Average</AggregateExpression>
             </Grouping>
           </DataDefinition>
-          <SeriesIdentifier>Nb. min indispo contractuelle</SeriesIdentifier>
+          <SeriesIdentifier>label.contractual_unavailability=&lt;Value of key 'label.contractual_unavailability'></SeriesIdentifier>
           <DataPoint>
             <Components>
               <Type>Orthogonal_Value</Type>
@@ -10171,7 +11654,7 @@ else "Accès utilisateurs";</expression>
               <AggregateExpression>Average</AggregateExpression>
             </Grouping>
           </DataDefinition>
-          <SeriesIdentifier>Nb. min indispo (indispo durant maintenance comprise)</SeriesIdentifier>
+          <SeriesIdentifier>label.total_unavailability=&lt;Value of key 'label.total_unavailability'></SeriesIdentifier>
           <DataPoint>
             <Components>
               <Type>Orthogonal_Value</Type>
@@ -10981,7 +12464,7 @@ else "Accès utilisateurs";</expression>
                             <cell id="696">
                                 <property name="colSpan">1</property>
                                 <property name="rowSpan">1</property>
-                                <text-data id="893">
+                                <text-data id="2919">
                                     <property name="fontFamily">"Calibri"</property>
                                     <property name="fontSize">20pt</property>
                                     <property name="color">#A02B69</property>
@@ -10989,7 +12472,9 @@ else "Accès utilisateurs";</expression>
                                     <property name="marginBottom">5pt</property>
                                     <expression name="bookmark" type="javascript">row["application_name"]</expression>
                                     <structure name="toc"/>
-                                    <expression name="valueExpr">"Vue détaillée " + row["application_label"] + " - " + BirtDateTime.month( df.parse(params["Year"].value + "-" + params["Month"].value + "-01"), 2 ) + " " + params["Year"].value</expression>
+                                    <expression name="valueExpr">reportContext.getMessage("label.detailed_view", reportContext.getLocale()) + " " +&#13;
+row["application_label"] + " - " + BirtDateTime.month( df.parse(params["Year"].value + "-" +&#13;
+params["Month"].value + "-01"), 2 ) + " " + params["Year"].value</expression>
                                     <property name="contentType">html</property>
                                 </text-data>
                             </cell>
@@ -11002,7 +12487,14 @@ else "Accès utilisateurs";</expression>
                                     <property name="color">#0B65A2</property>
                                     <property name="marginTop">20pt</property>
                                     <property name="marginBottom">5pt</property>
-                                    <expression name="valueExpr">"Taux de disponibilité mensuel : " + BirtDateTime.month(BirtDateTime.addMonth(df.parse(params["Year"].value + "-" + params["Month"].value + "-01"),-12),2)  + " " +  BirtDateTime.year(BirtDateTime.addMonth(df.parse(params["Year"].value + "-" + params["Month"].value + "-01"),-12)) + " à "  + BirtDateTime.month( df.parse(params["Year"].value + "-" + params["Month"].value + "-01"), 2 ) + " " + params["Year"].value</expression>
+                                    <expression name="valueExpr">reportContext.getMessage("label.monthly_availability_rate", reportContext.getLocale()) + " : " +&#13;
+BirtDateTime.month(BirtDateTime.addMonth(df.parse(params["Year"].value + "-" +&#13;
+params["Month"].value + "-01"),-12),2)  + " " +&#13;
+BirtDateTime.year(BirtDateTime.addMonth(df.parse(params["Year"].value + "-" +&#13;
+params["Month"].value + "-01"),-12)) + " "  +&#13;
+reportContext.getMessage("label.to", reportContext.getLocale()) +&#13;
+BirtDateTime.month( df.parse(params["Year"].value +&#13;
+"-" + params["Month"].value + "-01"), 2 ) + " " + params["Year"].value</expression>
                                     <property name="contentType">html</property>
                                 </text-data>
                                 <extended-item extensionName="Chart" id="600">
@@ -11652,7 +13144,7 @@ else "Accès utilisateurs";</expression>
               <AggregateExpression>Sum</AggregateExpression>
             </Grouping>
           </DataDefinition>
-          <SeriesIdentifier>Taux dispo contractuel</SeriesIdentifier>
+          <SeriesIdentifier>label.contractual_availability_rate=&lt;Value of key 'label.contractual_availability_rate'></SeriesIdentifier>
           <DataPoint>
             <Components>
               <Type>Orthogonal_Value</Type>
@@ -11952,7 +13444,7 @@ else "Accès utilisateurs";</expression>
               <AggregateExpression>Sum</AggregateExpression>
             </Grouping>
           </DataDefinition>
-          <SeriesIdentifier>Taux dispo non contractuel (indispo durant maintenance comprise)</SeriesIdentifier>
+          <SeriesIdentifier>label.total_availability_rate=&lt;Value of key 'label.total_availability_rate'></SeriesIdentifier>
           <DataPoint>
             <Components>
               <Type>Orthogonal_Value</Type>
@@ -12686,13 +14178,13 @@ else "Accès utilisateurs";</expression>
                         </row>
                         <row id="2864">
                             <cell id="2865">
-                                <text-data id="595">
+                                <text-data id="2922">
                                     <property name="fontFamily">"Calibri"</property>
                                     <property name="fontSize">14pt</property>
                                     <property name="color">#0B65A2</property>
                                     <property name="marginTop">20pt</property>
                                     <property name="marginBottom">5pt</property>
-                                    <expression name="valueExpr">"Taux de disponibilité journalier"</expression>
+                                    <expression name="valueExpr">reportContext.getMessage("label.daily_availability_rate", reportContext.getLocale())</expression>
                                     <property name="contentType">html</property>
                                 </text-data>
                                 <extended-item extensionName="Chart" id="597">
@@ -14483,16 +15975,16 @@ else "Accès utilisateurs";</expression>
                         <row id="2870">
                             <cell id="2871">
                                 <property name="whiteSpace">nowrap</property>
-                                <text-data id="115">
+                                <text-data id="2924">
                                     <property name="fontFamily">"Calibri"</property>
                                     <property name="fontSize">14pt</property>
                                     <property name="color">#0B65A2</property>
                                     <property name="marginTop">20pt</property>
                                     <property name="marginBottom">5pt</property>
-                                    <expression name="valueExpr">"Taux de disponibilité moyen par heure"</expression>
+                                    <expression name="valueExpr">reportContext.getMessage("label.hourly_availability_rate", reportContext.getLocale())</expression>
                                     <property name="contentType">html</property>
                                 </text-data>
-                                <extended-item extensionName="Chart" id="1746">
+                                <extended-item extensionName="Chart" id="2925">
                                     <xml-property name="xmlRepresentation"><![CDATA[<model:ChartWithAxes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:attribute="http://www.birt.eclipse.org/ChartModelAttribute" xmlns:data="http://www.birt.eclipse.org/ChartModelData" xmlns:layout="http://www.birt.eclipse.org/ChartModelLayout" xmlns:model="http://www.birt.eclipse.org/ChartModel" xmlns:type="http://www.birt.eclipse.org/ChartModelType">
   <Version>2.6</Version>
   <Type>Line Chart</Type>
@@ -16145,7 +17637,7 @@ else "Accès utilisateurs";</expression>
             <column id="2873"/>
             <row id="2874">
                 <cell id="2875">
-                    <text-data id="917">
+                    <text-data id="2926">
                         <property name="fontFamily">"Calibri"</property>
                         <property name="fontSize">20pt</property>
                         <property name="color">#A02B69</property>
@@ -16154,14 +17646,17 @@ else "Accès utilisateurs";</expression>
                         <property name="textAlign">left</property>
                         <property name="pageBreakBefore">always</property>
                         <expression name="bookmark" type="javascript">"overall"</expression>
-                        <expression name="valueExpr">"Vue par catégorie " + reportContext.getParameterDisplayText("Application") + " - " + BirtDateTime.month( df.parse(params["Year"].value + "-" + params["Month"].value + "-01"), 2 ) + " " + params["Year"].value</expression>
+                        <expression name="valueExpr">reportContext.getMessage("label.category_view", reportContext.getLocale()) + " " +&#13;
+reportContext.getParameterDisplayText("Application") + " - " +&#13;
+BirtDateTime.month( df.parse(params["Year"].value + "-" + params["Month"].value + "-01"), 2 ) +&#13;
+" " + params["Year"].value</expression>
                         <property name="contentType">html</property>
                     </text-data>
                 </cell>
             </row>
             <row id="2876">
                 <cell id="2877">
-                    <text-data id="151">
+                    <text-data id="2927">
                         <property name="fontFamily">"Calibri"</property>
                         <property name="fontSize">14pt</property>
                         <property name="color">#0B65A2</property>
@@ -16169,7 +17664,7 @@ else "Accès utilisateurs";</expression>
                         <property name="marginBottom">5pt</property>
                         <property name="textAlign">left</property>
                         <expression name="bookmark" type="javascript">"Core Infrastructure and Customer Access focus"</expression>
-                        <expression name="valueExpr">"Disponibilité contractuelle Coeur Infrastructure et Accès utilisateur"</expression>
+                        <expression name="valueExpr">reportContext.getMessage("message.availibility_CI_CA", reportContext.getLocale())</expression>
                         <property name="contentType">html</property>
                     </text-data>
                 </cell>
@@ -17587,21 +19082,19 @@ else "Accès utilisateurs";</expression>
                                 <property name="backgroundColor">#0B65A2</property>
                             </cell>
                             <cell id="341">
-                                <label id="344">
-                                    <property name="fontFamily">"Calibri"</property>
-                                    <property name="marginTop">auto</property>
-                                    <text-property name="text">Coeur infrastructure </text-property>
-                                </label>
+                                <text-data id="2929">
+                                    <expression name="valueExpr">" " + reportContext.getMessage("label.CI", reportContext.getLocale())</expression>
+                                    <property name="contentType">html</property>
+                                </text-data>
                             </cell>
                             <cell id="342">
                                 <property name="backgroundColor">#A02B69</property>
                             </cell>
                             <cell id="343">
-                                <label id="345">
-                                    <property name="fontFamily">"Calibri"</property>
-                                    <property name="marginTop">auto</property>
-                                    <text-property name="text">Accès utilisateur</text-property>
-                                </label>
+                                <text-data id="2930">
+                                    <expression name="valueExpr">" " + reportContext.getMessage("label.CA", reportContext.getLocale())</expression>
+                                    <property name="contentType">html</property>
+                                </text-data>
                             </cell>
                         </row>
                         <row id="809">
@@ -17621,11 +19114,10 @@ else "Accès utilisateurs";</expression>
                                 <property name="backgroundColor">#505655</property>
                             </cell>
                             <cell id="805">
-                                <label id="808">
-                                    <property name="fontFamily">"Calibri"</property>
-                                    <property name="marginTop">auto</property>
-                                    <text-property name="text">Application</text-property>
-                                </label>
+                                <text-data id="2931">
+                                    <expression name="valueExpr">" " + reportContext.getMessage("label.application", reportContext.getLocale())</expression>
+                                    <property name="contentType">html</property>
+                                </text-data>
                             </cell>
                             <cell id="806">
                                 <property name="backgroundColor">#FFFFFF</property>
@@ -17637,7 +19129,7 @@ else "Accès utilisateurs";</expression>
             </row>
             <row id="2906">
                 <cell id="2907">
-                    <text-data id="2908">
+                    <text-data id="2932">
                         <property name="fontFamily">"Calibri"</property>
                         <property name="fontSize">14pt</property>
                         <property name="color">#0B65A2</property>
@@ -17645,7 +19137,7 @@ else "Accès utilisateurs";</expression>
                         <property name="marginBottom">10pt</property>
                         <property name="textAlign">left</property>
                         <expression name="bookmark" type="javascript">"Core Infrastructure and Customer Access focus"</expression>
-                        <expression name="valueExpr">"Disponibilité selon la prise en compte des maintenances"</expression>
+                        <expression name="valueExpr">reportContext.getMessage("message.availability_downtime", reportContext.getLocale())</expression>
                         <property name="contentType">html</property>
                     </text-data>
                 </cell>
@@ -17721,7 +19213,7 @@ else "Accès utilisateurs";</expression>
                                             <text-data id="1749">
                                                 <property name="fontFamily">"Calibri"</property>
                                                 <property name="textAlign">center</property>
-                                                <expression name="valueExpr">"Maintenance\n exclue\n (SLA)";</expression>
+                                                <expression name="valueExpr">reportContext.getMessage("label.downtime_exclude", reportContext.getLocale())</expression>
                                                 <property name="contentType">html</property>
                                             </text-data>
                                         </property>
@@ -17788,7 +19280,7 @@ else "Accès utilisateurs";</expression>
                                             <text-data id="1750">
                                                 <property name="fontFamily">"Calibri"</property>
                                                 <property name="textAlign">center</property>
-                                                <expression name="valueExpr">"Maintenance\n incluse\n";</expression>
+                                                <expression name="valueExpr">reportContext.getMessage("label.downtime_include", reportContext.getLocale())</expression>
                                                 <property name="contentType">html</property>
                                             </text-data>
                                         </property>
@@ -18264,7 +19756,9 @@ else "Accès utilisateurs";</expression>
                                 <text-data id="2677">
                                     <property name="fontFamily">"Calibri"</property>
                                     <property name="marginLeft">3pt</property>
-                                    <expression name="valueExpr">" > " + Formatter.format(row["step_1_max"],"#.###") + "% and &lt; " + Formatter.format(row["step_2_max"],"#.###") + "%"</expression>
+                                    <expression name="valueExpr">" > " + Formatter.format(row["step_1_max"],"#.###") + "% " +&#13;
+reportContext.getMessage("label.and", reportContext.getLocale())&#13;
++ " &lt; " + Formatter.format(row["step_2_max"],"#.###") + "%"</expression>
                                     <property name="contentType">html</property>
                                 </text-data>
                             </cell>
@@ -18279,7 +19773,9 @@ else "Accès utilisateurs";</expression>
                                 <text-data id="2672">
                                     <property name="fontFamily">"Calibri"</property>
                                     <property name="marginLeft">3pt</property>
-                                    <expression name="valueExpr">" > " + Formatter.format(row["step_2_max"],"#.###") + "% and &lt; " + Formatter.format(row["step_3_max"],"#.###") + "%"</expression>
+                                    <expression name="valueExpr">" > " + Formatter.format(row["step_2_max"],"#.###") + "% " +&#13;
+reportContext.getMessage("label.and", reportContext.getLocale())&#13;
++ " &lt; " + Formatter.format(row["step_3_max"],"#.###") + "%"</expression>
                                     <property name="contentType">html</property>
                                 </text-data>
                             </cell>
@@ -18301,14 +19797,14 @@ else "Accès utilisateurs";</expression>
             </row>
             <row id="2890">
                 <cell id="2891">
-                    <text-data id="611">
+                    <text-data id="2933">
                         <property name="fontFamily">"Calibri"</property>
                         <property name="fontSize">14pt</property>
                         <property name="color">#0B65A2</property>
                         <property name="marginTop">20pt</property>
                         <property name="marginBottom">10pt</property>
                         <property name="pageBreakBefore">always</property>
-                        <expression name="valueExpr">"Disponibilité par composant de l'application"</expression>
+                        <expression name="valueExpr">reportContext.getMessage("message.availability_downtime", reportContext.getLocale())</expression>
                         <property name="contentType">html</property>
                     </text-data>
                 </cell>
@@ -18380,15 +19876,14 @@ else "Accès utilisateurs";</expression>
                                 <property name="header">
                                     <extended-item extensionName="CrosstabCell" id="1738">
                                         <property name="content">
-                                            <label id="1739">
+                                            <text-data id="2936">
                                                 <property name="fontFamily">"Calibri"</property>
                                                 <property name="fontSize">9pt</property>
                                                 <property name="color">#0B65A2</property>
                                                 <property name="textAlign">center</property>
-                                                <text-property name="text">Maintenance&#13;
- exclue&#13;
- (SLA)</text-property>
-                                            </label>
+                                                <expression name="valueExpr">reportContext.getMessage("label.downtime_exclude", reportContext.getLocale())</expression>
+                                                <property name="contentType">html</property>
+                                            </text-data>
                                         </property>
                                         <property name="backgroundColor">#F0F1F2</property>
                                     </extended-item>
@@ -18456,14 +19951,14 @@ else "Accès utilisateurs";</expression>
                                 <property name="header">
                                     <extended-item extensionName="CrosstabCell" id="1743">
                                         <property name="content">
-                                            <label id="1744">
+                                            <text-data id="2937">
                                                 <property name="fontFamily">"Calibri"</property>
                                                 <property name="fontSize">9pt</property>
                                                 <property name="color">#0B65A2</property>
                                                 <property name="textAlign">center</property>
-                                                <text-property name="text">Maintenance&#13;
- incluse</text-property>
-                                            </label>
+                                                <expression name="valueExpr">reportContext.getMessage("label.downtime_include", reportContext.getLocale())</expression>
+                                                <property name="contentType">html</property>
+                                            </text-data>
                                         </property>
                                         <property name="backgroundColor">#F0F1F2</property>
                                     </extended-item>
@@ -18570,28 +20065,28 @@ else "Accès utilisateurs";</expression>
                         <property name="header">
                             <extended-item extensionName="CrosstabCell" id="1770">
                                 <property name="content">
-                                    <label id="1773">
+                                    <text-data id="2934">
                                         <property name="fontFamily">"Calibri"</property>
                                         <property name="fontSize">9pt</property>
                                         <property name="color">#0B65A2</property>
-                                        <property name="marginTop">9pt</property>
                                         <property name="textAlign">center</property>
-                                        <text-property name="text">Catégorie</text-property>
-                                    </label>
+                                        <expression name="valueExpr">reportContext.getMessage("label.category", reportContext.getLocale())</expression>
+                                        <property name="contentType">html</property>
+                                    </text-data>
                                 </property>
                                 <property name="backgroundColor">#F0F1F2</property>
                             </extended-item>
                             <extended-item extensionName="CrosstabCell" id="2552"/>
                             <extended-item extensionName="CrosstabCell" id="2557">
                                 <property name="content">
-                                    <label id="2560">
+                                    <text-data id="2935">
                                         <property name="fontFamily">"Calibri"</property>
                                         <property name="fontSize">9pt</property>
                                         <property name="color">#0B65A2</property>
-                                        <property name="marginTop">9pt</property>
                                         <property name="textAlign">center</property>
-                                        <text-property name="text">Application</text-property>
-                                    </label>
+                                        <expression name="valueExpr">reportContext.getMessage("label.application", reportContext.getLocale())</expression>
+                                        <property name="contentType">html</property>
+                                    </text-data>
                                 </property>
                                 <property name="backgroundColor">#F0F1F2</property>
                             </extended-item>
@@ -19027,7 +20522,9 @@ else "Accès utilisateurs";</expression>
                                 <text-data id="2852">
                                     <property name="fontFamily">"Calibri"</property>
                                     <property name="marginLeft">3pt</property>
-                                    <expression name="valueExpr">" > " + Formatter.format(row["step_1_max"],"#.###") + "% and &lt; " + Formatter.format(row["step_2_max"],"#.###") + "%"</expression>
+                                    <expression name="valueExpr">" > " + Formatter.format(row["step_1_max"],"#.###") + "% " +&#13;
+reportContext.getMessage("label.and", reportContext.getLocale())&#13;
++ " &lt; " + Formatter.format(row["step_2_max"],"#.###") + "%"</expression>
                                     <property name="contentType">html</property>
                                 </text-data>
                             </cell>
@@ -19042,7 +20539,9 @@ else "Accès utilisateurs";</expression>
                                 <text-data id="2856">
                                     <property name="fontFamily">"Calibri"</property>
                                     <property name="marginLeft">3pt</property>
-                                    <expression name="valueExpr">" > " + Formatter.format(row["step_2_max"],"#.###") + "% and &lt; " + Formatter.format(row["step_3_max"],"#.###") + "%"</expression>
+                                    <expression name="valueExpr">" > " + Formatter.format(row["step_2_max"],"#.###") + "% "+&#13;
+reportContext.getMessage("label.and", reportContext.getLocale())&#13;
++" &lt; " + Formatter.format(row["step_3_max"],"#.###") + "%"</expression>
                                     <property name="contentType">html</property>
                                 </text-data>
                             </cell>
