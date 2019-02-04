@@ -21,37 +21,9 @@
 
 - name: install package prerequisites
   yum:
-    name: "{{ item }}"
+    name: ['git', 'unzip', 'zip', 'bzip2', 'xz', 'rsync', 'httpd-tools','httpd', 'perl', 'net-tools', 'bind-utils', 'patch', 'dos2unix', 'firewalld', 'wget', 'libxslt', 'php-common', 'php-mysqlnd', 'php', 'php-xml', 'php-xmlrpc', 'php-ldap', 'mod_auth_eon', 'mariadb-server', 'expect', 'MySQL-python', 'docker', 'python-docker-py']
     state: present
-  with_items:
-  - git
-  - unzip
-  - zip
-  - bzip2
-  - xz
-  - rsync
-  - httpd-tools
-  - httpd
-  - perl
-  - net-tools
-  - bind-utils
-  - patch
-  - dos2unix
-  - firewalld
-  - wget 
-  - libxslt
-  - php-common
-  - php-mysql
-  - php
-  - php-xml
-  - php-xmlrpc
-  - php-ldap
-  - mod_auth_eon
-  - mariadb-server
-  - expect
-  - MySQL-python
-  - docker
-  - python-docker-py
+    exclude: php-mysql
 
 - name: create dedicated group for EyesOfReport
   group:
