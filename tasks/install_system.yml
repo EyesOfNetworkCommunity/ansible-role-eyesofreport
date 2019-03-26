@@ -41,7 +41,7 @@
   - wget 
   - libxslt
   - php-common
-  - php-mysql
+  - php-mysqlnd
   - php
   - php-xml
   - php-xmlrpc
@@ -126,4 +126,9 @@
     group: "{{ eor_group }}"
     mode: 0750
 
-  
+- name: change timezone in php.ini
+  become: true
+  lineinfile:
+    dest: /etc/php.ini
+    regexp: ";date.timezone ="
+    line: "date.timezone = Europe/Paris"
