@@ -120,3 +120,6 @@ sql_internal_pwd: ''
 sql_external_pwd: ''
 sql_root_pwd: ''
 pentaho_pwd: ''
+
+### Timezone variables #################################################
+timezone: 'Europe/Paris'

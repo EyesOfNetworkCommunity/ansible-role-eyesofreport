@@ -102,4 +102,6 @@
   lineinfile:
     dest: /etc/php.ini
     regexp: ";date.timezone ="
-    line: "date.timezone = Europe/Paris"
+    line: "date.timezone = {{ item }}"
+  with_items:
+    - "{{ timezone }}"
