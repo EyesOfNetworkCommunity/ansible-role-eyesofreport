@@ -51,7 +51,7 @@ java_bin: "{{ java_home }}/bin/java"
 ### EORWeb Git repository location #####################################
 eorweb_git:
   repo: 'https://github.com/EyesOfNetworkCommunity/eorweb.git'
-  release: 'remediation_validation'
+  release: 'master'
 
 ### third party packages variables #####################################
 # Refer to files/3rd_perty/README.md for instruction on how to use
