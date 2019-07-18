@@ -41,11 +41,12 @@
   - wget 
   - libxslt
   - php-common
-  - php-mysql
+  - php-mysqlnd
   - php
   - php-xml
   - php-xmlrpc
   - php-ldap
+  - php-process
   - mod_auth_eon
   - mariadb-server
   - expect
